@@ -46,14 +46,21 @@ IPCSocket::~IPCSocket() {
     }
 }
 
-std::string IPCSocket::send_command(const std::vector<std::string>& args) const {
+void IPCSocket::send_command(const std::vector<std::string> &args) const {
     std::string command = join(args, ' ');
 
-    ssize_t err = send(sock_fd, command.c_str(), command.size(), 0);
+    ssize_t err = ::send(sock_fd, command.c_str(), command.size(), 0);
     if (err < 0) {
-        throw std::runtime_error(std::string("could not send to socket: ") + std::strerror(errno));
+        throw std::runtime_error(std::string("could not send_command to socket: ") + std::strerror(errno));
     }
+}
 
+std::string IPCSocket::send_and_receive(const std::vector<std::string>& args) const {
+    send_command(args);
+    return receive();
+}
+
+std::string IPCSocket::receive() const {
     std::string buf(4096, ' ');
     ssize_t len = recv(sock_fd, &buf[0], buf.size(), 0);
     if (len == -1) {

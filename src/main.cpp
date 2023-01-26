@@ -7,7 +7,12 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     IPCSocket sock(argv[1]);
-    std::cout << "sending ping\n";
-    std::string response = sock.send_command({"PING"});
-    std::cout << "received " << response << "\n";
+    std::cout << "sending PING\n";
+    std::cout << "received " << sock.send_and_receive({"PING"});
+    std::cout << "sending ATTACH\n";
+    std::cout << "received " << sock.send_and_receive({"ATTACH"});
+    std::cout.flush();
+    while (true) {
+        std::cout << "received" << sock.receive() << "\n";
+    }
 }
