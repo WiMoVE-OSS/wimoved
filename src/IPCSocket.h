@@ -1,3 +1,6 @@
+#ifndef GAFFA_IPCSOCKET_H
+#define GAFFA_IPCSOCKET_H
+
 #include <array>
 #include <string>
 #include <vector>
@@ -19,3 +22,5 @@ private:
     struct sockaddr_un local;
     struct sockaddr_un dest;
 };
+
+#endif // GAFFA_IPCSOCKET_H

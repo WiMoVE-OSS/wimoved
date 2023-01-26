@@ -25,16 +25,15 @@ IPCSocket::IPCSocket(const std::string& iface) : local{AF_UNIX, "\0"}, dest() {
     }
 
     // TODO: handle errno = EADDRINUSE
-    int err = bind(sock_fd, (struct sockaddr *) &local, sizeof(local)) < 0;
-    if (err == -1) {
+    if (bind(sock_fd, (struct sockaddr *) &local, sizeof(local)) == -1) {
+        close(sock_fd);
         throw std::runtime_error(std::string("could not bind to socket: ") + std::strerror(errno));
     }
 
     dest.sun_family = AF_UNIX;
     strncpy(dest.sun_path, socket_path.c_str(), sizeof(local.sun_path));
     local.sun_path[sizeof(local.sun_path)-1] = '\0';
-    err = connect(sock_fd, (struct sockaddr *) &dest, sizeof(dest));
-    if (err == -1) {
+    if (connect(sock_fd, (struct sockaddr *) &dest, sizeof(dest)) == -1) {
         close(sock_fd);
         throw std::runtime_error(std::string("could not connect to socket: ") + std::strerror(errno));
     }
