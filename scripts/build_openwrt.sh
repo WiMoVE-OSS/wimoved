@@ -11,13 +11,17 @@ fi
 gaffa_dir="$(pwd)/$(dirname -- "$0")/.."
 
 mkdir -p "$OPENWRT_DIR/package/network/services/gaffa"
-rm -rf "$OPENWRT_DIR/package/network/services/gaffa/*"
 cp "$gaffa_dir/scripts/Makefile" "$OPENWRT_DIR/package/network/services/gaffa"
-cp -r "$gaffa_dir" "$OPENWRT_DIR/package/network/services/gaffa/src"
 
-rm "$OPENWRT_DIR/package/network/services/gaffa/src/CMakeCache.txt"
-rm -r "$OPENWRT_DIR/package/network/services/gaffa/src/cmake_install.cmake"
-rm -r "$OPENWRT_DIR/package/network/services/gaffa/src/CMakeFiles"
+# update source files
+rm -rf "$OPENWRT_DIR/package/network/services/gaffa/src/src"
+cp -r "$gaffa_dir/src" "$OPENWRT_DIR/package/network/services/gaffa/src"
+
+# update build files
+cp "$gaffa_dir/CMakeLists.txt" "$OPENWRT_DIR/package/network/services/gaffa/src"
+#rm "$OPENWRT_DIR/package/network/services/gaffa/src/CMakeCache.txt"
+#rm -r "$OPENWRT_DIR/package/network/services/gaffa/src/cmake_install.cmake"
+#rm -r "$OPENWRT_DIR/package/network/services/gaffa/src/CMakeFiles"
 
 (
 cd "$OPENWRT_DIR" || exit 1
@@ -26,5 +30,6 @@ make "-j$(nproc)" package/network/services/gaffa/compile
 
 (
 scp -O "$OPENWRT_DIR/bin/targets/mvebu/cortexa9/packages/gaffa_1_arm_cortex-a9_vfpv3-d16.ipk" acs4:
+ssh acs4 opkg remove gaffa
 ssh acs4 opkg install ./gaffa_1_arm_cortex-a9_vfpv3-d16.ipk
 )
