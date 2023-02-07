@@ -2,6 +2,7 @@
 #define GAFFA_IPCSOCKET_H
 
 #include <array>
+#include <optional>
 #include <string>
 #include <vector>
 #include "hostapd.h"
@@ -11,10 +12,11 @@
 
 class IPCSocket {
 public:
-    explicit IPCSocket(const std::string& iface);
-    std::string send_and_receive(const std::vector<std::string>& args) const;
+    explicit IPCSocket(const std::string &iface, const std::chrono::duration<int>& timeout);
+
+    std::optional<std::string> send_and_receive(const std::vector<std::string>& args) const;
     void send_command(const std::vector<std::string>& args) const;
-    std::string receive() const;
+    std::optional<std::string> receive() const;
     ~IPCSocket();
 private:
     //wpa_ctrl *ctrl_iface;

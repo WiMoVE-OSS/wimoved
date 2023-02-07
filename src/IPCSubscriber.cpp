@@ -1,19 +1,32 @@
-#include <stdexcept>
+#include <chrono>
 #include <iostream>
+#include <stdexcept>
 #include "IPCSubscriber.h"
 
-IPCSubscriber::IPCSubscriber(IPCQueue &queue, const std::string& iface) : socket(iface), queue(queue) {
+IPCSubscriber::IPCSubscriber(IPCQueue &queue, const std::string& iface) : socket(iface, std::chrono::seconds(1)), queue(queue) {
 
 }
 
 void IPCSubscriber::loop() {
-    std::string result = socket.send_and_receive({"ATTACH"});
-    if (result != "OK\n") {
-        throw std::runtime_error(std::string("could not attach to hostapd: ") + result);
+    std::optional<std::string> result = socket.send_and_receive({"ATTACH"});
+    if (!result.has_value()) {
+        throw std::runtime_error(std::string("socket timeout in attach to hostapd"));
+    }
+    if (result.value() != "OK\n") {
+        throw std::runtime_error(std::string("could not attach to hostapd: ") + result.value());
     }
     std::cout << "attached to hostapd" << std::endl;
     while (true) {
-        std::string event = socket.receive();
-        std::cout << event << std::endl;
+        std::optional<std::string> event = socket.receive();
+        if (!event.has_value()) {
+            std::optional<std::string> ping_result = socket.send_and_receive({"PING"});
+            if (!ping_result.has_value() || ping_result.value() != "PONG\n") {
+                std::cout << "socket timeout in event loop" << std::endl;
+                break;
+            }
+            std::cout << "socket timeout, but ping response" << std::endl;
+        } else {
+            std::cout << event.value() << std::endl;
+        }
     }
 }
