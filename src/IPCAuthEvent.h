@@ -6,6 +6,8 @@ class IPCAuthEvent;
 #include "IPCEvent.h"
 
 class IPCAuthEvent : public IPCEvent {
+public:
+    explicit IPCAuthEvent(std::string station_mac);
     void handle(EventHandler *handler) override;
 };
 

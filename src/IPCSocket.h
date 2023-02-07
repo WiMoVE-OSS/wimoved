@@ -19,7 +19,6 @@ public:
     std::optional<std::string> receive() const;
     ~IPCSocket();
 private:
-    //wpa_ctrl *ctrl_iface;
     int sock_fd;
     struct sockaddr_un local;
     struct sockaddr_un dest;

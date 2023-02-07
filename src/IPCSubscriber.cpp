@@ -7,6 +7,7 @@
 const std::string HOSTAPD_ASSOC_STRING = "<3>EAPOL-4WAY-HS-COMPLETED ";
 const std::string HOSTAPD_AUTH_STRING = "<3>AP-STA-CONNECTED ";
 const std::string HOSTAPD_DISASSOC_STRING = "<3>AP-STA-DISCONNECTED ";
+const size_t MAC_ADDRESS_LENGTH = 2 * 6 + 5;
 
 IPCSubscriber::IPCSubscriber(IPCQueue &queue, const std::string& iface) : socket(iface, std::chrono::seconds(1)), queue(queue) {
 
@@ -30,11 +31,14 @@ void IPCSubscriber::loop() {
             }
         } else {
             if (event.value().rfind(HOSTAPD_ASSOC_STRING) == 0) {
-                queue.enqueue(std::make_unique<IPCAssocEvent>());
+                std::string station_mac = event.value().substr(HOSTAPD_ASSOC_STRING.size(), HOSTAPD_ASSOC_STRING.size() + MAC_ADDRESS_LENGTH);
+                queue.enqueue(std::make_unique<IPCAssocEvent>(station_mac));
             } else if (event.value().rfind(HOSTAPD_AUTH_STRING) == 0){
-                queue.enqueue(std::make_unique<IPCAuthEvent>());
+                std::string station_mac = event.value().substr(HOSTAPD_AUTH_STRING.size(), HOSTAPD_AUTH_STRING.size() + MAC_ADDRESS_LENGTH);
+                queue.enqueue(std::make_unique<IPCAuthEvent>(station_mac));
             } else if (event.value().rfind(HOSTAPD_DISASSOC_STRING) == 0) {
-                queue.enqueue(std::make_unique<IPCDisassocEvent>());
+                std::string station_mac = event.value().substr(HOSTAPD_DISASSOC_STRING.size(), HOSTAPD_DISASSOC_STRING.size() + MAC_ADDRESS_LENGTH);
+                queue.enqueue(std::make_unique<IPCDisassocEvent>(station_mac));
             } else {
                 std::cout << "unknown event" << event.value() << std::endl;
             }

@@ -7,8 +7,12 @@ class EventHandler;
 
 class IPCEvent {
 public:
-    virtual void handle(EventHandler *handler) = 0;
+    explicit IPCEvent(std::string station_mac);
     virtual ~IPCEvent() = default;
+    virtual void handle(EventHandler *handler) = 0;
+    uint32_t vni();
+
+    std::string station_mac;
 };
 
 #include "EventHandler.h"

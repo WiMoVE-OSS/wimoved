@@ -4,18 +4,21 @@
 
 #include "IPCQueue.h"
 #include "EventHandler.h"
+#include "IPCCaller.h"
 
 class EventLoop : public EventHandler {
 private:
+
     IPCQueue& queue;
+    IPCCaller caller;
 public:
-    explicit EventLoop(IPCQueue &queue);
+    EventLoop(IPCQueue &queue, const std::string &iface);
 
     void loop();
 
-    void handle_assoc(const IPCAssocEvent* event) override;
-    void handle_auth(const IPCAuthEvent* event) override;
-    void handle_disassoc(const IPCDisassocEvent* event) override;
+    void handle_assoc(IPCAssocEvent* event) override;
+    void handle_auth(IPCAuthEvent* event) override;
+    void handle_disassoc(IPCDisassocEvent* event) override;
 };
 
 

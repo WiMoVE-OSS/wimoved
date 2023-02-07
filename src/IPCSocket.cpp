@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <chrono>
 #include <optional>
+#include <mutex>
 #include "IPCSocket.h"
 
 std::string join(const std::vector<std::string>& strings, char separator) {
@@ -18,7 +19,20 @@ std::string join(const std::vector<std::string>& strings, char separator) {
     return o.str();
 }
 
+int counter = 0;
+std::mutex m;
+
 IPCSocket::IPCSocket(const std::string& iface, const std::chrono::duration<int>& timeout) : local{AF_UNIX, "\0"}, dest() {
+    std::string local_path;
+    {
+        std::lock_guard g(m);
+        local_path = "/var/run/gaffa" + std::to_string(counter);
+        counter++;
+    }
+    if (unlink(local_path.c_str()) == 0) {
+        std::cout << "successfully unlinked " << local_path << std::endl;
+    }
+
     std::string socket_path  = "/var/run/hostapd/" + iface;
 
     sock_fd = socket(AF_UNIX, SOCK_DGRAM, 0);
@@ -33,14 +47,16 @@ IPCSocket::IPCSocket(const std::string& iface, const std::chrono::duration<int>&
     setsockopt(sock_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof(tv));
 
     // TODO: handle errno = EADDRINUSE
+    strncpy(local.sun_path, local_path.c_str(), sizeof(local.sun_path));
+    local.sun_path[sizeof(local.sun_path)-1] = '\0';
     if (bind(sock_fd, (struct sockaddr *) &local, sizeof(local)) == -1) {
         close(sock_fd);
         throw std::runtime_error(std::string("could not bind to socket: ") + std::strerror(errno));
     }
 
     dest.sun_family = AF_UNIX;
-    strncpy(dest.sun_path, socket_path.c_str(), sizeof(local.sun_path));
-    local.sun_path[sizeof(local.sun_path)-1] = '\0';
+    strncpy(dest.sun_path, socket_path.c_str(), sizeof(dest.sun_path));
+    dest.sun_path[sizeof(dest.sun_path)-1] = '\0';
     if (connect(sock_fd, (struct sockaddr *) &dest, sizeof(dest)) == -1) {
         close(sock_fd);
         throw std::runtime_error(std::string("could not connect to socket: ") + std::strerror(errno));
