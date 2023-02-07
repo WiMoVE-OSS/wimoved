@@ -13,9 +13,9 @@ public:
 
     void loop();
 
-    virtual void handle_assoc(const IPCEvent* event) override;
-    virtual void handle_auth(const IPCEvent* event) override;
-    virtual void handle_disassoc(const IPCEvent* event) override;
+    void handle_assoc(const IPCAssocEvent* event) override;
+    void handle_auth(const IPCAuthEvent* event) override;
+    void handle_disassoc(const IPCDisassocEvent* event) override;
 };
 
 

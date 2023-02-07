@@ -11,13 +11,13 @@
 class IPCQueue {
 
 private:
-    std::queue<IPCEvent> queue;
+    std::queue<std::unique_ptr<IPCEvent>> queue;
     std::mutex mutex;
     std::condition_variable condition_variable;
-    IPCEvent synchronized_dequeue();
+    std::unique_ptr<IPCEvent> synchronized_dequeue();
 public:
-    void enqueue(const IPCEvent& event);
-    IPCEvent dequeue();
+    void enqueue(std::unique_ptr<IPCEvent> event);
+    std::unique_ptr<IPCEvent> dequeue();
 };
 
 

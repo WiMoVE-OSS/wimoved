@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 #include "IPCSubscriber.h"
+#include "IPCAssocEvent.h"
 
 IPCSubscriber::IPCSubscriber(IPCQueue &queue, const std::string& iface) : socket(iface, std::chrono::seconds(1)), queue(queue) {
 
@@ -24,7 +25,8 @@ void IPCSubscriber::loop() {
                 break;
             }
         } else {
-            queue.enqueue(IPCEvent(event.value()));
+            std::cout << event.value() << std::endl;
+            queue.enqueue(std::make_unique<IPCAssocEvent>());
         }
     }
 }

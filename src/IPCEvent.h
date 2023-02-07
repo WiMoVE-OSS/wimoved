@@ -1,19 +1,16 @@
 #ifndef GAFFA_IPCEVENT_H
 #define GAFFA_IPCEVENT_H
 
-class IPCEvent;
-
 #include <string>
-#include "EventHandler.h"
+
+class EventHandler;
 
 class IPCEvent {
-private:
-    std::string text;
 public:
-    IPCEvent(std::string text);
-    void handle(EventHandler *handler);
-    const std::string& content() const;
+    virtual void handle(EventHandler *handler) = 0;
+    virtual ~IPCEvent() = default;
 };
 
+#include "EventHandler.h"
 
 #endif //GAFFA_IPCEVENT_H
