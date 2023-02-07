@@ -5,14 +5,15 @@
 #include "IPCQueue.h"
 #include "EventHandler.h"
 #include "IPCCaller.h"
+#include "NetworkRenderer.h"
 
 class EventLoop : public EventHandler {
 private:
-
+    NetworkRenderer& renderer;
     IPCQueue& queue;
     IPCCaller caller;
 public:
-    EventLoop(IPCQueue &queue, const std::string &iface);
+    EventLoop(NetworkRenderer& renderer, IPCQueue &queue, const std::string &iface);
 
     void loop();
 

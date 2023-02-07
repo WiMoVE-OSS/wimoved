@@ -2,17 +2,16 @@
 #define GAFFA_IPCEVENT_H
 
 #include <string>
+#include "Station.h"
 
 class EventHandler;
 
 class IPCEvent {
 public:
-    explicit IPCEvent(std::string station_mac);
+    explicit IPCEvent(Station station);
     virtual ~IPCEvent() = default;
     virtual void handle(EventHandler *handler) = 0;
-    uint32_t vni();
-
-    std::string station_mac;
+    Station station;
 };
 
 #include "EventHandler.h"

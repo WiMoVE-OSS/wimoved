@@ -7,6 +7,6 @@ void IPCAssocEvent::handle(EventHandler *handler) {
     handler->handle_assoc(this);
 }
 
-IPCAssocEvent::IPCAssocEvent(std::string station_mac) : IPCEvent(std::move(station_mac)) {
+IPCAssocEvent::IPCAssocEvent(Station station) : IPCEvent(std::move(station)) {
 
 }

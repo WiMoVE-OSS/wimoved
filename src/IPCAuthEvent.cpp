@@ -7,6 +7,6 @@ void IPCAuthEvent::handle(EventHandler *handler) {
     handler->handle_auth(this);
 }
 
-IPCAuthEvent::IPCAuthEvent(std::string station_mac) : IPCEvent(std::move(station_mac)) {
+IPCAuthEvent::IPCAuthEvent(Station station) : IPCEvent(std::move(station)) {
 
 }

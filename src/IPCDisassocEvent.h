@@ -7,8 +7,8 @@ class IPCDisassocEvent;
 
 class IPCDisassocEvent : public IPCEvent {
 public:
-    explicit IPCDisassocEvent(std::string station_mac);
-    virtual void handle(EventHandler *handler) override;
+    explicit IPCDisassocEvent(Station station);
+    void handle(EventHandler *handler) override;
 };
 
 

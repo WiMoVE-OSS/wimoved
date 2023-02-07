@@ -32,13 +32,16 @@ void IPCSubscriber::loop() {
         } else {
             if (event.value().rfind(HOSTAPD_ASSOC_STRING) == 0) {
                 std::string station_mac = event.value().substr(HOSTAPD_ASSOC_STRING.size(), HOSTAPD_ASSOC_STRING.size() + MAC_ADDRESS_LENGTH);
-                queue.enqueue(std::make_unique<IPCAssocEvent>(station_mac));
+                Station station(station_mac);
+                queue.enqueue(std::make_unique<IPCAssocEvent>(std::move(station)));
             } else if (event.value().rfind(HOSTAPD_AUTH_STRING) == 0){
                 std::string station_mac = event.value().substr(HOSTAPD_AUTH_STRING.size(), HOSTAPD_AUTH_STRING.size() + MAC_ADDRESS_LENGTH);
-                queue.enqueue(std::make_unique<IPCAuthEvent>(station_mac));
+                Station station(station_mac);
+                queue.enqueue(std::make_unique<IPCAuthEvent>(std::move(station)));
             } else if (event.value().rfind(HOSTAPD_DISASSOC_STRING) == 0) {
                 std::string station_mac = event.value().substr(HOSTAPD_DISASSOC_STRING.size(), HOSTAPD_DISASSOC_STRING.size() + MAC_ADDRESS_LENGTH);
-                queue.enqueue(std::make_unique<IPCDisassocEvent>(station_mac));
+                Station station(station_mac);
+                queue.enqueue(std::make_unique<IPCDisassocEvent>(std::move(station)));
             } else {
                 std::cout << "unknown event" << event.value() << std::endl;
             }

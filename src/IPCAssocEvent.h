@@ -7,10 +7,8 @@ class IPCAssocEvent;
 
 class IPCAssocEvent : public IPCEvent {
 public:
-    explicit IPCAssocEvent(std::string station_mac);
+    explicit IPCAssocEvent(Station station);
     virtual void handle(EventHandler *handler) override;
-
-    uint32_t vlan_id;
 };
 
 

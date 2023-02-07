@@ -2,11 +2,6 @@
 
 #include <utility>
 
-IPCEvent::IPCEvent(std::string station_mac) : station_mac(std::move(station_mac)) {
+IPCEvent::IPCEvent(Station station) : station(std::move(station)) {
 
-}
-
-uint32_t IPCEvent::vni() {
-    // TODO: implement proper VNI calculation
-    return 1;
 }
