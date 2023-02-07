@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include "IPCSubscriber.h"
+#include "EventLoop.h"
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
@@ -13,9 +14,9 @@ int main(int argc, char *argv[]) {
     std::thread subscriber_thread([&queue, &iface](){
         IPCSubscriber(queue, iface).loop();
     });
-    while (true) {
-        IPCEvent event = queue.dequeue();
-        std::cout << "event from queue: " << event.content() << std::endl;
-    }
+    std::thread event_loop_thread([&queue]() {
+        EventLoop(queue).loop();
+    });
     subscriber_thread.join();
+    event_loop_thread.join();
 }

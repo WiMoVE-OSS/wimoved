@@ -8,3 +8,7 @@ const std::string& IPCEvent::content() const {
 
 IPCEvent::IPCEvent(std::string text) : text(std::move(text)) {
 }
+
+void IPCEvent::handle(EventHandler *handler) {
+    handler->handle_assoc(this);
+}

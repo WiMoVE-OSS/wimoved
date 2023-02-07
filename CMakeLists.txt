@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 add_definitions(-DCONFIG_CTRL_IFACE -DCONFIG_CTRL_IFACE_UNIX)
-add_executable(gaffa src/hostapd/os_unix.c src/hostapd/wpa_ctrl.c src/IPCSocket.cpp src/main.cpp src/IPCSubscriber.cpp src/IPCSubscriber.h src/IPCQueue.cpp src/IPCQueue.h src/IPCEvent.cpp src/IPCEvent.h)
+add_executable(gaffa src/hostapd/os_unix.c src/hostapd/wpa_ctrl.c src/IPCSocket.cpp src/main.cpp src/IPCSubscriber.cpp src/IPCSubscriber.h src/IPCQueue.cpp src/IPCQueue.h src/IPCEvent.cpp src/IPCEvent.h src/EventLoop.cpp src/EventLoop.h src/EventHandler.cpp src/EventHandler.h)
 
 include_directories(src/hostapd)
 
