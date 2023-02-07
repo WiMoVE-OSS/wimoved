@@ -16,7 +16,7 @@ uint32_t IPCCaller::vlan_for_station(const std::string &station_mac) {
     }
     std::istringstream stream(result.value());
     std::string line;
-    while (std::getline(stream, line)) {stream = {std::istringstream}
+    while (std::getline(stream, line)) {
         if (line.rfind(VLAN_ID_PREFIX) == 0) {
             return std::stol(line.substr(VLAN_ID_PREFIX.size(), line.size()));
         }
