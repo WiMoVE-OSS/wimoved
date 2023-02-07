@@ -4,6 +4,10 @@
 #include "IPCSubscriber.h"
 #include "IPCAssocEvent.h"
 
+const std::string HOSTAPD_ASSOC_STRING = "<3>EAPOL-4WAY-HS-COMPLETED ";
+const std::string HOSTAPD_AUTH_STRING = "<3>AP-STA-CONNECTED ";
+const std::string HOSTAPD_DISASSOC_STRING = "<3>AP-STA-DISCONNECTED ";
+
 IPCSubscriber::IPCSubscriber(IPCQueue &queue, const std::string& iface) : socket(iface, std::chrono::seconds(1)), queue(queue) {
 
 }
@@ -25,8 +29,15 @@ void IPCSubscriber::loop() {
                 break;
             }
         } else {
-            std::cout << event.value() << std::endl;
-            queue.enqueue(std::make_unique<IPCAssocEvent>());
+            if (event.value().rfind(HOSTAPD_ASSOC_STRING) == 0) {
+                queue.enqueue(std::make_unique<IPCAssocEvent>());
+            } else if (event.value().rfind(HOSTAPD_AUTH_STRING) == 0){
+                queue.enqueue(std::make_unique<IPCAuthEvent>());
+            } else if (event.value().rfind(HOSTAPD_DISASSOC_STRING) == 0) {
+                queue.enqueue(std::make_unique<IPCDisassocEvent>());
+            } else {
+                std::cout << "unknown event" << event.value() << std::endl;
+            }
         }
     }
 }
