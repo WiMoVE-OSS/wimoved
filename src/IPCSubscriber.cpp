@@ -21,12 +21,10 @@ void IPCSubscriber::loop() {
         if (!event.has_value()) {
             std::optional<std::string> ping_result = socket.send_and_receive({"PING"});
             if (!ping_result.has_value() || ping_result.value() != "PONG\n") {
-                std::cout << "socket timeout in event loop" << std::endl;
                 break;
             }
-            std::cout << "socket timeout, but ping response" << std::endl;
         } else {
-            std::cout << event.value() << std::endl;
+            queue.enqueue(IPCEvent(event.value()));
         }
     }
 }

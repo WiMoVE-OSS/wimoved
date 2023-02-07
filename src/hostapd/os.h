@@ -312,7 +312,7 @@ void * os_malloc(size_t size);
 /**
  * os_realloc - Re-allocate dynamic memory
  * @ptr: Old buffer from os_malloc() or os_realloc()
- * @size: Size of the new buffer
+ * @size: size of the new buffer
  * Returns: Allocated buffer or %NULL on failure
  *
  * Caller is responsible for freeing the returned buffer with os_free().
@@ -589,7 +589,7 @@ static inline void os_remove_in_array(void *ptr, size_t nmemb, size_t size,
  * os_strlcpy - Copy a string with size bound and NUL-termination
  * @dest: Destination
  * @src: Source
- * @siz: Size of the target buffer
+ * @siz: size of the target buffer
  * Returns: Total length of the target string (length of src) (not including
  * NUL-termination)
  *

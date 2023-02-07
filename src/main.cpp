@@ -13,5 +13,9 @@ int main(int argc, char *argv[]) {
     std::thread subscriber_thread([&queue, &iface](){
         IPCSubscriber(queue, iface).loop();
     });
+    while (true) {
+        IPCEvent event = queue.dequeue();
+        std::cout << "event from queue: " << event.content() << std::endl;
+    }
     subscriber_thread.join();
 }
