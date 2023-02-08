@@ -17,6 +17,8 @@ class NetLinkRenderer {
 
 public:
     void createVxlanIface(uint32_t vni);
+    void deleteInterface(std::string);
+    void createBridge(uint32_t vni);
 };
 #endif //GAFFA_NETLINKRENDERER_H
 
