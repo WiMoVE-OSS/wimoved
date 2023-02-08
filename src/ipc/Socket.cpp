@@ -7,6 +7,7 @@
 #include <optional>
 #include <mutex>
 #include "Socket.h"
+#include "TimeoutException.h"
 
 std::string join(const std::vector<std::string>& strings, char separator) {
     std::ostringstream o;
@@ -78,12 +79,12 @@ void ipc::Socket::send_command(const std::vector<std::string> &args) const {
     }
 }
 
-std::optional<std::string> ipc::Socket::send_and_receive(const std::vector<std::string>& args) const {
+std::string ipc::Socket::send_and_receive(const std::vector<std::string>& args) const {
     send_command(args);
     return receive();
 }
 
-std::optional<std::string> ipc::Socket::receive() const {
+std::string ipc::Socket::receive() const {
     std::string buf(4096, ' ');
     while (true) {
         ssize_t len = recv(sock_fd, &buf[0], buf.size(), 0);
@@ -91,7 +92,7 @@ std::optional<std::string> ipc::Socket::receive() const {
             return buf.substr(0, len);
         }
         if (errno == EAGAIN) {
-            return std::nullopt;
+            throw TimeoutException("timeout in recv() from hostapd");
         }
         if (errno != EINTR) {
             throw std::runtime_error(std::string("could not recv from socket: ") + std::strerror(errno));

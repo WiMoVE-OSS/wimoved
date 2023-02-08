@@ -38,7 +38,7 @@ add_executable(gaffa
         src/BridgePerVxlanRenderer.h
         src/Station.cpp
         src/Station.h
-)
+        src/ipc/TimeoutException.cpp src/ipc/TimeoutException.h)
 target_link_libraries(gaffa /usr/lib/libnl-3.so /usr/lib/libnl-route-3.so)
 
 include_directories(src/hostapd)

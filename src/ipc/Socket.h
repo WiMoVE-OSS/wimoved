@@ -16,11 +16,11 @@ namespace ipc {
     public:
         explicit Socket(const std::string &iface, const std::chrono::duration<int> &timeout);
 
-        std::optional<std::string> send_and_receive(const std::vector<std::string> &args) const;
+        std::string send_and_receive(const std::vector<std::string> &args) const;
 
         void send_command(const std::vector<std::string> &args) const;
 
-        std::optional<std::string> receive() const;
+        std::string receive() const;
 
         ~Socket();
 

@@ -11,11 +11,7 @@ ipc::Caller::Caller(const std::string &iface) : socket(iface, std::chrono::secon
 }
 
 uint32_t ipc::Caller::vlan_for_station(const std::string &station_mac) {
-    std::optional<std::string> result = socket.send_and_receive({"STA", station_mac});
-    if (!result.has_value()) {
-        throw std::runtime_error("timeout in vlan_for_station");
-    }
-    std::istringstream stream(result.value());
+    std::istringstream stream(socket.send_and_receive({"STA", station_mac}));
     std::string line;
     while (std::getline(stream, line)) {
         if (line.rfind(VLAN_ID_PREFIX) == 0) {
@@ -26,10 +22,6 @@ uint32_t ipc::Caller::vlan_for_station(const std::string &station_mac) {
 }
 
 std::vector<Station> ipc::Caller::connected_stations() {
-    std::optional<std::string> result = socket.send_and_receive({"STA-FIRST"});
-    if (!result.has_value()) {
-        throw std::runtime_error("timeout in connected_stations");
-    }
-    std::vector<Station> stations{Station(result.value().substr(0, MAC_ADDRESS_LENGTH))};
+    std::vector<Station> stations{Station(socket.send_and_receive({"STA-FIRST"}).substr(0, MAC_ADDRESS_LENGTH))};
     return stations;
 }
