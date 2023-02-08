@@ -2,9 +2,9 @@
 #define GAFFA_EVENTLOOP_H
 
 
-#include "IPCQueue.h"
+#include "ipc/IPCQueue.h"
 #include "EventHandler.h"
-#include "IPCCaller.h"
+#include "ipc/IPCCaller.h"
 #include "NetworkRenderer.h"
 
 class EventLoop : public EventHandler {

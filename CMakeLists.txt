@@ -9,37 +9,35 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 include_directories("/usr/include/libnl3/")
 add_definitions(-DCONFIG_CTRL_IFACE -DCONFIG_CTRL_IFACE_UNIX)
 add_executable(gaffa
-    src/hostapd/os_unix.c
-    src/hostapd/wpa_ctrl.c
-    src/IPCSocket.cpp src/main.cpp
-    src/IPCSubscriber.cpp
-    src/IPCSubscriber.h
-    src/IPCQueue.cpp
-    src/IPCQueue.h
-    src/IPCEvent.cpp
-    src/IPCEvent.h
-    src/EventLoop.cpp
-    src/EventLoop.h
-    src/EventHandler.cpp
-    src/EventHandler.h
-    src/IPCAssocEvent.cpp
-    src/IPCAssocEvent.h
-    src/IPCAuthEvent.cpp
-    src/IPCAuthEvent.h
-    src/IPCDisassocEvent.cpp
-    src/IPCDisassocEvent.h
-    src/IPCCaller.cpp
-    src/IPCCaller.h
-    src/NetworkRenderer.cpp
-    src/NetworkRenderer.h
-    src/BridgePerVxlanRenderer.cpp
-    src/BridgePerVxlanRenderer.h
-    src/Station.cpp
-    src/Station.h
-    src/NetlinkSocket.cpp
-    src/NetlinkSocket.h
-    src/NetlinkVxlan.cpp
-    src/NetlinkVxlan.h
+        src/ipc/IPCSocket.cpp src/main.cpp
+        src/ipc/IPCSubscriber.cpp
+        src/ipc/IPCSubscriber.h
+        src/ipc/IPCQueue.cpp
+        src/ipc/IPCQueue.h
+        src/ipc/IPCEvent.cpp
+        src/ipc/IPCEvent.h
+        src/ipc/IPCAssocEvent.cpp
+        src/ipc/IPCAssocEvent.h
+        src/ipc/IPCAuthEvent.cpp
+        src/ipc/IPCAuthEvent.h
+        src/ipc/IPCDisassocEvent.cpp
+        src/ipc/IPCDisassocEvent.h
+        src/ipc/IPCCaller.cpp
+        src/ipc/IPCCaller.h
+        src/EventLoop.cpp
+        src/EventLoop.h
+        src/EventHandler.cpp
+        src/EventHandler.h
+        src/NetworkRenderer.cpp
+        src/NetworkRenderer.h
+        src/BridgePerVxlanRenderer.cpp
+        src/BridgePerVxlanRenderer.h
+        src/Station.cpp
+        src/Station.h
+        src/NetlinkSocket.cpp
+        src/NetlinkSocket.h
+        src/NetlinkVxlan.cpp
+        src/NetlinkVxlan.h
 )
 target_link_libraries(gaffa /usr/lib/libnl-3.so /usr/lib/libnl-route-3.so)
 

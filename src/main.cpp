@@ -1,6 +1,6 @@
 #include <iostream>
 #include <thread>
-#include "IPCSubscriber.h"
+#include "ipc/IPCSubscriber.h"
 #include "EventLoop.h"
 #include "BridgePerVxlanRenderer.h"
 

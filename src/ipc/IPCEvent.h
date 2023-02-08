@@ -2,7 +2,7 @@
 #define GAFFA_IPCEVENT_H
 
 #include <string>
-#include "Station.h"
+#include "../Station.h"
 
 class EventHandler;
 
@@ -14,6 +14,6 @@ public:
     Station station;
 };
 
-#include "EventHandler.h"
+#include "../EventHandler.h"
 
 #endif //GAFFA_IPCEVENT_H

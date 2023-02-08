@@ -1,9 +1,9 @@
 #ifndef GAFFA_EVENTHANDLER_H
 #define GAFFA_EVENTHANDLER_H
 
-#include "IPCAssocEvent.h"
-#include "IPCAuthEvent.h"
-#include "IPCDisassocEvent.h"
+#include "ipc/IPCAssocEvent.h"
+#include "ipc/IPCAuthEvent.h"
+#include "ipc/IPCDisassocEvent.h"
 
 class EventHandler {
 public:

@@ -5,7 +5,6 @@
 #include <optional>
 #include <string>
 #include <vector>
-#include "hostapd.h"
 
 #include <sys/socket.h>
 #include <sys/un.h>
