@@ -9,21 +9,25 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 include_directories("/usr/include/libnl3/")
 add_definitions(-DCONFIG_CTRL_IFACE -DCONFIG_CTRL_IFACE_UNIX)
 add_executable(gaffa
-        src/ipc/IPCSocket.cpp src/main.cpp
-        src/ipc/IPCSubscriber.cpp
-        src/ipc/IPCSubscriber.h
-        src/ipc/IPCQueue.cpp
-        src/ipc/IPCQueue.h
-        src/ipc/IPCEvent.cpp
-        src/ipc/IPCEvent.h
-        src/ipc/IPCAssocEvent.cpp
-        src/ipc/IPCAssocEvent.h
-        src/ipc/IPCAuthEvent.cpp
-        src/ipc/IPCAuthEvent.h
-        src/ipc/IPCDisassocEvent.cpp
-        src/ipc/IPCDisassocEvent.h
-        src/ipc/IPCCaller.cpp
-        src/ipc/IPCCaller.h
+        src/ipc/Socket.cpp src/main.cpp
+        src/ipc/Subscriber.cpp
+        src/ipc/Subscriber.h
+        src/ipc/Queue.cpp
+        src/ipc/Queue.h
+        src/ipc/Event.cpp
+        src/ipc/Event.h
+        src/ipc/AssocEvent.cpp
+        src/ipc/AssocEvent.h
+        src/ipc/AuthEvent.cpp
+        src/ipc/AuthEvent.h
+        src/ipc/DisassocEvent.cpp
+        src/ipc/DisassocEvent.h
+        src/ipc/Caller.cpp
+        src/ipc/Caller.h
+        src/nl/Socket.cpp
+        src/nl/Socket.h
+        src/nl/Vxlan.cpp
+        src/nl/Vxlan.h
         src/EventLoop.cpp
         src/EventLoop.h
         src/EventHandler.cpp
@@ -34,10 +38,6 @@ add_executable(gaffa
         src/BridgePerVxlanRenderer.h
         src/Station.cpp
         src/Station.h
-        src/NetlinkSocket.cpp
-        src/NetlinkSocket.h
-        src/NetlinkVxlan.cpp
-        src/NetlinkVxlan.h
 )
 target_link_libraries(gaffa /usr/lib/libnl-3.so /usr/lib/libnl-route-3.so)
 

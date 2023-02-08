@@ -6,7 +6,7 @@
 #include <chrono>
 #include <optional>
 #include <mutex>
-#include "IPCSocket.h"
+#include "Socket.h"
 
 std::string join(const std::vector<std::string>& strings, char separator) {
     std::ostringstream o;
@@ -22,7 +22,7 @@ std::string join(const std::vector<std::string>& strings, char separator) {
 int counter = 0;
 std::mutex m;
 
-IPCSocket::IPCSocket(const std::string& iface, const std::chrono::duration<int>& timeout) : local{AF_UNIX, "\0"}, dest() {
+ipc::Socket::Socket(const std::string& iface, const std::chrono::duration<int>& timeout) : local{AF_UNIX, "\0"}, dest() {
     std::string local_path;
     {
         std::lock_guard g(m);
@@ -63,13 +63,13 @@ IPCSocket::IPCSocket(const std::string& iface, const std::chrono::duration<int>&
     }
 }
 
-IPCSocket::~IPCSocket() {
+ipc::Socket::~Socket() {
     if (close(sock_fd) == -1) {
         std::cerr << "could not close socket: " << std::strerror(errno) << "\n";
     }
 }
 
-void IPCSocket::send_command(const std::vector<std::string> &args) const {
+void ipc::Socket::send_command(const std::vector<std::string> &args) const {
     std::string command = join(args, ' ');
 
     ssize_t err = send(sock_fd, command.c_str(), command.size(), 0);
@@ -78,12 +78,12 @@ void IPCSocket::send_command(const std::vector<std::string> &args) const {
     }
 }
 
-std::optional<std::string> IPCSocket::send_and_receive(const std::vector<std::string>& args) const {
+std::optional<std::string> ipc::Socket::send_and_receive(const std::vector<std::string>& args) const {
     send_command(args);
     return receive();
 }
 
-std::optional<std::string> IPCSocket::receive() const {
+std::optional<std::string> ipc::Socket::receive() const {
     std::string buf(4096, ' ');
     while (true) {
         ssize_t len = recv(sock_fd, &buf[0], buf.size(), 0);

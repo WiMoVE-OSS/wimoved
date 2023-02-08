@@ -1,15 +1,15 @@
 #include <chrono>
 #include <stdexcept>
 #include <sstream>
-#include "IPCCaller.h"
+#include "Caller.h"
 
 const std::string VLAN_ID_PREFIX = "vlan_id=";
 
-IPCCaller::IPCCaller(const std::string &iface) : socket(iface, std::chrono::seconds(1)) {
+ipc::Caller::Caller(const std::string &iface) : socket(iface, std::chrono::seconds(1)) {
 
 }
 
-uint32_t IPCCaller::vlan_for_station(const std::string &station_mac) {
+uint32_t ipc::Caller::vlan_for_station(const std::string &station_mac) {
     std::optional<std::string> result = socket.send_and_receive({"STA", station_mac});
     if (!result.has_value()) {
         throw std::runtime_error("timeout in vlan_for_station");
@@ -24,7 +24,7 @@ uint32_t IPCCaller::vlan_for_station(const std::string &station_mac) {
     throw std::runtime_error("no vlan_id attribute found for station");
 }
 
-std::vector<std::string> IPCCaller::connected_stations() {
+std::vector<std::string> ipc::Caller::connected_stations() {
     // TODO: implement
     return std::vector<std::string>();
 }

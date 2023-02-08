@@ -1,6 +1,6 @@
-#include "IPCQueue.h"
+#include "Queue.h"
 
-void IPCQueue::enqueue(std::unique_ptr<IPCEvent> event) {
+void ipc::Queue::enqueue(std::unique_ptr<ipc::Event> event) {
     {
         std::lock_guard guard(mutex);
         queue.push(std::move(event));
@@ -8,7 +8,7 @@ void IPCQueue::enqueue(std::unique_ptr<IPCEvent> event) {
     condition_variable.notify_one();
 }
 
-std::unique_ptr<IPCEvent> IPCQueue::dequeue() {
+std::unique_ptr<ipc::Event> ipc::Queue::dequeue() {
     std::unique_lock<std::mutex> unique_lock(mutex);
     if (!queue.empty()) {
         return synchronized_dequeue();
@@ -17,8 +17,8 @@ std::unique_ptr<IPCEvent> IPCQueue::dequeue() {
     return synchronized_dequeue();
 }
 
-std::unique_ptr<IPCEvent> IPCQueue::synchronized_dequeue() {
-    std::unique_ptr<IPCEvent> event = std::move(queue.front());
+std::unique_ptr<ipc::Event> ipc::Queue::synchronized_dequeue() {
+    std::unique_ptr<Event> event = std::move(queue.front());
     queue.pop();
     return event;
 }

@@ -4,12 +4,12 @@
 #include <netlink/route/link/vxlan.h>
 #include <net/if.h>
 #include <iostream>
-#include "NetlinkSocket.h"
-#include "NetlinkVxlan.h"
+#include "Socket.h"
+#include "Vxlan.h"
 
 const std::string VXLAN_IFACE_PREFIX = "vxlan";
 
-NetlinkSocket::NetlinkSocket() {
+nl::Socket::Socket() {
     socket = nl_socket_alloc();
     if (socket == nullptr) {
         throw std::runtime_error(std::string("error in nl_socket_alloc: ") + std::strerror(errno));
@@ -20,13 +20,13 @@ NetlinkSocket::NetlinkSocket() {
     };
 }
 
-NetlinkSocket::~NetlinkSocket() {
+nl::Socket::~Socket() {
     nl_close(socket);
     nl_socket_free(socket);
 }
 
-void NetlinkSocket::create_vxlan_iface(uint32_t vni) {
-    NetlinkVxlan vxlan;
+void nl::Socket::create_vxlan_iface(uint32_t vni) {
+    Vxlan vxlan;
 
     rtnl_link_set_name(vxlan.link, (VXLAN_IFACE_PREFIX + std::to_string(vni)).c_str());
     rtnl_link_set_flags(vxlan.link, IFF_UP);

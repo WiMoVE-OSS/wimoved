@@ -2,24 +2,24 @@
 #define GAFFA_EVENTLOOP_H
 
 
-#include "ipc/IPCQueue.h"
+#include "ipc/Queue.h"
 #include "EventHandler.h"
-#include "ipc/IPCCaller.h"
+#include "ipc/Caller.h"
 #include "NetworkRenderer.h"
 
 class EventLoop : public EventHandler {
 private:
     NetworkRenderer& renderer;
-    IPCQueue& queue;
-    IPCCaller caller;
+    ipc::Queue& queue;
+    ipc::Caller caller;
 public:
-    EventLoop(NetworkRenderer& renderer, IPCQueue &queue, const std::string &iface);
+    EventLoop(NetworkRenderer& renderer, ipc::Queue &queue, const std::string &iface);
 
     void loop();
 
-    void handle_assoc(IPCAssocEvent* event) override;
-    void handle_auth(IPCAuthEvent* event) override;
-    void handle_disassoc(IPCDisassocEvent* event) override;
+    void handle_assoc(ipc::AssocEvent* event) override;
+    void handle_auth(ipc::AuthEvent* event) override;
+    void handle_disassoc(ipc::DisassocEvent* event) override;
 };
 
 

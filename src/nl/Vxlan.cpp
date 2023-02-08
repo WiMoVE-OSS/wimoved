@@ -1,13 +1,13 @@
 #include <stdexcept>
-#include "NetlinkVxlan.h"
+#include "Vxlan.h"
 
-NetlinkVxlan::NetlinkVxlan() {
+nl::Vxlan::Vxlan() {
     link = rtnl_link_vxlan_alloc();
     if (link == nullptr) {
         throw std::runtime_error("rtnl_link_vxlan_alloc: could not allocate");
     }
 }
 
-NetlinkVxlan::~NetlinkVxlan() {
+nl::Vxlan::~Vxlan() {
     rtnl_link_put(link);
 }

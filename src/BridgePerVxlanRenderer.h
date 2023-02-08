@@ -1,13 +1,12 @@
 #ifndef GAFFA_BRIDGEPERVXLANRENDERER_H
 #define GAFFA_BRIDGEPERVXLANRENDERER_H
 
-
 #include "NetworkRenderer.h"
-#include "NetlinkSocket.h"
+#include "nl/Socket.h"
 
 class BridgePerVxlanRenderer : public NetworkRenderer {
 private:
-    NetlinkSocket socket;
+    nl::Socket socket;
 public:
     BridgePerVxlanRenderer();
     ~BridgePerVxlanRenderer();

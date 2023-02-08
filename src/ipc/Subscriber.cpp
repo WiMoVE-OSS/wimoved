@@ -1,19 +1,19 @@
 #include <chrono>
 #include <iostream>
 #include <stdexcept>
-#include "IPCSubscriber.h"
-#include "IPCAssocEvent.h"
+#include "Subscriber.h"
+#include "AssocEvent.h"
 
 const std::string HOSTAPD_ASSOC_STRING = "<3>EAPOL-4WAY-HS-COMPLETED ";
 const std::string HOSTAPD_AUTH_STRING = "<3>AP-STA-CONNECTED ";
 const std::string HOSTAPD_DISASSOC_STRING = "<3>AP-STA-DISCONNECTED ";
 const size_t MAC_ADDRESS_LENGTH = 2 * 6 + 5;
 
-IPCSubscriber::IPCSubscriber(IPCQueue &queue, const std::string& iface) : socket(iface, std::chrono::seconds(1)), queue(queue) {
+ipc::Subscriber::Subscriber(Queue &queue, const std::string& iface) : socket(iface, std::chrono::seconds(1)), queue(queue) {
 
 }
 
-void IPCSubscriber::loop() {
+void ipc::Subscriber::loop() {
     std::optional<std::string> result = socket.send_and_receive({"ATTACH"});
     if (!result.has_value()) {
         throw std::runtime_error(std::string("socket timeout in attach to hostapd"));
@@ -33,15 +33,15 @@ void IPCSubscriber::loop() {
             if (event.value().rfind(HOSTAPD_ASSOC_STRING) == 0) {
                 std::string station_mac = event.value().substr(HOSTAPD_ASSOC_STRING.size(), HOSTAPD_ASSOC_STRING.size() + MAC_ADDRESS_LENGTH);
                 Station station(station_mac);
-                queue.enqueue(std::make_unique<IPCAssocEvent>(std::move(station)));
+                queue.enqueue(std::make_unique<AssocEvent>(std::move(station)));
             } else if (event.value().rfind(HOSTAPD_AUTH_STRING) == 0){
                 std::string station_mac = event.value().substr(HOSTAPD_AUTH_STRING.size(), HOSTAPD_AUTH_STRING.size() + MAC_ADDRESS_LENGTH);
                 Station station(station_mac);
-                queue.enqueue(std::make_unique<IPCAuthEvent>(std::move(station)));
+                queue.enqueue(std::make_unique<AuthEvent>(std::move(station)));
             } else if (event.value().rfind(HOSTAPD_DISASSOC_STRING) == 0) {
                 std::string station_mac = event.value().substr(HOSTAPD_DISASSOC_STRING.size(), HOSTAPD_DISASSOC_STRING.size() + MAC_ADDRESS_LENGTH);
                 Station station(station_mac);
-                queue.enqueue(std::make_unique<IPCDisassocEvent>(std::move(station)));
+                queue.enqueue(std::make_unique<DisassocEvent>(std::move(station)));
             } else {
                 std::cout << "unknown event" << event.value() << std::endl;
             }
