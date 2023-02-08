@@ -1,12 +1,19 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(gaffa LANGUAGES C CXX)
+project(gaffa LANGUAGES CXX)
 
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
-include_directories("/usr/include/libnl3/")
+
+find_path(LIBNL_INCLUDE_DIR netlink/netlink.h
+        /usr/include
+        /usr/include/libnl3
+        /usr/local/include
+        /usr/local/include/libnl3
+)
+
+include_directories(${LIBNL_INCLUDE_DIR})
 add_definitions(-DCONFIG_CTRL_IFACE -DCONFIG_CTRL_IFACE_UNIX)
 add_executable(gaffa
         src/ipc/Socket.cpp src/main.cpp
@@ -43,7 +50,7 @@ add_executable(gaffa
         src/Station.cpp
         src/Station.h
         src/ipc/TimeoutException.cpp src/ipc/TimeoutException.h)
-target_link_libraries(gaffa /usr/lib/libnl-3.so /usr/lib/libnl-route-3.so)
+target_link_libraries(gaffa nl-3 nl-route-3)
 
 include_directories(src/hostapd)
 
