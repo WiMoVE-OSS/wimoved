@@ -27,7 +27,7 @@ void ipc::Subscriber::loop(const std::future<void> &future) {
             try {
                 std::string ping_result = socket.send_and_receive({"PING"});
                 if (ping_result != "PONG\n") {
-                    std::cout << "timeout in Subscriber::loop(), hostapd did not respond pong" << std::endl;
+                    std::cout << "timeout in Subscriber::loop(), hostapd did not respond pong: " << ping_result << std::endl;
                     break;
                 } else {
                     continue;

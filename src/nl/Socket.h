@@ -2,6 +2,8 @@
 #define GAFFA_NL_SOCKET_H
 
 #include <netlink/netlink.h>
+#include <netlink/list.h>
+#include <unordered_set>
 
 namespace nl {
     class Socket {
@@ -11,8 +13,9 @@ namespace nl {
         void create_vxlan_iface(uint32_t vni);
         void add_iface_bridge(const std::string& bridgeName, const std::string& ifaceName);
         void create_bridge_for_vni(uint32_t vni);
-        void create_bridge(std::string name);
+        void create_bridge(const std::string& name);
         void delete_interface(const std::string& name);
+        std::unordered_set<uint32_t > interface_list();
     private:
         struct nl_sock *socket;
     };
