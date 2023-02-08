@@ -85,12 +85,16 @@ std::optional<std::string> IPCSocket::send_and_receive(const std::vector<std::st
 
 std::optional<std::string> IPCSocket::receive() const {
     std::string buf(4096, ' ');
-    ssize_t len = recv(sock_fd, &buf[0], buf.size(), 0);
-    if (len == -1) {
+    while (true) {
+        ssize_t len = recv(sock_fd, &buf[0], buf.size(), 0);
+        if (len != -1) {
+            return buf.substr(0, len);
+        }
         if (errno == EAGAIN) {
             return std::nullopt;
         }
-        throw std::runtime_error(std::string("could not recv from socket: ") + std::strerror(errno));
+        if (errno != EINTR) {
+            throw std::runtime_error(std::string("could not recv from socket: ") + std::strerror(errno));
+        }
     }
-    return buf.substr(0, len);
 }

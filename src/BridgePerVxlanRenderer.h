@@ -3,9 +3,13 @@
 
 
 #include "NetworkRenderer.h"
+#include "NetlinkSocket.h"
 
 class BridgePerVxlanRenderer : public NetworkRenderer {
+private:
+    NetlinkSocket socket;
 public:
+    BridgePerVxlanRenderer();
     ~BridgePerVxlanRenderer();
     void setup_vni(uint32_t vni) override;
     void setup_station(const Station& station) override;
