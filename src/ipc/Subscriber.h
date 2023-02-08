@@ -1,6 +1,7 @@
 #ifndef GAFFA_SUBSCRIBER_H
 #define GAFFA_SUBSCRIBER_H
 
+#include <future>
 #include "Socket.h"
 #include "Queue.h"
 
@@ -9,7 +10,7 @@ namespace ipc {
     public:
         explicit Subscriber(Queue &queue, const std::string &iface);
 
-        void loop();
+        void loop(const std::future<void>& future);
 
     private:
         Socket socket;

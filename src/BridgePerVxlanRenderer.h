@@ -10,7 +10,6 @@ private:
     nl::Socket socket;
 public:
     BridgePerVxlanRenderer();
-    ~BridgePerVxlanRenderer();
     void setup_vni(uint32_t vni) override;
     void setup_station(const Station& station) override;
     void cleanup(const std::function<std::vector<Station>()>& get_stations) override;

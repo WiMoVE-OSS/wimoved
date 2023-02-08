@@ -2,6 +2,7 @@
 #define GAFFA_EVENTLOOP_H
 
 
+#include <future>
 #include "ipc/Queue.h"
 #include "EventHandler.h"
 #include "ipc/Caller.h"
@@ -15,7 +16,7 @@ private:
 public:
     EventLoop(NetworkRenderer& renderer, ipc::Queue &queue, const std::string &iface);
 
-    void loop();
+    void loop(const std::future<void>& future);
 
     void handle_assoc(ipc::AssocEvent* event) override;
     void handle_auth(ipc::AuthEvent* event) override;

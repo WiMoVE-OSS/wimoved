@@ -21,7 +21,7 @@ namespace ipc {
     public:
         void enqueue(std::unique_ptr<Event> event);
 
-        std::unique_ptr<Event> dequeue();
+        std::unique_ptr<Event> dequeue(const std::chrono::duration<int>& timeout);
     };
 }
 

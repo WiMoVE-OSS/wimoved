@@ -1,4 +1,5 @@
 #include "Queue.h"
+#include "TimeoutException.h"
 
 void ipc::Queue::enqueue(std::unique_ptr<ipc::Event> event) {
     {
@@ -8,12 +9,14 @@ void ipc::Queue::enqueue(std::unique_ptr<ipc::Event> event) {
     condition_variable.notify_one();
 }
 
-std::unique_ptr<ipc::Event> ipc::Queue::dequeue() {
+std::unique_ptr<ipc::Event> ipc::Queue::dequeue(const std::chrono::duration<int>& timeout) {
     std::unique_lock<std::mutex> unique_lock(mutex);
     if (!queue.empty()) {
         return synchronized_dequeue();
     }
-    condition_variable.wait(unique_lock);
+    if (condition_variable.wait_for(unique_lock, timeout) == std::cv_status::timeout) {
+        throw TimeoutException("timeout in dequeue()");
+    }
     return synchronized_dequeue();
 }
 

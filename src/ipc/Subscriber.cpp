@@ -13,13 +13,13 @@ ipc::Subscriber::Subscriber(Queue &queue, const std::string& iface) : socket(ifa
 
 }
 
-void ipc::Subscriber::loop() {
+void ipc::Subscriber::loop(const std::future<void> &future) {
     std::string result = socket.send_and_receive({"ATTACH"});
     if (result != "OK\n") {
         throw std::runtime_error(std::string("could not attach to hostapd: ") + result);
     }
     std::cout << "attached to hostapd" << std::endl;
-    while (true) {
+    while (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
         std::string event;
         try {
             event = socket.receive();

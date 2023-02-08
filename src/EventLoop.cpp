@@ -1,13 +1,19 @@
 #include <iostream>
 #include "EventLoop.h"
 #include "NetworkRenderer.h"
+#include "ipc/TimeoutException.h"
 
 EventLoop::EventLoop(NetworkRenderer& renderer, ipc::Queue &queue, const std::string& iface) : renderer(renderer), queue(queue), caller(iface) {
 }
 
-void EventLoop::loop() {
-    while (true) {
-        std::unique_ptr<ipc::Event> event = queue.dequeue();
+void EventLoop::loop(const std::future<void>& future) {
+    while (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
+        std::unique_ptr<ipc::Event> event;
+        try {
+            event = queue.dequeue(std::chrono::seconds(1));
+        } catch (const ipc::TimeoutException& e) {
+            continue;
+        }
         event->handle(this);
     }
 }
