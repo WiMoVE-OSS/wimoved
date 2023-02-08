@@ -6,8 +6,11 @@
 #include <iostream>
 #include "Socket.h"
 #include "Vxlan.h"
+#include "Bridge.h"
+#include "Link.h"
 
 const std::string VXLAN_IFACE_PREFIX = "vxlan";
+const std::string BRIDGE_IFACE_PREFIX = "bridge";
 
 nl::Socket::Socket() {
     socket = nl_socket_alloc();
@@ -48,6 +51,55 @@ void nl::Socket::create_vxlan_iface(uint32_t vni) {
         } else {
             throw std::runtime_error(std::string("error in rtnl_link_add: ") + nl_geterror(err));
         }
+    }
+}
+
+void nl::Socket::create_bridge_for_vni(uint32_t vni) {
+    create_bridge(BRIDGE_IFACE_PREFIX + std::to_string(vni));
+}
+
+void nl::Socket::create_bridge(std::string name) {
+    Bridge bridge;
+    rtnl_link_set_name(bridge.link, name.c_str());
+    rtnl_link_set_flags(bridge.link, IFF_UP);
+
+    int err;
+    err = rtnl_link_add(socket, bridge.link, NLM_F_CREATE | NLM_F_EXCL);
+    if (err < 0) {
+        if (err == -NLE_EXIST) {
+            std::cout << "rtnl_link_add: bridge interface with name " << name << " already exists" << std::endl;
+        } else {
+            throw std::runtime_error(std::string("error in rtnl_link_add: ") + nl_geterror(err));
+        }
+    }
+}
+
+void nl::Socket::add_iface_bridge(const std::string& bridgeName, const std::string& ifaceName) {
+    Bridge bridge;
+    Link link;
+    int err;
+
+    if ((err = rtnl_link_get_kernel(socket, 0, ifaceName.c_str(), &link.link)) < 0){
+        throw std::runtime_error("Could not get interface: " + ifaceName + " " + nl_geterror(err));
+    }
+    if ((err = rtnl_link_get_kernel(socket, 0, bridgeName.c_str(), &bridge.link)) < 0){
+        throw std::runtime_error("Could not get interface: " + bridgeName + " " + nl_geterror(err));
+    }
+
+    if(( err = rtnl_link_enslave(socket, bridge.link, link.link)) < 0) {
+        throw std::runtime_error("Could not enslave interface: " + ifaceName + " to Bridge " + bridgeName + " " + nl_geterror(err));
+    }
+}
+
+void nl::Socket::delete_interface(std::string name) {
+    Link link;
+    int err;
+
+    rtnl_link_set_name(link.link, name.c_str());
+
+
+    if ((err =rtnl_link_delete(socket, link.link)) < 0) {
+        throw std::runtime_error(std::string("Could not delete link: ") + nl_geterror(err));
     }
 }
 

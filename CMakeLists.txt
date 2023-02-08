@@ -28,6 +28,10 @@ add_executable(gaffa
         src/nl/Socket.h
         src/nl/Vxlan.cpp
         src/nl/Vxlan.h
+        src/nl/Bridge.cpp
+        src/nl/Bridge.h
+        src/nl/Link.cpp
+        src/nl/Link.h
         src/EventLoop.cpp
         src/EventLoop.h
         src/EventHandler.cpp
