@@ -10,6 +10,8 @@
 #include <sys/un.h>
 
 namespace ipc {
+    const size_t MAC_ADDRESS_LENGTH = 2 * 6 + 5;
+
     class Socket {
     public:
         explicit Socket(const std::string &iface, const std::chrono::duration<int> &timeout);

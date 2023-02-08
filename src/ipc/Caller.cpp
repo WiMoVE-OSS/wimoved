@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <sstream>
 #include "Caller.h"
+#include "../Station.h"
 
 const std::string VLAN_ID_PREFIX = "vlan_id=";
 
@@ -24,7 +25,11 @@ uint32_t ipc::Caller::vlan_for_station(const std::string &station_mac) {
     throw std::runtime_error("no vlan_id attribute found for station");
 }
 
-std::vector<std::string> ipc::Caller::connected_stations() {
-    // TODO: implement
-    return std::vector<std::string>();
+std::vector<Station> ipc::Caller::connected_stations() {
+    std::optional<std::string> result = socket.send_and_receive({"STA-FIRST"});
+    if (!result.has_value()) {
+        throw std::runtime_error("timeout in connected_stations");
+    }
+    std::vector<Station> stations{Station(result.value().substr(0, MAC_ADDRESS_LENGTH))};
+    return stations;
 }

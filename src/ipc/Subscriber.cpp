@@ -7,7 +7,6 @@
 const std::string HOSTAPD_ASSOC_STRING = "<3>EAPOL-4WAY-HS-COMPLETED ";
 const std::string HOSTAPD_AUTH_STRING = "<3>AP-STA-CONNECTED ";
 const std::string HOSTAPD_DISASSOC_STRING = "<3>AP-STA-DISCONNECTED ";
-const size_t MAC_ADDRESS_LENGTH = 2 * 6 + 5;
 
 ipc::Subscriber::Subscriber(Queue &queue, const std::string& iface) : socket(iface, std::chrono::seconds(1)), queue(queue) {
 

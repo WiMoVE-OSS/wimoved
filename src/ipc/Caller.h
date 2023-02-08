@@ -3,6 +3,7 @@
 
 
 #include "Socket.h"
+#include "../Station.h"
 
 namespace ipc {
     class Caller {
@@ -11,7 +12,7 @@ namespace ipc {
 
         uint32_t vlan_for_station(const std::string &station_mac);
 
-        std::vector<std::string> connected_stations();
+        std::vector<Station> connected_stations();
 
     private:
         Socket socket;
