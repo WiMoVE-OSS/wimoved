@@ -91,7 +91,7 @@ void nl::Socket::add_iface_bridge(const std::string& bridgeName, const std::stri
     }
 }
 
-void nl::Socket::delete_interface(std::string name) {
+void nl::Socket::delete_interface(const std::string& name) {
     Link link;
     int err;
 
