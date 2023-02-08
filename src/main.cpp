@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     std::thread cleanup_thread([&renderer, &iface]() {
         ipc::Caller caller(iface);
         while (true) {
-            std::this_thread::sleep_for(std::chrono::seconds(10));
+            std::this_thread::sleep_for(std::chrono::seconds(1));
             renderer.cleanup([&caller]() {
                 return caller.connected_stations();
             });

@@ -22,6 +22,11 @@ uint32_t ipc::Caller::vlan_for_station(const std::string &station_mac) {
 }
 
 std::vector<Station> ipc::Caller::connected_stations() {
-    std::vector<Station> stations{Station(socket.send_and_receive({"STA-FIRST"}).substr(0, MAC_ADDRESS_LENGTH))};
+    std::vector<Station> stations;
+    std::string ipc_result = socket.send_and_receive({"STA-FIRST"});
+    while (!ipc_result.empty()) {
+        stations.emplace_back(ipc_result.substr(0, MAC_ADDRESS_LENGTH));
+        ipc_result = socket.send_and_receive({"STA-NEXT", stations[stations.size()-1].mac});
+    }
     return stations;
 }
