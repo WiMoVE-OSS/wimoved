@@ -1,6 +1,6 @@
 #!/bin/bash
 set -xe
-rm -r out package
+rm -r out package || true
 mkdir -p out package/src/src
 cp scripts/Makefile package/
 cp CMakeLists.txt package/src/
