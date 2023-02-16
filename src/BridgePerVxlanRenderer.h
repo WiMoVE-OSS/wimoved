@@ -4,10 +4,12 @@
 #include <functional>
 #include "NetworkRenderer.h"
 #include "nl/Socket.h"
+#include <mutex>
 
 class BridgePerVxlanRenderer : public NetworkRenderer {
 private:
     nl::Socket socket;
+    std::mutex renderer_mutex;
 public:
     BridgePerVxlanRenderer();
     void setup_vni(uint32_t vni) override;

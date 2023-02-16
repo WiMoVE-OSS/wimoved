@@ -6,6 +6,7 @@ BridgePerVxlanRenderer::BridgePerVxlanRenderer() : socket() {
 }
 
 void BridgePerVxlanRenderer::setup_vni(uint32_t vni) {
+    std::lock_guard g(renderer_mutex);
     std::cout << "setup_vni(" << vni << ")" << std::endl;
     socket.create_vxlan_iface(vni);
     socket.create_bridge_for_vni(vni);
@@ -13,15 +14,16 @@ void BridgePerVxlanRenderer::setup_vni(uint32_t vni) {
 }
 
 void BridgePerVxlanRenderer::setup_station(const Station& station) {
+    std::lock_guard g(renderer_mutex);
     if (not station.vlan_id.has_value()) {
         throw std::runtime_error("The station " + station.mac + " has no vlan_id");
     }
     std::cout << "setup_station(" << station.mac << ")" << std::endl;
-    setup_vni(station.vni());
     socket.add_iface_bridge("bridge" + std::to_string(station.vni()), "vlan" + std::to_string(station.vlan_id.value_or(0)));
 }
 
 void BridgePerVxlanRenderer::cleanup(const std::function<std::vector<Station>()> &get_stations) {
+    std::lock_guard g(renderer_mutex);
     std::unordered_set<uint32_t > connected_station_vnis(0);
     std::cout << "cleanup(";
     for (auto& station : get_stations()) {
