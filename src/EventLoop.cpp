@@ -1,4 +1,5 @@
 #include <iostream>
+#include <thread>
 #include "EventLoop.h"
 #include "NetworkRenderer.h"
 #include "ipc/TimeoutException.h"
@@ -26,7 +27,17 @@ void EventLoop::handle_auth(ipc::AuthEvent *event) {
 void EventLoop::handle_assoc(ipc::AssocEvent *event) {
     event->station.vlan_id = caller.vlan_for_station(event->station.mac);
     //std::cout << "handle_assoc called " << event->station_mac << " with vlan_id " << event->vlan_id << std::endl;
-    renderer.setup_station(event->station);
+    for (int i = 0; i < 10; i++) {
+        try {
+            renderer.setup_station(event->station);
+            return;
+        }
+        catch (std::runtime_error &err) {
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+    //TODO: Disconnect station on bridging failure
+    std::cerr << "Station could not be bridged to vxlan interface " << std::endl;
 }
 
 void EventLoop::handle_disassoc(ipc::DisassocEvent *event) {
