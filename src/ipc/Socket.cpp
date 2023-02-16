@@ -51,10 +51,9 @@ ipc::Socket::Socket(const std::string& iface, const std::chrono::duration<int>& 
         throw std::runtime_error(std::string("could not create socket: ") + std::strerror(errno));
     }
     auto timeout_usec = std::chrono::duration_cast<std::chrono::microseconds>(timeout);
-    struct timeval tv{
-            timeout_usec.count() / 1000000,
-            timeout_usec.count() % 1000000,
-    };
+    struct timeval tv{};
+    tv.tv_sec = timeout_usec.count() / 1000000;
+    tv.tv_usec = timeout_usec.count() % 1000000;
     setsockopt(sock_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof(tv));
 
     // TODO: handle errno = EADDRINUSE
