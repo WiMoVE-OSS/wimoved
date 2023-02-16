@@ -14,3 +14,5 @@ _deps
 !.gitignore
 *.cbp
 gaffa
+out/
+package/
