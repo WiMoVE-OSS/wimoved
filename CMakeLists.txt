@@ -6,12 +6,13 @@ set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 
-find_path(LIBNL_INCLUDE_DIR netlink/netlink.h
-        /usr/include
-        /usr/include/libnl3
-        /usr/local/include
-        /usr/local/include/libnl3
-)
+#find_path(LIBNL_INCLUDE_DIR netlink/netlink.h
+#        /usr/include
+#        /usr/include/libnl3
+#        /usr/local/include
+#        /usr/local/include/libnl3
+#)
+set(LIBNL_INCLUDE_DIR /home/build/openwrt/staging_dir/target-arm_cortex-a9+vfpv3-d16_musl_eabi/usr/include/libnl3)
 
 include_directories(${LIBNL_INCLUDE_DIR})
 add_definitions(-DCONFIG_CTRL_IFACE -DCONFIG_CTRL_IFACE_UNIX)
