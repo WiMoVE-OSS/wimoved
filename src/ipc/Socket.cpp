@@ -4,12 +4,13 @@
 #include <iostream>
 #include <unistd.h>
 #include <chrono>
-#include <optional>
 #include <mutex>
+#include <sys/time.h>
+#include <random>
 #include "Socket.h"
 #include "TimeoutException.h"
 
-std::string join(const std::vector<std::string>& strings, char separator) {
+static std::string join(const std::vector<std::string>& strings, char separator) {
     std::ostringstream o;
     auto it = strings.begin();
     if (it != strings.end())
@@ -20,16 +21,25 @@ std::string join(const std::vector<std::string>& strings, char separator) {
     return o.str();
 }
 
-int counter = 0;
-std::mutex m;
+static std::random_device random_device;
+static std::mt19937 twister(random_device());
+static std::mutex twister_mutex;
+static const std::string random_alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+static const int random_name_len = 8;
+
+static std::string random_name() {
+    std::lock_guard g(twister_mutex);
+
+    std::string s;
+    s.reserve(random_name_len);
+    for (int i = 0; i < random_name_len; i++) {
+        s += random_alphabet[twister() % random_alphabet.size()];
+    }
+    return s;
+}
 
 ipc::Socket::Socket(const std::string& iface, const std::chrono::duration<int>& timeout) : local{AF_UNIX, "\0"}, dest() {
-    std::string local_path;
-    {
-        std::lock_guard g(m);
-        local_path = "/var/run/gaffa" + std::to_string(counter);
-        counter++;
-    }
+    std::string local_path = "/var/run/gaffa." + random_name();
     if (unlink(local_path.c_str()) == 0) {
         std::cout << "successfully unlinked " << local_path << std::endl;
     }
@@ -68,6 +78,9 @@ ipc::Socket::~Socket() {
     if (close(sock_fd) == -1) {
         std::cerr << "could not close socket: " << std::strerror(errno) << "\n";
     }
+    if (unlink(local.sun_path) != 0) {
+        std::cerr << "could not unlink socket: " << std::strerror(errno) << "\n";
+    };
 }
 
 void ipc::Socket::send_command(const std::vector<std::string> &args) const {
