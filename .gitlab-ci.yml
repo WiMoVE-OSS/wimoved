@@ -30,5 +30,5 @@ build:
     - bash /home/build/openwrt/stage2.sh
   artifacts:
     paths:
-      - /home/build/openwrt/out/*
+      - out/*
 
