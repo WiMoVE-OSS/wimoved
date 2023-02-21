@@ -14,5 +14,5 @@ prepare-environment:
     - docker pull $IMAGE_TAG || true
     - docker pull openwrtorg/sdk:mvebu-cortexa9-22.03.3
     - if [ -f "pre_build_hook" ]; then ./pre_build_hook; fi
-    - docker build --cache-from $IMAGE_TAG -t $IMAGE_TAG -f Dockerfile .
+    - docker build --cache-from $IMAGE_TAG --allow network.host -t $IMAGE_TAG -f Dockerfile .
     - docker push $IMAGE_TAG
