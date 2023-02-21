@@ -28,7 +28,8 @@ build:
     - cp -r src /home/build/openwrt/package/network/services/gaffa/src/
     - mkdir -p /home/build/openwrt/out
     - bash /home/build/openwrt/stage2.sh
+    - pwd
   artifacts:
     paths:
-      - out/*
+      - out/*.ipk
 
