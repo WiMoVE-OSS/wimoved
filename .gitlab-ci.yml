@@ -11,7 +11,7 @@ prepare-environment:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     # Use old image if existent to use build caching (if available)
     - docker pull $IMAGE_TAG || true
-    - docker pull $DOCKER_BASE_IMAGE
+    - docker pull openwrtorg/sdk:mvebu-cortexa9-22.03.3
     - if [ -f "pre_build_hook" ]; then ./pre_build_hook; fi
     - docker build --cache-from $IMAGE_TAG -t $IMAGE_TAG -f Dockerfile .
     - docker push $IMAGE_TAG
