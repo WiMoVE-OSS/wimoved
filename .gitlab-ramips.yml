@@ -1,0 +1,9 @@
+buildenv:ramips:
+  extends: .prepare-environment
+  variables:
+    TAG: ramips-mt7621-22.03.3
+
+build:ramips:
+  extends: .build
+  variables:
+    TAG: ramips-mt7621-22.03.3

@@ -1,0 +1,9 @@
+buildenv:arm:
+  extends: .prepare-environment
+  variables:
+    TAG: mvebu-cortexa9-22.03.3
+
+build:arm:
+  extends: .build
+  variables:
+    TAG: mvebu-cortexa9-22.03.3
