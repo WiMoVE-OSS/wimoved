@@ -16,3 +16,19 @@ prepare-environment:
     - if [ -f "pre_build_hook" ]; then ./pre_build_hook; fi
     - docker build --cache-from $IMAGE_TAG --allow network.host -t $IMAGE_TAG -f Dockerfile .
     - docker push $IMAGE_TAG
+
+build:
+  stage: build
+  image: $IMAGE_PREFIX/gaffa-buildenv
+  script:
+    - cp scripts/stage2.sh /home/build/openwrt/stage2.sh
+    - mkdir -p /home/build/openwrt/package/network/services/gaffa/src/src
+    - cp scripts/Makefile /home/build/openwrt/package/network/services/gaffa/
+    - cp CMakeLists.txt /home/build/openwrt/package/network/services/gaffa/src/
+    - cp -r src /home/build/openwrt/package/network/services/gaffa/src/
+    - mkdir -p /home/build/openwrt/out
+    - bash /home/build/openwrt/stage2.sh
+  artifacts:
+    paths:
+      - /home/build/openwrt/out/*
+
