@@ -7,8 +7,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 
 if(DEFINED STAGING_DIR)
+    add_compile_definitions(GAFFA_IPC_SOCKET_GROUP="network")
     include_directories(${STAGING_DIR}/usr/include/libnl3)
 else()
+    add_compile_definitions(GAFFA_IPC_SOCKET_GROUP="root")
     include_directories(/usr/include/libnl3)
 endif()
 

@@ -7,6 +7,8 @@
 #include <mutex>
 #include <sys/time.h>
 #include <random>
+#include <grp.h>
+#include <sys/stat.h>
 #include "Socket.h"
 #include "TimeoutException.h"
 
@@ -63,6 +65,22 @@ ipc::Socket::Socket(const std::string& iface, const std::chrono::duration<int>& 
         close(sock_fd);
         throw std::runtime_error(std::string("could not bind to socket: ") + std::strerror(errno));
     }
+
+    #ifdef GAFFA_IPC_SOCKET_GROUP
+    std::array<char, 200> buf{};
+    struct group grp{};
+    struct group *grp_result = nullptr;
+    getgrnam_r(GAFFA_IPC_SOCKET_GROUP, &grp, &buf[0], buf.size(), &grp_result);
+    if (grp_result == nullptr) {
+        throw std::runtime_error(std::string("getgrnam failed: ") + std::strerror(errno));
+    }
+    if (chown(local_path.c_str(), -1, grp_result->gr_gid) == -1) {
+        throw std::runtime_error(std::string("could not set socket group: ") + std::strerror(errno));
+    }
+    if (chmod(local_path.c_str(), 0775) == -1) {
+        throw std::runtime_error(std::string("could not set socket permissions: ") + std::strerror(errno));
+    }
+    #endif
 
     dest.sun_family = AF_UNIX;
     strncpy(dest.sun_path, socket_path.c_str(), sizeof(dest.sun_path));
