@@ -1,4 +1,5 @@
-FROM openwrtorg/sdk:mvebu-cortexa9-22.03.3
+ARG TAG=mvebu-cortexa9-22.03.3
+FROM openwrtorg/sdk:$TAG
 
 RUN ./scripts/feeds update && \
     make defconfig && \

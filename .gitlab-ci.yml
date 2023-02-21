@@ -2,24 +2,24 @@ stages:
   - prepare-environment
   - build
 
-prepare-environment:
+.prepare-environment:
   stage: prepare-environment
   image: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/docker:latest
   script:
     - cd scripts
-    - export IMAGE_TAG=$IMAGE_PREFIX/gaffa-buildenv
+    - export IMAGE_TAG=$IMAGE_PREFIX/gaffa-buildenv:$TAG
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - echo $IMAGE_TAG
     # Use old image if existent to use build caching (if available)
     - docker pull $IMAGE_TAG || true
-    - docker pull openwrtorg/sdk:mvebu-cortexa9-22.03.3
+    - docker pull openwrtorg/sdk:$TAG
     - if [ -f "pre_build_hook" ]; then ./pre_build_hook; fi
-    - docker build --cache-from $IMAGE_TAG --allow network.host -t $IMAGE_TAG -f Dockerfile .
+    - docker build --cache-from $IMAGE_TAG --allow network.host -t $IMAGE_TAG --build-arg TAG="$TAG" -f Dockerfile .
     - docker push $IMAGE_TAG
 
-build:
+.build:
   stage: build
-  image: $IMAGE_PREFIX/gaffa-buildenv
+  image: $IMAGE_PREFIX/gaffa-buildenv:$TAG
   script:
     - cp scripts/stage2.sh /home/build/openwrt/stage2.sh
     - mkdir -p /home/build/openwrt/package/network/services/gaffa/src/src
@@ -33,3 +33,6 @@ build:
     paths:
       - "*.ipk"
 
+include:
+  - ".gitlab-arm.yml"
+  - ".gitlab-ramips.yml"
