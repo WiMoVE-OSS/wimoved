@@ -28,7 +28,7 @@ build:
     - cp -r src /home/build/openwrt/package/network/services/gaffa/src/
     - mkdir -p /home/build/openwrt/out
     - bash /home/build/openwrt/stage2.sh
-    - cp bin/targets/mvebu/cortexa9/packages/gaffa*.ipk /builds/bp2022hk1/Gaffa/
+    - cp /home/build/openwrt/out/gaffa*.ipk /builds/bp2022hk1/Gaffa/
   artifacts:
     paths:
       - "*.ipk"
