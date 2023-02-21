@@ -31,5 +31,5 @@ build:
     - pwd
   artifacts:
     paths:
-      - out/*.ipk
+      - ../../../home/build/openwrt/out/*.ipk
 
