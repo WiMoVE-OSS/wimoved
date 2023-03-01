@@ -38,15 +38,15 @@ void BridgePerVxlanRenderer::cleanup(const std::function<std::vector<Station>()>
     for (const auto vni : existing_interfaces) {
        std::cout << "Delete " << vni << std::endl;
        try {
+           socket.delete_interface("vxlan" + std::to_string(vni));
+       } catch (const std::exception&) {
+           std::cerr << "Could not delete vxlan interface vni: " << vni << std::endl;
+       }
+       try {
            socket.delete_interface("bridge" + std::to_string(vni));
        }
        catch (const std::exception&) {
            std::cerr << "Could not delete bridge vni: " << vni << std::endl;
-       }
-       try {
-           socket.delete_interface("vxlan" + std::to_string(vni));
-       } catch (const std::exception&) {
-           std::cerr << "Could not delete vxlan interface vni: " << vni << std::endl;
        }
     }
 
