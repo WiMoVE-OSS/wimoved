@@ -14,7 +14,7 @@ namespace ipc {
 
     class Socket {
     public:
-        explicit Socket(const std::string &iface, const std::chrono::duration<int> &timeout);
+        explicit Socket(const std::string &socket_path, const std::chrono::duration<int> &timeout);
 
         std::string send_and_receive(const std::vector<std::string> &args) const;
 

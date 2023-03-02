@@ -8,7 +8,7 @@
 namespace ipc {
     class Caller {
     public:
-        explicit Caller(const std::string &iface);
+        explicit Caller(const std::string &socket_path);
 
         uint32_t vlan_for_station(const std::string &station_mac);
 

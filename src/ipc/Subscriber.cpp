@@ -9,7 +9,7 @@ const std::string HOSTAPD_ASSOC_STRING = "<3>EAPOL-4WAY-HS-COMPLETED ";
 const std::string HOSTAPD_AUTH_STRING = "<3>AP-STA-CONNECTED ";
 const std::string HOSTAPD_DISASSOC_STRING = "<3>AP-STA-DISCONNECTED ";
 
-ipc::Subscriber::Subscriber(Queue &queue, const std::string& iface) : socket(iface, std::chrono::seconds(1)), queue(queue) {
+ipc::Subscriber::Subscriber(Queue &queue, const std::string& socket_path) : socket(socket_path, std::chrono::seconds(1)), queue(queue) {
 
 }
 

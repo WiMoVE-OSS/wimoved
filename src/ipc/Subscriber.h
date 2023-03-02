@@ -8,7 +8,7 @@
 namespace ipc {
     class Subscriber {
     public:
-        explicit Subscriber(Queue &queue, const std::string &iface);
+        explicit Subscriber(Queue &queue, const std::string &socket_path);
 
         void loop(const std::future<void>& future);
 
