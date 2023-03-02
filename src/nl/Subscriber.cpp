@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "../logging/easylogging++.h"
 #include "Event.h"
 
 nl::Subscriber::Subscriber(::SynchronizedQueue<Event> &queue, const std::chrono::duration<int> &timeout)
@@ -19,7 +20,7 @@ void nl::Subscriber::loop(const std::future<void> &future) {
             continue;
         }
         for (auto &event : events) {
-            std::cerr << event.interface_name << std::endl;
+            LOG(ERROR) << event.interface_name;
             queue.enqueue(std::make_unique<Event>(std::move(event)));
         }
     }

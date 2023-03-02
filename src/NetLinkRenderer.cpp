@@ -1,7 +1,7 @@
 #include "NetLinkRenderer.h"
 
 void NetLinkRenderer::createVxlanIface(uint32_t vni) {
-    std::cout << "Hello" << std::endl;
+    LOG(DEBUG) << "Hello";
     struct rtnl_link* link;
 
     struct nl_addr* addr;
@@ -44,9 +44,9 @@ void NetLinkRenderer::createVxlanIface(uint32_t vni) {
 
     if ((err = rtnl_link_add(sk, link, NLM_F_CREATE)) < 0) {
         if (err == NLE_EXIST) {
-            std::cerr << "Interface with this vni already exists: " << vni << std::endl;
+            LOG(ERROR) << "Interface with this vni already exists: " << vni;
         } else {
-            std::cout << nl_geterror(err) << std::endl;
+            LOG(ERROR) << nl_geterror(err);
             throw std::runtime_error("TEST");
         }
     }
@@ -98,26 +98,26 @@ void NetLinkRenderer::createBridge(uint32_t id) {
     link = rtnl_link_alloc();
     if ((err = rtnl_link_set_type(link, "bridge")) < 0) {
         rtnl_link_put(link);
-        std::cout << "Failed set_link_type: " << nl_geterror(err) << std::endl;
+        LOG(ERROR) << "Failed set_link_type: " << nl_geterror(err);
         rtnl_link_put(link);
         return;
     }
     rtnl_link_set_name(link, "testbridge");
 
     if ((err = rtnl_link_add(sk, link, NLM_F_CREATE)) < 0) {
-        std::cout << "Failed link_add: " << nl_geterror(err) << std::endl;
+        LOG(ERROR) << "Failed link_add: " << nl_geterror(err);
         rtnl_link_put(link);
         return;
     }
 
     struct rtnl_link* slave;
     if ((err = rtnl_link_get_kernel(sk, 0, "vxlan1010", &slave)) < 0) {
-        std::cout << "Failed get_kernel lo " << nl_geterror(err) << std::endl;
+        LOG(ERROR) << "Failed get_kernel lo " << nl_geterror(err);
         rtnl_link_put(link);
         return;
     }
     if ((err = rtnl_link_get_kernel(sk, 0, "testbridge", &link)) < 0) {
-        std::cout << "Failed get_kernel bridge" << nl_geterror(err) << std::endl;
+        LOG(ERROR) << "Failed get_kernel bridge" << nl_geterror(err);
         rtnl_link_put(link);
         return;
     }
@@ -125,7 +125,7 @@ void NetLinkRenderer::createBridge(uint32_t id) {
     if ((err = rtnl_link_enslave(sk, link, slave)) < 0) {
         rtnl_link_put(slave);
         rtnl_link_put(link);
-        std::cout << "Failed enslave " << nl_geterror(err) << std::endl;
+        LOG(ERROR) << "Failed enslave " << nl_geterror(err);
         return;
     }
 

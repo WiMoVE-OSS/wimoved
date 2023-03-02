@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include "logging/easylogging++.h"
+
 // trim from start (in place)
 static inline void ltrim(std::string &s) {
     s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) { return !std::isspace(ch); }));
@@ -30,7 +32,7 @@ ConfigParser::ConfigParser(const std::string &config_path) {
     std::string line;
     std::ifstream config_file(config_path);
     if (!config_file.is_open()) {
-        std::cerr << "Unable to read config file " << config_path << ". Using default config" << std::endl;
+        LOG(ERROR) << "Unable to read config file " << config_path << ". Using default config";
         return;
     }
 
@@ -46,7 +48,7 @@ ConfigParser::ConfigParser(const std::string &config_path) {
 
         // Check if token is already defined
         if (config_options.find(token) == config_options.end()) {
-            std::cerr << "Unknown config option " << token << ". Skipping!!" << std::endl;
+            LOG(ERROR) << "Unknown config option " << token << ". Skipping!!";
             continue;
         }
 
