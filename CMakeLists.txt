@@ -18,8 +18,8 @@ add_executable(gaffa
         src/ipc/Socket.cpp src/main.cpp
         src/ipc/Subscriber.cpp
         src/ipc/Subscriber.h
-        src/ipc/Queue.cpp
-        src/ipc/Queue.h
+        src/SynchronizedQueue.cpp
+        src/SynchronizedQueue.h
         src/ipc/Event.cpp
         src/ipc/Event.h
         src/ipc/AssocEvent.cpp
@@ -48,7 +48,14 @@ add_executable(gaffa
         src/BridgePerVxlanRenderer.h
         src/Station.cpp
         src/Station.h
-        src/ipc/TimeoutException.cpp src/ipc/TimeoutException.h
+        src/TimeoutException.cpp
+        src/TimeoutException.h
+        src/nl/Event.cpp
+        src/nl/Event.h
+        src/nl/Subscriber.cpp
+        src/nl/Subscriber.h
+        src/VlanMissingException.cpp
+        src/VlanMissingException.h
         src/logging/easylogging++.cpp
         src/logging/easylogging++.h
         src/ConfigParser.cpp

@@ -5,16 +5,16 @@
 #include "BridgePerVxlanRenderer.h"
 #include "ipc/Subscriber.h"
 #include "EventLoop.h"
+#include "nl/Subscriber.h"
 #include "logging/easylogging++.h"
 #include "ConfigParser.h"
 
-#define ELPP_THREAD_SAFE 1
-INITIALIZE_EASYLOGGINGPP
-
-
-std::vector<std::promise<void>> promises(3);
+std::vector<std::promise<void>> promises(5);
 bool promises_resolved = false;
 std::mutex promises_mutex;
+
+#define ELPP_THREAD_SAFE 1
+INITIALIZE_EASYLOGGINGPP
 
 void handle_signal(int signal) {
     std::lock_guard g(promises_mutex);
@@ -38,18 +38,28 @@ int main(int argc, char *argv[]) {
     std::signal(SIGINT, handle_signal);
     std::signal(SIGTERM, handle_signal);
 
-    ipc::Queue queue;
+    SynchronizedQueue<ipc::Event> ipc_queue;
+    SynchronizedQueue<nl::Event> nl_queue;
     BridgePerVxlanRenderer renderer;
     std::string socket_path = parser.get_config_option("hapd_sock");
 
-    std::thread subscriber_thread([&queue, &socket_path](){
-        ipc::Subscriber(queue, socket_path).loop(promises[0].get_future());
+    std::chrono::duration timeout = std::chrono::seconds(1);
+    EventLoop event_loop(renderer, ipc_queue, nl_queue, socket_path);
+
+    std::thread ipc_subscriber_thread([&ipc_queue, &timeout, &socket_path](){
+        ipc::Subscriber(ipc_queue, timeout, socket_path).loop(promises[0].get_future());
     });
-    std::thread event_loop_thread([&renderer, &queue, &socket_path]() {
-        EventLoop(renderer, queue, socket_path).loop(promises[1].get_future());
+    std::thread nl_subscriber_thread([&nl_queue, &timeout]() {
+        nl::Subscriber(nl_queue, timeout).loop(promises[1].get_future());
+    });
+    std::thread event_loop_ipc_thread([&event_loop]() {
+        event_loop.loop_ipc_queue(promises[2].get_future());
+    });
+    std::thread event_loop_nl_thread([&event_loop]() {
+        event_loop.loop_nl_queue(promises[3].get_future());
     });
     std::thread cleanup_thread([&renderer, &socket_path]() {
-        std::future<void> future = promises[2].get_future();
+        std::future<void> future = promises[4].get_future();
         ipc::Caller caller(socket_path);
         while (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
             std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -58,7 +68,9 @@ int main(int argc, char *argv[]) {
             });
         }
     });
-    subscriber_thread.join();
-    event_loop_thread.join();
+    ipc_subscriber_thread.join();
+    nl_subscriber_thread.join();
+    event_loop_ipc_thread.join();
+    event_loop_nl_thread.join();
     cleanup_thread.join();
 }

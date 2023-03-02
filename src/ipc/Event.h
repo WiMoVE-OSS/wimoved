@@ -1,5 +1,5 @@
-#ifndef GAFFA_EVENT_H
-#define GAFFA_EVENT_H
+#ifndef GAFFA_IPC_EVENT_H
+#define GAFFA_IPC_EVENT_H
 
 #include <string>
 #include "../Station.h"
@@ -21,4 +21,4 @@ namespace ipc {
 
 #include "../EventHandler.h"
 
-#endif //GAFFA_EVENT_H
+#endif //GAFFA_IPC_EVENT_H

@@ -11,6 +11,8 @@ public:
     uint32_t vni() const;
     std::optional<uint32_t> vlan_id;
     std::string mac;
+
+    std::string vlan_interface_name() const;
 };
 
 

@@ -3,14 +3,12 @@
 #include <stdexcept>
 #include "Subscriber.h"
 #include "AssocEvent.h"
-#include "TimeoutException.h"
 
 const std::string HOSTAPD_ASSOC_STRING = "<3>EAPOL-4WAY-HS-COMPLETED ";
 const std::string HOSTAPD_AUTH_STRING = "<3>AP-STA-CONNECTED ";
 const std::string HOSTAPD_DISASSOC_STRING = "<3>AP-STA-DISCONNECTED ";
 
-ipc::Subscriber::Subscriber(Queue &queue, const std::string& socket_path) : socket(socket_path, std::chrono::seconds(1)), queue(queue) {
-
+ipc::Subscriber::Subscriber(SynchronizedQueue<Event> &queue, const std::chrono::duration<int>& timeout, const std::string& socket_path) : socket(socket_path, timeout), queue(queue) {
 }
 
 void ipc::Subscriber::loop(const std::future<void> &future) {
@@ -23,17 +21,17 @@ void ipc::Subscriber::loop(const std::future<void> &future) {
         std::string event;
         try {
             event = socket.receive();
-        } catch (const ipc::TimeoutException& e) {
+        } catch (const TimeoutException& e) {
             try {
                 std::string ping_result = socket.send_and_receive({"PING"});
                 if (ping_result != "PONG\n") {
-                    std::cout << "timeout in Subscriber::loop(), hostapd did not respond pong: " << ping_result << std::endl;
+                    std::cout << "timeout in Subscriber::loop_ipc_queue(), hostapd did not respond pong: " << ping_result << std::endl;
                     break;
                 } else {
                     continue;
                 }
-            } catch (const ipc::TimeoutException& e) {
-                std::cout << "timeout in Subscriber::loop(), hostapd timed out while responding to ping" << std::endl;
+            } catch (const TimeoutException& e) {
+                std::cout << "timeout in Subscriber::loop_ipc_queue(), hostapd timed out while responding to ping" << std::endl;
                 break;
             }
         }
