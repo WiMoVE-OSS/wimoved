@@ -11,6 +11,7 @@
 #include <stdexcept>
 
 #include "../VlanMissingException.h"
+#include "../logging/easylogging++.h"
 #include "Bridge.h"
 #include "Link.h"
 #include "Vxlan.h"
@@ -52,7 +53,7 @@ void nl::Socket::create_vxlan_iface(uint32_t vni) {
     err = rtnl_link_add(socket, vxlan.link, NLM_F_CREATE | NLM_F_EXCL);
     if (err < 0) {
         if (err == -NLE_EXIST) {
-            std::cerr << "rtnl_link_add: vxlan interface with vni " << vni << " already exists" << std::endl;
+            LOG(ERROR) << "rtnl_link_add: vxlan interface with vni " << vni << " already exists";
         } else {
             throw std::runtime_error(std::string("error in rtnl_link_add: ") + nl_geterror(err));
         }
@@ -70,7 +71,7 @@ void nl::Socket::create_bridge(const std::string &name) {
     err = rtnl_link_add(socket, bridge.link, NLM_F_CREATE | NLM_F_EXCL);
     if (err < 0) {
         if (err == -NLE_EXIST) {
-            std::cerr << "rtnl_link_add: bridge interface with name " << name << " already exists" << std::endl;
+            LOG(ERROR) << "rtnl_link_add: bridge interface with name " << name << " already exists";
         } else {
             throw std::runtime_error(std::string("error in rtnl_link_add: ") + nl_geterror(err));
         }
@@ -122,7 +123,7 @@ std::unordered_set<uint32_t> nl::Socket::interface_list() {
         struct rtnl_link *link;
         link = (rtnl_link *)object;
         if (rtnl_link_is_vxlan(link)) {
-            std::cout << rtnl_link_get_name(link) << std::endl;
+            LOG(DEBUG) << rtnl_link_get_name(link);
             uint32_t id;
             if ((err = rtnl_link_vxlan_get_id(link, &id)) < 0) {
                 throw std::runtime_error(std::string("Could not get vni ") + nl_geterror(err));
@@ -144,8 +145,8 @@ static int interface_event_handler(struct nl_msg *msg, void *arg) {
 
     if (if_indextoname(ifinfo->ifi_index, &ifname[0]) == nullptr) {
         // TODO: is throwing an exception ok here?
-        std::cerr << "received netlink event for interface with index " << ifinfo->ifi_index
-                  << ", but could not get interface name: " << std::strerror(errno) << std::endl;
+        LOG(ERROR) << "received netlink event for interface with index " << ifinfo->ifi_index
+                   << ", but could not get interface name: " << std::strerror(errno);
         return NL_OK;
     }
     auto *sock = static_cast<nl::Socket *>(arg);

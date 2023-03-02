@@ -14,8 +14,11 @@ std::vector<std::promise<void>> promises(5);
 bool promises_resolved = false;
 std::mutex promises_mutex;
 
-#define ELPP_THREAD_SAFE 1
 INITIALIZE_EASYLOGGINGPP
+
+#define ELPP_THREAD_SAFE
+#define ELPP_FEATURE_CRASH_LOG
+#define ELPP_HANDLE_SIGABRT
 
 void handle_signal(int signal) {
     std::lock_guard g(promises_mutex);
@@ -27,9 +30,12 @@ void handle_signal(int signal) {
         promise.set_value();
     }
 }
-
 int main(int argc, char* argv[]) {
-    LOG(INFO) << "Welcome to Gaffa!";
+    el::Configurations defaultConf;
+    defaultConf.setToDefault();
+    defaultConf.setGlobally(el::ConfigurationType::Format, "[%level] %datetime %fbase:%line - %msg");
+    el::Loggers::reconfigureLogger("default", defaultConf);
+
     std::string config_path = "/etc/gaffa/config";
     if (argc >= 2) {
         config_path = argv[1];

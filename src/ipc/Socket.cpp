@@ -14,6 +14,7 @@
 #include <stdexcept>
 
 #include "../TimeoutException.h"
+#include "../logging/easylogging++.h"
 
 static std::string join(const std::vector<std::string>& strings, char separator) {
     std::ostringstream o;
@@ -45,7 +46,7 @@ ipc::Socket::Socket(const std::string& socket_path, const std::chrono::duration<
     : local{AF_UNIX, "\0"}, dest() {
     std::string local_path = "/var/run/gaffa." + random_name();
     if (unlink(local_path.c_str()) == 0) {
-        std::cout << "successfully unlinked " << local_path << std::endl;
+        LOG(DEBUG) << "successfully unlinked " << local_path;
     }
 
     sock_fd = socket(AF_UNIX, SOCK_DGRAM, 0);
@@ -93,10 +94,10 @@ ipc::Socket::Socket(const std::string& socket_path, const std::chrono::duration<
 
 ipc::Socket::~Socket() {
     if (close(sock_fd) == -1) {
-        std::cerr << "could not close socket: " << std::strerror(errno) << "\n";
+        LOG(ERROR) << "could not close socket: " << std::strerror(errno) << "\n";
     }
     if (unlink(local.sun_path) != 0) {
-        std::cerr << "could not unlink socket: " << std::strerror(errno) << "\n";
+        LOG(ERROR) << "could not unlink socket: " << std::strerror(errno) << "\n";
     };
 }
 
