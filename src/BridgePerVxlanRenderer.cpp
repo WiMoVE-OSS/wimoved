@@ -19,7 +19,7 @@ void BridgePerVxlanRenderer::setup_station(const Station& station) {
         throw std::runtime_error("The station " + station.mac + " has no vlan_id");
     }
     std::cout << "setup_station(" << station.mac << ")" << std::endl;
-    socket.add_iface_bridge("bridge" + std::to_string(station.vni()), "vlan" + std::to_string(station.vlan_id.value_or(0)));
+    socket.add_iface_bridge("bridge" + std::to_string(station.vni()), station.vlan_interface_name());
 }
 
 void BridgePerVxlanRenderer::cleanup(const std::function<std::vector<Station>()> &get_stations) {

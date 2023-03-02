@@ -10,7 +10,7 @@
 #include <grp.h>
 #include <sys/stat.h>
 #include "Socket.h"
-#include "TimeoutException.h"
+#include "../TimeoutException.h"
 
 static std::string join(const std::vector<std::string>& strings, char separator) {
     std::ostringstream o;

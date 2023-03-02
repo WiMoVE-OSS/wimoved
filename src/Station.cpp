@@ -24,3 +24,7 @@ uint32_t Station::vni() const {
 
     return x % NUM_VNIS;
 }
+
+std::string Station::vlan_interface_name() const {
+    return "vlan" + std::to_string(vlan_id.value_or(0));
+}

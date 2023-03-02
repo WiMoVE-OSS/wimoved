@@ -3,18 +3,18 @@
 
 #include <future>
 #include "Socket.h"
-#include "Queue.h"
+#include "../SynchronizedQueue.h"
 
 namespace ipc {
     class Subscriber {
     public:
-        explicit Subscriber(Queue &queue, const std::string &socket_path);
+        Subscriber(SynchronizedQueue<Event> &queue, const std::chrono::duration<int>& timeout, const std::string &socket_path);
 
         void loop(const std::future<void>& future);
 
     private:
         Socket socket;
-        Queue &queue;
+        SynchronizedQueue<Event> &queue;
     };
 }
 
