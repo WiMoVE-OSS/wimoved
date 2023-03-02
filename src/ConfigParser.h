@@ -1,15 +1,16 @@
 #ifndef GAFFA_CONFIGPARSER_H
 #define GAFFA_CONFIGPARSER_H
 
+#include <string>
 #include <unordered_map>
 
 class ConfigParser {
-public:
+   public:
     explicit ConfigParser(const std::string& config_path);
     std::string get_config_option(const std::string& option);
-private:
+
+   private:
     std::unordered_map<std::string, std::string> config_options;
 };
 
-
-#endif //GAFFA_CONFIGPARSER_H
+#endif  // GAFFA_CONFIGPARSER_H

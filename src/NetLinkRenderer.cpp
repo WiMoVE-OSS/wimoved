@@ -2,7 +2,7 @@
 
 void NetLinkRenderer::createVxlanIface(uint32_t vni) {
     std::cout << "Hello" << std::endl;
-    struct rtnl_link *link;
+    struct rtnl_link* link;
 
     struct nl_addr* addr;
     struct nl_addr* localAddr;
@@ -15,7 +15,7 @@ void NetLinkRenderer::createVxlanIface(uint32_t vni) {
     if (sk == nullptr) {
         throw std::runtime_error(std::string("Could not set id: ") + std::strerror(errno));
     }
-    if ((err = nl_connect(sk, NETLINK_ROUTE )) < 0){
+    if ((err = nl_connect(sk, NETLINK_ROUTE)) < 0) {
         throw std::runtime_error("Tot");
     };
 
@@ -34,12 +34,13 @@ void NetLinkRenderer::createVxlanIface(uint32_t vni) {
         throw std::runtime_error(std::string("Could not set id: ") + std::strerror(errno));
     }
 
-    struct ifla_vxlan_port_range range{4789, 4789};
+    struct ifla_vxlan_port_range range {
+        4789, 4789
+    };
 
-    if ((err = rtnl_link_vxlan_set_port_range(link, &range))< 0) {
+    if ((err = rtnl_link_vxlan_set_port_range(link, &range)) < 0) {
         throw std::runtime_error(std::string("Could not set portrange") + nl_geterror(err));
     }
-
 
     if ((err = rtnl_link_add(sk, link, NLM_F_CREATE)) < 0) {
         if (err == NLE_EXIST) {
@@ -53,7 +54,7 @@ void NetLinkRenderer::createVxlanIface(uint32_t vni) {
 }
 
 void NetLinkRenderer::deleteInterface(std::string name) {
-    struct rtnl_link *link;
+    struct rtnl_link* link;
     int err;
     struct nl_sock* sk;
 
@@ -61,10 +62,9 @@ void NetLinkRenderer::deleteInterface(std::string name) {
     if (sk == nullptr) {
         throw std::runtime_error(std::string("Could not set id: ") + std::strerror(errno));
     }
-    if ((err = nl_connect(sk, NETLINK_ROUTE )) < 0){
+    if ((err = nl_connect(sk, NETLINK_ROUTE)) < 0) {
         throw std::runtime_error("Tot");
     };
-
 
     if (!(link = rtnl_link_alloc())) {
         rtnl_link_put(link);
@@ -73,7 +73,7 @@ void NetLinkRenderer::deleteInterface(std::string name) {
 
     rtnl_link_set_name(link, name.c_str());
 
-    if ((err =rtnl_link_delete(sk, link)) < 0) {
+    if ((err = rtnl_link_delete(sk, link)) < 0) {
         rtnl_link_put(link);
         throw std::runtime_error(std::string("Could not delete link: ") + nl_geterror(err));
     }
@@ -89,11 +89,11 @@ void NetLinkRenderer::createBridge(uint32_t id) {
     if (sk == nullptr) {
         throw std::runtime_error(std::string("Could not set id: ") + std::strerror(errno));
     }
-    if ((err = nl_connect(sk, NETLINK_ROUTE )) < 0){
+    if ((err = nl_connect(sk, NETLINK_ROUTE)) < 0) {
         throw std::runtime_error("Tot");
     };
 
-    struct rtnl_link *link;
+    struct rtnl_link* link;
 
     link = rtnl_link_alloc();
     if ((err = rtnl_link_set_type(link, "bridge")) < 0) {
@@ -111,18 +111,18 @@ void NetLinkRenderer::createBridge(uint32_t id) {
     }
 
     struct rtnl_link* slave;
-    if ((err = rtnl_link_get_kernel(sk, 0, "vxlan1010", &slave)) < 0){
+    if ((err = rtnl_link_get_kernel(sk, 0, "vxlan1010", &slave)) < 0) {
         std::cout << "Failed get_kernel lo " << nl_geterror(err) << std::endl;
         rtnl_link_put(link);
         return;
     }
-    if ((err = rtnl_link_get_kernel(sk, 0, "testbridge", &link)) < 0){
+    if ((err = rtnl_link_get_kernel(sk, 0, "testbridge", &link)) < 0) {
         std::cout << "Failed get_kernel bridge" << nl_geterror(err) << std::endl;
         rtnl_link_put(link);
         return;
     }
 
-    if(( err = rtnl_link_enslave(sk, link, slave)) < 0) {
+    if ((err = rtnl_link_enslave(sk, link, slave)) < 0) {
         rtnl_link_put(slave);
         rtnl_link_put(link);
         std::cout << "Failed enslave " << nl_geterror(err) << std::endl;

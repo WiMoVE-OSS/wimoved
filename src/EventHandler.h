@@ -6,10 +6,10 @@
 #include "ipc/DisassocEvent.h"
 
 class EventHandler {
-public:
+   public:
     virtual void handle_assoc(ipc::AssocEvent* event) = 0;
     virtual void handle_auth(ipc::AuthEvent* event) = 0;
     virtual void handle_disassoc(ipc::DisassocEvent* event) = 0;
 };
 
-#endif //GAFFA_EVENTHANDLER_H
+#endif  // GAFFA_EVENTHANDLER_H

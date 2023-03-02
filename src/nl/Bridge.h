@@ -4,14 +4,14 @@
 #include <netlink/route/link/bridge.h>
 
 namespace nl {
-    class Bridge {
-    public:
-        Bridge();
-        Bridge(const Bridge &other) = delete;
-        ~Bridge();
+class Bridge {
+   public:
+    Bridge();
+    Bridge(const Bridge &other) = delete;
+    ~Bridge();
 
-        rtnl_link *link;
-    };
-}
+    rtnl_link *link;
+};
+}  // namespace nl
 
-#endif //GAFFA_BRIDGE_H
+#endif  // GAFFA_BRIDGE_H

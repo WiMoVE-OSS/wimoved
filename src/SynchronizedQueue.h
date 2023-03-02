@@ -1,18 +1,17 @@
 #ifndef GAFFA_SYNCHRONIZEDQUEUE_H
 #define GAFFA_SYNCHRONIZEDQUEUE_H
 
-
-#include <cstdlib>
-#include <queue>
-#include <mutex>
 #include <condition_variable>
-#include "ipc/Event.h"
+#include <cstdlib>
+#include <mutex>
+#include <queue>
+
 #include "TimeoutException.h"
+#include "ipc/Event.h"
 
-template<typename T>
+template <typename T>
 class SynchronizedQueue {
-
-private:
+   private:
     std::queue<std::unique_ptr<T>> queue;
     std::mutex mutex;
     std::condition_variable condition_variable;
@@ -23,7 +22,7 @@ private:
         return event;
     }
 
-public:
+   public:
     void enqueue(std::unique_ptr<T> event) {
         {
             std::lock_guard guard(mutex);
@@ -44,5 +43,4 @@ public:
     }
 };
 
-
-#endif //GAFFA_SYNCHRONIZEDQUEUE_H
+#endif  // GAFFA_SYNCHRONIZEDQUEUE_H

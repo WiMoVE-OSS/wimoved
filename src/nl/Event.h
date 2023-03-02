@@ -4,10 +4,10 @@
 #include <string>
 
 namespace nl {
-    class Event {
-    public:
-        std::string interface_name;
-    };
-}
+class Event {
+   public:
+    std::string interface_name;
+};
+}  // namespace nl
 
 #endif

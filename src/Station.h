@@ -1,12 +1,11 @@
 #ifndef GAFFA_STATION_H
 #define GAFFA_STATION_H
 
-
-#include <string>
 #include <optional>
+#include <string>
 
 class Station {
-public:
+   public:
     Station(std::string mac);
     uint32_t vni() const;
     std::optional<uint32_t> vlan_id;
@@ -15,5 +14,4 @@ public:
     std::string vlan_interface_name() const;
 };
 
-
-#endif //GAFFA_STATION_H
+#endif  // GAFFA_STATION_H

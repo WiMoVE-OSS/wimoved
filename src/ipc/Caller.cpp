@@ -1,15 +1,15 @@
-#include <chrono>
-#include <stdexcept>
-#include <sstream>
-#include <thread>
 #include "Caller.h"
+
+#include <chrono>
+#include <sstream>
+#include <stdexcept>
+#include <thread>
+
 #include "../Station.h"
 
 const std::string VLAN_ID_PREFIX = "vlan_id=";
 
-ipc::Caller::Caller(const std::string &socket_path) : socket(socket_path, std::chrono::seconds(1)) {
-
-}
+ipc::Caller::Caller(const std::string &socket_path) : socket(socket_path, std::chrono::seconds(1)) {}
 
 uint32_t ipc::Caller::vlan_for_station(const std::string &station_mac) {
     for (int i = 0; i < 10; i++) {
@@ -29,10 +29,10 @@ std::vector<Station> ipc::Caller::connected_stations() {
     std::vector<Station> stations;
     std::string ipc_result = socket.send_and_receive({"STA-FIRST"});
     while (!ipc_result.empty()) {
-        if (ipc_result !="FAIL\n") {
+        if (ipc_result != "FAIL\n") {
             stations.emplace_back(ipc_result.substr(0, MAC_ADDRESS_LENGTH));
         }
-        ipc_result = socket.send_and_receive({"STA-NEXT", stations[stations.size()-1].mac});
+        ipc_result = socket.send_and_receive({"STA-NEXT", stations[stations.size() - 1].mac});
     }
     return stations;
 }
