@@ -49,6 +49,8 @@ add_executable(gaffa
         src/Station.cpp
         src/Station.h
         src/ipc/TimeoutException.cpp src/ipc/TimeoutException.h
+        src/logging/easylogging++.cpp
+        src/logging/easylogging++.h
         src/ConfigParser.cpp
         src/ConfigParser.h)
 target_link_libraries(gaffa nl-3 nl-route-3)

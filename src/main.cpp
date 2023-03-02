@@ -5,7 +5,12 @@
 #include "BridgePerVxlanRenderer.h"
 #include "ipc/Subscriber.h"
 #include "EventLoop.h"
+#include "logging/easylogging++.h"
 #include "ConfigParser.h"
+
+#define ELPP_THREAD_SAFE 1
+INITIALIZE_EASYLOGGINGPP
+
 
 std::vector<std::promise<void>> promises(3);
 bool promises_resolved = false;
@@ -23,6 +28,7 @@ void handle_signal(int signal) {
 }
 
 int main(int argc, char *argv[]) {
+    LOG(INFO) << "Welcome to Gaffa!";
     std::string config_path = "/etc/gaffa/config";
     if (argc >= 2) {
         config_path = argv[1];
