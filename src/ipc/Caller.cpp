@@ -7,7 +7,7 @@
 
 const std::string VLAN_ID_PREFIX = "vlan_id=";
 
-ipc::Caller::Caller(const std::string &iface) : socket(iface, std::chrono::seconds(1)) {
+ipc::Caller::Caller(const std::string &socket_path) : socket(socket_path, std::chrono::seconds(1)) {
 
 }
 

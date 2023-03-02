@@ -40,13 +40,11 @@ static std::string random_name() {
     return s;
 }
 
-ipc::Socket::Socket(const std::string& iface, const std::chrono::duration<int>& timeout) : local{AF_UNIX, "\0"}, dest() {
+ipc::Socket::Socket(const std::string& socket_path, const std::chrono::duration<int>& timeout) : local{AF_UNIX, "\0"}, dest() {
     std::string local_path = "/var/run/gaffa." + random_name();
     if (unlink(local_path.c_str()) == 0) {
         std::cout << "successfully unlinked " << local_path << std::endl;
     }
-
-    std::string socket_path  = "/var/run/hostapd/" + iface;
 
     sock_fd = socket(AF_UNIX, SOCK_DGRAM, 0);
     if (sock_fd == -1) {

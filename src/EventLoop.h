@@ -14,7 +14,7 @@ private:
     ipc::Queue& queue;
     ipc::Caller caller;
 public:
-    EventLoop(NetworkRenderer& renderer, ipc::Queue &queue, const std::string &iface);
+    EventLoop(NetworkRenderer& renderer, ipc::Queue &queue, const std::string &socket_path);
 
     void loop(const std::future<void>& future);
 

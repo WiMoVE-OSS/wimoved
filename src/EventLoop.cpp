@@ -4,7 +4,7 @@
 #include "NetworkRenderer.h"
 #include "ipc/TimeoutException.h"
 
-EventLoop::EventLoop(NetworkRenderer& renderer, ipc::Queue &queue, const std::string& iface) : renderer(renderer), queue(queue), caller(iface) {
+EventLoop::EventLoop(NetworkRenderer& renderer, ipc::Queue &queue, const std::string& socket_path) : renderer(renderer), queue(queue), caller(socket_path) {
 }
 
 void EventLoop::loop(const std::future<void>& future) {

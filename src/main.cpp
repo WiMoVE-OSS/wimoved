@@ -5,6 +5,7 @@
 #include "BridgePerVxlanRenderer.h"
 #include "ipc/Subscriber.h"
 #include "EventLoop.h"
+#include "ConfigParser.h"
 
 std::vector<std::promise<void>> promises(3);
 bool promises_resolved = false;
@@ -22,26 +23,28 @@ void handle_signal(int signal) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc < 2) {
-        std::cout << "Usage: " << argv[0] << " <interface>\n";
-        return 1;
+    std::string config_path = "/etc/gaffa/config";
+    if (argc >= 2) {
+        config_path = argv[1];
     }
+    ConfigParser parser(config_path);
+
     std::signal(SIGINT, handle_signal);
     std::signal(SIGTERM, handle_signal);
 
-    std::string iface = argv[1];
     ipc::Queue queue;
     BridgePerVxlanRenderer renderer;
+    std::string socket_path = parser.get_config_option("hapd_sock");
 
-    std::thread subscriber_thread([&queue, &iface](){
-        ipc::Subscriber(queue, iface).loop(promises[0].get_future());
+    std::thread subscriber_thread([&queue, &socket_path](){
+        ipc::Subscriber(queue, socket_path).loop(promises[0].get_future());
     });
-    std::thread event_loop_thread([&renderer, &queue, &iface]() {
-        EventLoop(renderer, queue, iface).loop(promises[1].get_future());
+    std::thread event_loop_thread([&renderer, &queue, &socket_path]() {
+        EventLoop(renderer, queue, socket_path).loop(promises[1].get_future());
     });
-    std::thread cleanup_thread([&renderer, &iface]() {
+    std::thread cleanup_thread([&renderer, &socket_path]() {
         std::future<void> future = promises[2].get_future();
-        ipc::Caller caller(iface);
+        ipc::Caller caller(socket_path);
         while (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
             std::this_thread::sleep_for(std::chrono::seconds(1));
             renderer.cleanup([&caller]() {
