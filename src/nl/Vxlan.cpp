@@ -1,5 +1,6 @@
-#include <stdexcept>
 #include "Vxlan.h"
+
+#include <stdexcept>
 
 nl::Vxlan::Vxlan() {
     link = rtnl_link_vxlan_alloc();
@@ -8,6 +9,4 @@ nl::Vxlan::Vxlan() {
     }
 }
 
-nl::Vxlan::~Vxlan() {
-    rtnl_link_put(link);
-}
+nl::Vxlan::~Vxlan() { rtnl_link_put(link); }

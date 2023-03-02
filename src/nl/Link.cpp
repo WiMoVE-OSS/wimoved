@@ -1,6 +1,6 @@
-#include <stdexcept>
 #include "Link.h"
 
+#include <stdexcept>
 
 nl::Link::Link() {
     link = rtnl_link_alloc();
@@ -9,6 +9,4 @@ nl::Link::Link() {
     }
 }
 
-nl::Link::~Link() {
-    rtnl_link_put(link);
-}
+nl::Link::~Link() { rtnl_link_put(link); }

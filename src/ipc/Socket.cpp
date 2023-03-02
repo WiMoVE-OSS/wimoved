@@ -1,24 +1,25 @@
-#include <cstring>
-#include <sstream>
-#include <stdexcept>
-#include <iostream>
-#include <unistd.h>
-#include <chrono>
-#include <mutex>
-#include <sys/time.h>
-#include <random>
+#include "Socket.h"
+
 #include <grp.h>
 #include <sys/stat.h>
-#include "Socket.h"
+#include <sys/time.h>
+#include <unistd.h>
+
+#include <chrono>
+#include <cstring>
+#include <iostream>
+#include <mutex>
+#include <random>
+#include <sstream>
+#include <stdexcept>
+
 #include "../TimeoutException.h"
 
 static std::string join(const std::vector<std::string>& strings, char separator) {
     std::ostringstream o;
     auto it = strings.begin();
-    if (it != strings.end())
-    {
-        for(o << *it++; it != strings.end(); ++it)
-            o << separator << *it;
+    if (it != strings.end()) {
+        for (o << *it++; it != strings.end(); ++it) o << separator << *it;
     }
     return o.str();
 }
@@ -40,7 +41,8 @@ static std::string random_name() {
     return s;
 }
 
-ipc::Socket::Socket(const std::string& socket_path, const std::chrono::duration<int>& timeout) : local{AF_UNIX, "\0"}, dest() {
+ipc::Socket::Socket(const std::string& socket_path, const std::chrono::duration<int>& timeout)
+    : local{AF_UNIX, "\0"}, dest() {
     std::string local_path = "/var/run/gaffa." + random_name();
     if (unlink(local_path.c_str()) == 0) {
         std::cout << "successfully unlinked " << local_path << std::endl;
@@ -51,23 +53,23 @@ ipc::Socket::Socket(const std::string& socket_path, const std::chrono::duration<
         throw std::runtime_error(std::string("could not create socket: ") + std::strerror(errno));
     }
     auto timeout_usec = std::chrono::duration_cast<std::chrono::microseconds>(timeout);
-    struct timeval tv{};
+    struct timeval tv {};
     tv.tv_sec = timeout_usec.count() / 1000000;
     tv.tv_usec = timeout_usec.count() % 1000000;
     setsockopt(sock_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof(tv));
 
     // TODO: handle errno = EADDRINUSE
     strncpy(local.sun_path, local_path.c_str(), sizeof(local.sun_path));
-    local.sun_path[sizeof(local.sun_path)-1] = '\0';
-    if (bind(sock_fd, (struct sockaddr *) &local, sizeof(local)) == -1) {
+    local.sun_path[sizeof(local.sun_path) - 1] = '\0';
+    if (bind(sock_fd, (struct sockaddr*)&local, sizeof(local)) == -1) {
         close(sock_fd);
         throw std::runtime_error(std::string("could not bind to socket: ") + std::strerror(errno));
     }
 
-    #ifdef GAFFA_IPC_SOCKET_GROUP
+#ifdef GAFFA_IPC_SOCKET_GROUP
     std::array<char, 200> buf{};
-    struct group grp{};
-    struct group *grp_result = nullptr;
+    struct group grp {};
+    struct group* grp_result = nullptr;
     getgrnam_r(GAFFA_IPC_SOCKET_GROUP, &grp, &buf[0], buf.size(), &grp_result);
     if (grp_result == nullptr) {
         throw std::runtime_error(std::string("getgrnam failed: ") + std::strerror(errno));
@@ -78,12 +80,12 @@ ipc::Socket::Socket(const std::string& socket_path, const std::chrono::duration<
     if (chmod(local_path.c_str(), 0775) == -1) {
         throw std::runtime_error(std::string("could not set socket permissions: ") + std::strerror(errno));
     }
-    #endif
+#endif
 
     dest.sun_family = AF_UNIX;
     strncpy(dest.sun_path, socket_path.c_str(), sizeof(dest.sun_path));
-    dest.sun_path[sizeof(dest.sun_path)-1] = '\0';
-    if (connect(sock_fd, (struct sockaddr *) &dest, sizeof(dest)) == -1) {
+    dest.sun_path[sizeof(dest.sun_path) - 1] = '\0';
+    if (connect(sock_fd, (struct sockaddr*)&dest, sizeof(dest)) == -1) {
         close(sock_fd);
         throw std::runtime_error(std::string("could not connect to socket: ") + std::strerror(errno));
     }
@@ -98,7 +100,7 @@ ipc::Socket::~Socket() {
     };
 }
 
-void ipc::Socket::send_command(const std::vector<std::string> &args) const {
+void ipc::Socket::send_command(const std::vector<std::string>& args) const {
     std::string command = join(args, ' ');
 
     ssize_t err = send(sock_fd, command.c_str(), command.size(), 0);

@@ -1,5 +1,6 @@
-#include <stdexcept>
 #include "Bridge.h"
+
+#include <stdexcept>
 
 nl::Bridge::Bridge() {
     link = rtnl_link_bridge_alloc();
@@ -8,6 +9,4 @@ nl::Bridge::Bridge() {
     }
 }
 
-nl::Bridge::~Bridge() {
-    rtnl_link_put(link);
-}
+nl::Bridge::~Bridge() { rtnl_link_put(link); }

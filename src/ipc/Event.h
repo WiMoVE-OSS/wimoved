@@ -2,23 +2,24 @@
 #define GAFFA_IPC_EVENT_H
 
 #include <string>
+
 #include "../Station.h"
 
 class EventHandler;
 
 namespace ipc {
-    class Event {
-    public:
-        explicit Event(Station station);
+class Event {
+   public:
+    explicit Event(Station station);
 
-        virtual ~Event() = default;
+    virtual ~Event() = default;
 
-        virtual void handle(EventHandler *handler) = 0;
+    virtual void handle(EventHandler *handler) = 0;
 
-        Station station;
-    };
-}
+    Station station;
+};
+}  // namespace ipc
 
 #include "../EventHandler.h"
 
-#endif //GAFFA_IPC_EVENT_H
+#endif  // GAFFA_IPC_EVENT_H

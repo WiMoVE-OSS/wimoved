@@ -2,19 +2,18 @@
 #define GAFFA_AUTHEVENT_H
 
 namespace ipc {
-    class AuthEvent;
+class AuthEvent;
 }
 
 #include "Event.h"
 
 namespace ipc {
-    class AuthEvent : public Event {
-    public:
-        explicit AuthEvent(Station station);
+class AuthEvent : public Event {
+   public:
+    explicit AuthEvent(Station station);
 
-        void handle(EventHandler *handler) override;
-    };
-}
+    void handle(EventHandler *handler) override;
+};
+}  // namespace ipc
 
-
-#endif //GAFFA_AUTHEVENT_H
+#endif  // GAFFA_AUTHEVENT_H

@@ -5,16 +5,15 @@
 
 namespace nl {
 
-    class Link {
+class Link {
+   public:
+    Link();
+    Link(const Link &other) = delete;
+    ~Link();
 
-    public:
-        Link();
-        Link(const Link &other) = delete;
-        ~Link();
+    rtnl_link *link;
+};
 
-        rtnl_link *link;
-    };
+}  // namespace nl
 
-}
-
-#endif //GAFFA_LINK_H
+#endif  // GAFFA_LINK_H

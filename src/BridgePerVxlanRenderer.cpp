@@ -1,9 +1,8 @@
-#include <iostream>
 #include "BridgePerVxlanRenderer.h"
 
-BridgePerVxlanRenderer::BridgePerVxlanRenderer() : socket() {
+#include <iostream>
 
-}
+BridgePerVxlanRenderer::BridgePerVxlanRenderer() : socket() {}
 
 void BridgePerVxlanRenderer::setup_vni(uint32_t vni) {
     std::lock_guard g(renderer_mutex);
@@ -22,9 +21,9 @@ void BridgePerVxlanRenderer::setup_station(const Station& station) {
     socket.add_iface_bridge("bridge" + std::to_string(station.vni()), station.vlan_interface_name());
 }
 
-void BridgePerVxlanRenderer::cleanup(const std::function<std::vector<Station>()> &get_stations) {
+void BridgePerVxlanRenderer::cleanup(const std::function<std::vector<Station>()>& get_stations) {
     std::lock_guard g(renderer_mutex);
-    std::unordered_set<uint32_t > connected_station_vnis(0);
+    std::unordered_set<uint32_t> connected_station_vnis(0);
     std::cout << "cleanup(";
     for (auto& station : get_stations()) {
         std::cout << station.mac << " ";
@@ -32,22 +31,20 @@ void BridgePerVxlanRenderer::cleanup(const std::function<std::vector<Station>()>
     }
     std::cout << ")" << std::endl;
     auto existing_interfaces = socket.interface_list();
-    for (const auto &vni : connected_station_vnis) {
+    for (const auto& vni : connected_station_vnis) {
         existing_interfaces.erase(vni);
     }
     for (const auto vni : existing_interfaces) {
-       std::cout << "Delete " << vni << std::endl;
-       try {
-           socket.delete_interface("vxlan" + std::to_string(vni));
-       } catch (const std::exception&) {
-           std::cerr << "Could not delete vxlan interface vni: " << vni << std::endl;
-       }
-       try {
-           socket.delete_interface("bridge" + std::to_string(vni));
-       }
-       catch (const std::exception&) {
-           std::cerr << "Could not delete bridge vni: " << vni << std::endl;
-       }
+        std::cout << "Delete " << vni << std::endl;
+        try {
+            socket.delete_interface("vxlan" + std::to_string(vni));
+        } catch (const std::exception&) {
+            std::cerr << "Could not delete vxlan interface vni: " << vni << std::endl;
+        }
+        try {
+            socket.delete_interface("bridge" + std::to_string(vni));
+        } catch (const std::exception&) {
+            std::cerr << "Could not delete bridge vni: " << vni << std::endl;
+        }
     }
-
 }

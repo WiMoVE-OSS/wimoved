@@ -12,6 +12,7 @@ CTestTestfile.cmake
 _deps
 
 .*
+!.clang-format
 !.gitignore
 *.cbp
 gaffa

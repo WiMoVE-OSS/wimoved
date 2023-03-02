@@ -1,0 +1,9 @@
+---
+Language: Cpp
+BasedOnStyle: Google
+
+ConstructorInitializerIndentWidth: 4
+ContinuationIndentWidth: 4
+IndentWidth: 4
+TabWidth: 4
+ColumnLimit: 120

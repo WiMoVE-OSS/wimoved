@@ -1,23 +1,21 @@
 #ifndef GAFFA_CALLER_H
 #define GAFFA_CALLER_H
 
-
-#include "Socket.h"
 #include "../Station.h"
+#include "Socket.h"
 
 namespace ipc {
-    class Caller {
-    public:
-        explicit Caller(const std::string &socket_path);
+class Caller {
+   public:
+    explicit Caller(const std::string &socket_path);
 
-        uint32_t vlan_for_station(const std::string &station_mac);
+    uint32_t vlan_for_station(const std::string &station_mac);
 
-        std::vector<Station> connected_stations();
+    std::vector<Station> connected_stations();
 
-    private:
-        Socket socket;
-    };
-}
+   private:
+    Socket socket;
+};
+}  // namespace ipc
 
-
-#endif //GAFFA_CALLER_H
+#endif  // GAFFA_CALLER_H
