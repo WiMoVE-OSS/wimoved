@@ -39,16 +39,28 @@ void ipc::Subscriber::loop(const std::future<void> &future) {
         }
         if (event.rfind(HOSTAPD_ASSOC_STRING) == 0) {
             std::string station_mac = event.substr(HOSTAPD_ASSOC_STRING.size(), HOSTAPD_ASSOC_STRING.size() + MAC_ADDRESS_LENGTH);
-            Station station(station_mac);
-            queue.enqueue(std::make_unique<AssocEvent>(std::move(station)));
+            try {
+                Station station(station_mac);
+                queue.enqueue(std::make_unique<AssocEvent>(std::move(station)));
+            } catch (const std::runtime_error& e) {
+                std::cerr << "Unable to create station: " << e.what() << std::endl;
+            }
         } else if (event.rfind(HOSTAPD_AUTH_STRING) == 0){
             std::string station_mac = event.substr(HOSTAPD_AUTH_STRING.size(), HOSTAPD_AUTH_STRING.size() + MAC_ADDRESS_LENGTH);
-            Station station(station_mac);
-            queue.enqueue(std::make_unique<AuthEvent>(std::move(station)));
+            try {
+                Station station(station_mac);
+                queue.enqueue(std::make_unique<AuthEvent>(std::move(station)));
+            } catch (const std::runtime_error& e) {
+                std::cerr << "Unable to create station: " << e.what() << std::endl;
+            }
         } else if (event.rfind(HOSTAPD_DISASSOC_STRING) == 0) {
             std::string station_mac = event.substr(HOSTAPD_DISASSOC_STRING.size(), HOSTAPD_DISASSOC_STRING.size() + MAC_ADDRESS_LENGTH);
-            Station station(station_mac);
-            queue.enqueue(std::make_unique<DisassocEvent>(std::move(station)));
+            try {
+                Station station(station_mac);
+                queue.enqueue(std::make_unique<DisassocEvent>(std::move(station)));
+            } catch (const std::runtime_error& e) {
+                std::cerr << "Unable to create station: " << e.what() << std::endl;
+            }
         } else {
             std::cout << "unknown event" << event << std::endl;
         }
