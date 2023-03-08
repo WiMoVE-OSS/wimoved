@@ -7,7 +7,9 @@
 #include "TimeoutException.h"
 #include "VlanMissingException.h"
 #include "logging/loginit.h"
+#include "metrics/MetricsManager.h"
 #include "nl/Event.h"
+#include "prometheus/counter.h"
 
 EventLoop::EventLoop(NetworkRenderer& renderer, SynchronizedQueue<ipc::Event>& ipc_queue,
                      SynchronizedQueue<nl::Event>& nl_queue)
@@ -32,6 +34,7 @@ void EventLoop::loop_ipc_queue(const std::future<void>& future) {
 }
 
 void EventLoop::loop_nl_queue(const std::future<void>& future) {
+    auto& processed_netlink_events_counter = MetricsManager::get_instance().get_netlink_counter_processed();
     while (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
         std::unique_ptr<nl::Event> event;
         try {
@@ -40,6 +43,7 @@ void EventLoop::loop_nl_queue(const std::future<void>& future) {
             auto event_iterator = stations_without_interface.find(event->interface_name);
             std::lock_guard g(loop_mutex);
             if (event_iterator != stations_without_interface.end()) {
+                processed_netlink_events_counter.Increment();
                 GAFFALOG(DEBUG) << "setting up interface " << event->interface_name << " after netlink event";
                 try {
                     renderer.setup_station(event_iterator->second);

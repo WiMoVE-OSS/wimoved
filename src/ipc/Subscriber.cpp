@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 #include "../logging/loginit.h"
+#include "../metrics/MetricsManager.h"
 #include "AssocEvent.h"
 
 const std::string HOSTAPD_ASSOC_STRING = "<3>EAPOL-4WAY-HS-COMPLETED ";
@@ -12,7 +13,12 @@ const std::string HOSTAPD_AUTH_STRING = "<3>AP-STA-CONNECTED ";
 const std::string HOSTAPD_DISASSOC_STRING = "<3>AP-STA-DISCONNECTED ";
 
 ipc::Subscriber::Subscriber(SynchronizedQueue<Event>& queue, const std::chrono::duration<int>& timeout)
-    : socket(timeout), queue(queue) {}
+    : socket(timeout),
+      queue(queue),
+      hostapd_association_counter(MetricsManager::get_instance().get_hostapd_counter_for_type("assoc")),
+      hostapd_disassociation_counter(MetricsManager::get_instance().get_hostapd_counter_for_type("disassoc")),
+      hostapd_authentication_counter(MetricsManager::get_instance().get_hostapd_counter_for_type("auth")),
+      hostapd_unknown_counter(MetricsManager::get_instance().get_hostapd_counter_for_type("unknown")) {}
 
 void ipc::Subscriber::loop(const std::future<void>& future) {
     std::string result = socket.send_and_receive({"ATTACH"});
@@ -46,6 +52,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             try {
                 Station station(station_mac);
                 queue.enqueue(std::make_unique<AssocEvent>(std::move(station)));
+                hostapd_association_counter.Increment();
             } catch (const std::runtime_error& e) {
                 GAFFALOG(ERROR) << "Unable to create station: " << e.what();
             }
@@ -55,6 +62,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             try {
                 Station station(station_mac);
                 queue.enqueue(std::make_unique<AuthEvent>(std::move(station)));
+                hostapd_authentication_counter.Increment();
             } catch (const std::runtime_error& e) {
                 GAFFALOG(ERROR) << "Unable to create station: " << e.what();
             }
@@ -64,10 +72,12 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             try {
                 Station station(station_mac);
                 queue.enqueue(std::make_unique<DisassocEvent>(std::move(station)));
+                hostapd_disassociation_counter.Increment();
             } catch (const std::runtime_error& e) {
                 GAFFALOG(ERROR) << "Unable to create station: " << e.what();
             }
         } else {
+            hostapd_unknown_counter.Increment();
             GAFFALOG(DEBUG) << "Received unknown event" << event;
         }
     }

@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.13)
 
 project(gaffa LANGUAGES CXX)
 
+find_package(prometheus-cpp CONFIG REQUIRED)
+
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
@@ -65,10 +67,13 @@ add_executable(gaffa
         src/logging/easylogging++.h
         src/ConfigParser.cpp
         src/ConfigParser.h
+        src/metrics/MetricsManager.cpp
+        src/metrics/MetricsManager.h
+        src/logging/loginit.h
         src/logging/loginit.h
         src/Configuration.cpp
         src/Configuration.h)
-target_link_libraries(gaffa nl-3 nl-route-3)
+target_link_libraries(gaffa nl-3 nl-route-3 prometheus-cpp::pull prometheus-cpp::core)
 
 include_directories(src/hostapd)
 

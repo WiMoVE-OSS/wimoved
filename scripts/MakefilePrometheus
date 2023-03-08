@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2022 BPHK2022
+
+include $(TOPDIR)/rules.mk
+
+PKG_NAME:=prometheus-client-cpp
+PKG_RELEASE:=1
+
+PKG_FLAGS:=nonshared
+PKG_LICENSE:=MIT
+PKG_MAINTAINER:=BPHK2022
+
+include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/cmake.mk
+
+
+CMAKE_OPTIONS += \
+        -DSTAGING_DIR=$(STAGING_DIR) \
+        -DBUILD_SHARED_LIBS=OFF \
+        -DENABLE_PUSH=OFF \
+        -DENABLE_COMPRESSION=OFF \
+
+
+CMAKE_INSTALL:=1
+
+define Package/prometheus-client-cpp
+  SECTION:=libs
+  CATEGORY:=Libraries
+  TITLE:=Prometheus
+endef
+
+define Package/prometheus-client-cpp/description
+  Scalable WiFi Daemon
+endef
+
+define Package/prometheus-client-cpp/config
+endef
+
+define Package/prometheus-client-cpp/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/lib/libprometheus-cpp-core.a $(1)/usr/lib/
+	mkdir -p $(1)/usr/include/prometheus/detail
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libprometheus-cpp-pull.a $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/include/prometheus/* $(1)/usr/include/prometheus
+endef
+
+$(eval $(call BuildPackage,prometheus-client-cpp))
