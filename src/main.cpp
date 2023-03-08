@@ -17,7 +17,7 @@ std::vector<std::promise<void>> promises(5);
 bool promises_resolved = false;
 std::mutex promises_mutex;
 
-void handle_signal(int signal) {
+void handle_signal(int __attribute__((unused)) signal) {
     std::lock_guard g(promises_mutex);
     if (promises_resolved) {
         return;

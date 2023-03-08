@@ -101,7 +101,8 @@ ipc::Socket::~Socket() {
     };
 }
 
-void ipc::Socket::send_command(const std::vector<std::string>& args) const {
+// NOLINTNEXTLINE(readability-make-member-function-const)
+void ipc::Socket::send_command(const std::vector<std::string>& args) {
     std::string command = join(args, ' ');
 
     ssize_t err = send(sock_fd, command.c_str(), command.size(), 0);
@@ -110,12 +111,13 @@ void ipc::Socket::send_command(const std::vector<std::string>& args) const {
     }
 }
 
-std::string ipc::Socket::send_and_receive(const std::vector<std::string>& args) const {
+std::string ipc::Socket::send_and_receive(const std::vector<std::string>& args) {
     send_command(args);
     return receive();
 }
 
-std::string ipc::Socket::receive() const {
+// NOLINTNEXTLINE(readability-make-member-function-const)
+std::string ipc::Socket::receive() {
     std::string buf(4096, ' ');
     while (true) {
         ssize_t len = recv(sock_fd, &buf[0], buf.size(), 0);
