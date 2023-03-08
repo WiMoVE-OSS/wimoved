@@ -16,10 +16,7 @@ EventLoop::EventLoop(NetworkRenderer& renderer, SynchronizedQueue<ipc::Event>& i
     : renderer(renderer),
       ipc_queue(ipc_queue),
       nl_queue(nl_queue),
-      caller(),
-      stations_without_interface(),
-      loop_mutex(),
-      processing_time_histogram(MetricsManager::get_instance().get_event_histogram()) {}
+      caller(socket_path) {}
 
 void EventLoop::loop_ipc_queue(const std::future<void>& future) {
     while (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {

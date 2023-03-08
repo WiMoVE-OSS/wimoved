@@ -17,11 +17,11 @@ class Socket {
    public:
     explicit Socket(const std::chrono::duration<int> &timeout);
 
-    std::string send_and_receive(const std::vector<std::string> &args) const;
+    std::string send_and_receive(const std::vector<std::string> &args);
 
-    void send_command(const std::vector<std::string> &args) const;
+    void send_command(const std::vector<std::string> &args);
 
-    std::string receive() const;
+    std::string receive();
 
     ~Socket();
 
