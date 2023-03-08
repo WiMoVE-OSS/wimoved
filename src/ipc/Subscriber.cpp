@@ -4,7 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "../logging/easylogging++.h"
+#include "../logging/loginit.h"
 #include "AssocEvent.h"
 
 const std::string HOSTAPD_ASSOC_STRING = "<3>EAPOL-4WAY-HS-COMPLETED ";
@@ -20,7 +20,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
     if (result != "OK\n") {
         throw std::runtime_error(std::string("could not attach to hostapd: ") + result);
     }
-    LOG(INFO) << "attached to hostapd";
+    GAFFALOG(INFO) << "attached to hostapd";
     while (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
         std::string event;
         try {
@@ -29,14 +29,15 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             try {
                 std::string ping_result = socket.send_and_receive({"PING"});
                 if (ping_result != "PONG\n") {
-                    LOG(FATAL) << "timeout in Subscriber::loop_ipc_queue(), hostapd did not respond pong: "
-                               << ping_result;
+                    GAFFALOG(FATAL) << "timeout in Subscriber::loop_ipc_queue(), hostapd did not respond pong: "
+                                    << ping_result;
                     break;
                 } else {
                     continue;
                 }
             } catch (const TimeoutException& e) {
-                LOG(FATAL) << "timeout in Subscriber::loop_ipc_queue(), hostapd timed out while responding to ping";
+                GAFFALOG(FATAL)
+                    << "timeout in Subscriber::loop_ipc_queue(), hostapd timed out while responding to ping";
                 break;
             }
         }
@@ -47,7 +48,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
                 Station station(station_mac);
                 queue.enqueue(std::make_unique<AssocEvent>(std::move(station)));
             } catch (const std::runtime_error& e) {
-                LOG(ERROR) << "Unable to create station: " << e.what();
+                GAFFALOG(ERROR) << "Unable to create station: " << e.what();
             }
         } else if (event.rfind(HOSTAPD_AUTH_STRING) == 0) {
             std::string station_mac =
@@ -56,7 +57,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
                 Station station(station_mac);
                 queue.enqueue(std::make_unique<AuthEvent>(std::move(station)));
             } catch (const std::runtime_error& e) {
-                LOG(ERROR) << "Unable to create station: " << e.what();
+                GAFFALOG(ERROR) << "Unable to create station: " << e.what();
             }
         } else if (event.rfind(HOSTAPD_DISASSOC_STRING) == 0) {
             std::string station_mac =
@@ -65,10 +66,10 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
                 Station station(station_mac);
                 queue.enqueue(std::make_unique<DisassocEvent>(std::move(station)));
             } catch (const std::runtime_error& e) {
-                LOG(ERROR) << "Unable to create station: " << e.what();
+                GAFFALOG(ERROR) << "Unable to create station: " << e.what();
             }
         } else {
-            LOG(DEBUG) << "Received unknown event" << event;
+            GAFFALOG(DEBUG) << "Received unknown event" << event;
         }
     }
 }

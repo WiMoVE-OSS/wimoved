@@ -6,9 +6,14 @@ set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 
+
+add_compile_definitions(ELPP_THREAD_SAFE)
+add_compile_definitions(ELPP_FEATURE_CRASH_LOG)
+
 if(DEFINED STAGING_DIR)
     add_compile_definitions(GAFFA_IPC_SOCKET_GROUP="network")
     include_directories(${STAGING_DIR}/usr/include/libnl3)
+    add_compile_definitions(ELPP_SYSLOG)
 else()
     add_compile_definitions(GAFFA_IPC_SOCKET_GROUP="root")
     include_directories(/usr/include/libnl3)
@@ -59,7 +64,8 @@ add_executable(gaffa
         src/logging/easylogging++.cpp
         src/logging/easylogging++.h
         src/ConfigParser.cpp
-        src/ConfigParser.h)
+        src/ConfigParser.h
+        src/logging/loginit.h)
 target_link_libraries(gaffa nl-3 nl-route-3)
 
 include_directories(src/hostapd)

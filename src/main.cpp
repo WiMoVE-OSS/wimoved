@@ -7,18 +7,15 @@
 #include "ConfigParser.h"
 #include "EventLoop.h"
 #include "ipc/Subscriber.h"
-#include "logging/easylogging++.h"
+#include "logging/loginit.h"
 #include "nl/Subscriber.h"
+
+INITIALIZE_EASYLOGGINGPP
+#include "logging/loginit.h"
 
 std::vector<std::promise<void>> promises(5);
 bool promises_resolved = false;
 std::mutex promises_mutex;
-
-INITIALIZE_EASYLOGGINGPP
-
-#define ELPP_THREAD_SAFE
-#define ELPP_FEATURE_CRASH_LOG
-#define ELPP_HANDLE_SIGABRT
 
 void handle_signal(int signal) {
     std::lock_guard g(promises_mutex);
@@ -30,17 +27,43 @@ void handle_signal(int signal) {
         promise.set_value();
     }
 }
-int main(int argc, char* argv[]) {
+
+void setup_logger(ConfigParser parser) {
+    std::set_terminate([]() -> void {
+        GAFFALOG(ERROR) << "An Exception was thrown that was not caught.";
+        try {
+            std::rethrow_exception(std::current_exception());
+        } catch (const std::exception& ex) {
+            GAFFALOG(FATAL) << typeid(ex).name() << ": " << ex.what();
+        } catch (...) {
+            GAFFALOG(FATAL) << "Error while handling exception: " << typeid(std::current_exception()).name();
+        }
+        GAFFALOG(ERROR) << "errno: " << errno << ": " << std::strerror(errno) << std::endl;
+        std::abort();
+    });
     el::Configurations defaultConf;
     defaultConf.setToDefault();
     defaultConf.setGlobally(el::ConfigurationType::Format, "[%level] %datetime %fbase:%line - %msg");
-    el::Loggers::reconfigureLogger("default", defaultConf);
 
+#ifdef ELPP_SYSLOG
+    el::SysLogInitializer elSyslogInit("Gaffa", LOG_PID | LOG_CONS | LOG_PERROR, LOG_USER);
+    el::Loggers::reconfigureLogger("syslog", defaultConf);
+#else
+    defaultConf.setGlobally(el::ConfigurationType::Filename, parser.get_config_option("log_path"));
+#endif
+
+    el::Loggers::reconfigureLogger("default", defaultConf);
+}
+
+int main(int argc, char* argv[]) {
     std::string config_path = "/etc/gaffa/config";
     if (argc >= 2) {
         config_path = argv[1];
     }
     ConfigParser parser(config_path);
+    setup_logger(parser);
+
+    GAFFALOG(INFO) << "Gaffa is starting";
 
     std::signal(SIGINT, handle_signal);
     std::signal(SIGTERM, handle_signal);
