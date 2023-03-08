@@ -65,7 +65,9 @@ add_executable(gaffa
         src/logging/easylogging++.h
         src/ConfigParser.cpp
         src/ConfigParser.h
-        src/logging/loginit.h)
+        src/logging/loginit.h
+        src/Configuration.cpp
+        src/Configuration.h)
 target_link_libraries(gaffa nl-3 nl-route-3)
 
 include_directories(src/hostapd)

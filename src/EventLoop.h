@@ -20,7 +20,7 @@ class EventLoop : public EventHandler {
 
    public:
     EventLoop(NetworkRenderer& renderer, SynchronizedQueue<ipc::Event>& ipc_queue,
-              SynchronizedQueue<nl::Event>& nl_queue, const std::string& socket_path);
+              SynchronizedQueue<nl::Event>& nl_queue);
 
     void loop_ipc_queue(const std::future<void>& future);
     void loop_nl_queue(const std::future<void>& future);

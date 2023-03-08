@@ -10,11 +10,11 @@
 #include "nl/Event.h"
 
 EventLoop::EventLoop(NetworkRenderer& renderer, SynchronizedQueue<ipc::Event>& ipc_queue,
-                     SynchronizedQueue<nl::Event>& nl_queue, const std::string& socket_path)
+                     SynchronizedQueue<nl::Event>& nl_queue)
     : renderer(renderer),
       ipc_queue(ipc_queue),
       nl_queue(nl_queue),
-      caller(socket_path),
+      caller(),
       stations_without_interface(),
       loop_mutex() {}
 
@@ -69,7 +69,8 @@ void EventLoop::handle_assoc(ipc::AssocEvent* event) {
     try {
         renderer.setup_station(event->station);
     } catch (VlanMissingException&) {
-        GAFFALOG(WARNING) << "vlan interface " << event->station.vlan_interface_name() << " missing in setup_station. Waiting for it to be created.";
+        GAFFALOG(WARNING) << "vlan interface " << event->station.vlan_interface_name()
+                          << " missing in setup_station. Waiting for it to be created.";
         stations_without_interface.emplace(event->station.vlan_interface_name(), event->station);
     } catch (std::runtime_error& err) {
         GAFFALOG(ERROR) << "station could not be bridged to vxlan interface: " << err.what();

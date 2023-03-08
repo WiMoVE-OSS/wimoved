@@ -9,7 +9,7 @@
 
 const std::string VLAN_ID_PREFIX = "vlan_id=";
 
-ipc::Caller::Caller(const std::string &socket_path) : socket(socket_path, std::chrono::seconds(1)) {}
+ipc::Caller::Caller() : socket(std::chrono::seconds(1)) {}
 
 uint32_t ipc::Caller::vlan_for_station(const std::string &station_mac) {
     for (int i = 0; i < 10; i++) {
