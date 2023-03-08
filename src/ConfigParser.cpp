@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "logging/easylogging++.h"
+#include "logging/loginit.h"
 
 // trim from start (in place)
 static inline void ltrim(std::string &s) {
@@ -28,11 +28,12 @@ ConfigParser::ConfigParser(const std::string &config_path) {
     // Set default values
     config_options["hapd_sock"] = "/var/run/hostapd/wlan0";
     config_options["max_vni"] = "20";
+    config_options["log_path"] = "gaffa.log";
 
     std::string line;
     std::ifstream config_file(config_path);
     if (!config_file.is_open()) {
-        LOG(ERROR) << "Unable to read config file " << config_path << ". Using default config";
+        GAFFALOG(ERROR) << "Unable to read config file " << config_path << ". Using default config";
         return;
     }
 
@@ -48,7 +49,7 @@ ConfigParser::ConfigParser(const std::string &config_path) {
 
         // Check if token is already defined
         if (config_options.find(token) == config_options.end()) {
-            LOG(ERROR) << "Unknown config option " << token << ". Skipping!!";
+            GAFFALOG(ERROR) << "Unknown config option " << token << ". Skipping!!";
             continue;
         }
 

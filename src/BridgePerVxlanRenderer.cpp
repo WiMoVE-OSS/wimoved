@@ -2,13 +2,13 @@
 
 #include <iostream>
 
-#include "logging/easylogging++.h"
+#include "logging/loginit.h"
 
 BridgePerVxlanRenderer::BridgePerVxlanRenderer() : socket() {}
 
 void BridgePerVxlanRenderer::setup_vni(uint32_t vni) {
     std::lock_guard g(renderer_mutex);
-    LOG(DEBUG) << "setup_vni(" << vni << ")";
+    GAFFALOG(DEBUG) << "Calling: setup_vni(" << vni << ")";
     socket.create_vxlan_iface(vni);
     socket.create_bridge_for_vni(vni);
     socket.add_iface_bridge("bridge" + std::to_string(vni), "vxlan" + std::to_string(vni));
@@ -19,33 +19,35 @@ void BridgePerVxlanRenderer::setup_station(const Station& station) {
     if (not station.vlan_id.has_value()) {
         throw std::runtime_error("The station " + station.mac + " has no vlan_id");
     }
-    LOG(DEBUG) << "setup_station(" << station.mac << ")";
+    GAFFALOG(DEBUG) << "Calling: setup_station(" << station.mac << ")";
     socket.add_iface_bridge("bridge" + std::to_string(station.vni()), station.vlan_interface_name());
 }
 
 void BridgePerVxlanRenderer::cleanup(const std::function<std::vector<Station>()>& get_stations) {
     std::lock_guard g(renderer_mutex);
     std::unordered_set<uint32_t> connected_station_vnis(0);
-    LOG(DEBUG) << "Starting cleanup. Stations connected: ";
+    GAFFALOG(DEBUG) << "Starting cleanup.";
+    int counter = 0;
     for (auto& station : get_stations()) {
-        LOG(DEBUG) << station.mac << " ";
         connected_station_vnis.emplace(station.vni());
+        counter++;
     }
     auto existing_interfaces = socket.interface_list();
     for (const auto& vni : connected_station_vnis) {
         existing_interfaces.erase(vni);
     }
     for (const auto vni : existing_interfaces) {
-        LOG(DEBUG) << "Deleting VNI " << vni;
+        GAFFALOG(DEBUG) << "Deleting VNI " << vni;
         try {
             socket.delete_interface("vxlan" + std::to_string(vni));
         } catch (const std::exception&) {
-            LOG(ERROR) << "Could not delete vxlan interface vni: " << vni;
+            GAFFALOG(ERROR) << "Could not delete vxlan interface vni: " << vni;
         }
         try {
             socket.delete_interface("bridge" + std::to_string(vni));
         } catch (const std::exception&) {
-            LOG(ERROR) << "Could not delete bridge vni: " << vni;
+            GAFFALOG(ERROR) << "Could not delete bridge vni: " << vni;
         }
     }
+    GAFFALOG(DEBUG) << "Cleanup finished, " << counter << " stations connected.";
 }
