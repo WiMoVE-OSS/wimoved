@@ -65,7 +65,7 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout) : local{AF_UNIX, 
     local.sun_path[sizeof(local.sun_path) - 1] = '\0';
     if (bind(sock_fd, (struct sockaddr*)&local, sizeof(local)) == -1) {
         close(sock_fd);
-        throw std::runtime_error(std::string("could not bind to socket: ") + std::strerror(errno));
+        throw std::runtime_error("could not bind to socket " + socket_path + ": " + std::strerror(errno));
     }
 
 #ifdef GAFFA_IPC_SOCKET_GROUP

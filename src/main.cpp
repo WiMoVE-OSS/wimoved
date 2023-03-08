@@ -61,10 +61,9 @@ int main(int argc, char* argv[]) {
     if (argc >= 2) {
         config_path = argv[1];
     }
+    GAFFALOG(INFO) << "Gaffa is starting";
     ConfigParser bla(config_path);
     setup_logger();
-
-    GAFFALOG(INFO) << "Gaffa is starting";
 
     std::signal(SIGINT, handle_signal);
     std::signal(SIGTERM, handle_signal);

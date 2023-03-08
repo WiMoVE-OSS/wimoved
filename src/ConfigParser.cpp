@@ -43,11 +43,6 @@ ConfigParser::ConfigParser(const std::string &config_path) {
         // Make token lowercase
         std::transform(token.begin(), token.end(), token.begin(), [](unsigned char c) { return std::tolower(c); });
 
-        // Check if token is already defined
-        if (config_options.find(token) == config_options.end()) {
-            GAFFALOG(ERROR) << "Unknown config option " << token << ". Skipping!!";
-            continue;
-        }
 
         std::string value = line.substr(split + 1, std::string::npos);
         trim(value);
