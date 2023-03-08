@@ -27,7 +27,7 @@ define Package/gaffa
   SECTION:=network
   CATEGORY:=Networking
   TITLE:=Scalable WiFi Daemon
-  DEPENDS:=+libstdcpp +libnl
+  DEPENDS:=+libstdcpp +libnl +libatomic
 endef
 
 define Package/gaffa/description

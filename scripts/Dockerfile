@@ -6,3 +6,12 @@ RUN ./scripts/feeds update && \
     ./scripts/feeds install libnl && \
     make -j$(nproc) package/libnl/compile
 
+RUN mkdir -p /home/build/openwrt/package/prometheus/src/ && \
+    wget https://github.com/jupp0r/prometheus-cpp/releases/download/v1.1.0/prometheus-cpp-with-submodules.tar.gz && \
+    tar -xzf prometheus-cpp-with-submodules.tar.gz -C /home/build/openwrt/package/prometheus/src/ --strip-components=1
+
+COPY MakefilePrometheus /home/build/openwrt/package/prometheus/Makefile
+
+RUN make -j$(nproc) package/prometheus/compile
+
+
