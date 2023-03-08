@@ -13,6 +13,7 @@
 #include <sstream>
 #include <stdexcept>
 
+#include "../Configuration.h"
 #include "../TimeoutException.h"
 #include "../logging/loginit.h"
 
@@ -42,8 +43,8 @@ static std::string random_name() {
     return s;
 }
 
-ipc::Socket::Socket(const std::string& socket_path, const std::chrono::duration<int>& timeout)
-    : local{AF_UNIX, "\0"}, dest() {
+ipc::Socket::Socket(const std::chrono::duration<int>& timeout) : local{AF_UNIX, "\0"}, dest() {
+    std::string socket_path = Configuration::get_instance().hapd_sock;
     std::string local_path = "/var/run/gaffa." + random_name();
     if (unlink(local_path.c_str()) == 0) {
         GAFFALOG(DEBUG) << "Successfully unlinked socket" << local_path;

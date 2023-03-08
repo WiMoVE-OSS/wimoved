@@ -4,7 +4,8 @@
 #include <regex>
 #include <utility>
 
-const auto NUM_VNIS = 20;
+#include "Configuration.h"
+
 const auto MAC_REGEX = std::regex("^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$");
 
 Station::Station(std::string mac) : vlan_id(std::nullopt) {
@@ -21,7 +22,7 @@ uint32_t Station::vni() const {
 
     uint64_t x = std::stoull(sanitized_mac, nullptr, 16);
 
-    return x % NUM_VNIS;
+    return x % Configuration::get_instance().max_vni;
 }
 
 std::string Station::vlan_interface_name() const { return "vlan" + std::to_string(vlan_id.value_or(0)); }

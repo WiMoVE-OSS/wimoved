@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "Configuration.h"
 #include "logging/loginit.h"
 
 // trim from start (in place)
@@ -25,11 +26,6 @@ static inline void trim(std::string &s) {
 }
 
 ConfigParser::ConfigParser(const std::string &config_path) {
-    // Set default values
-    config_options["hapd_sock"] = "/var/run/hostapd/wlan0";
-    config_options["max_vni"] = "20";
-    config_options["log_path"] = "gaffa.log";
-
     std::string line;
     std::ifstream config_file(config_path);
     if (!config_file.is_open()) {
@@ -57,13 +53,23 @@ ConfigParser::ConfigParser(const std::string &config_path) {
         trim(value);
         config_options[token] = value;
     }
+    Configuration::get_instance().populate(*this);
 }
 
-std::string ConfigParser::get_config_option(const std::string &option) {
+std::string ConfigParser::get_config_string(const std::string &option) const {
     auto got = config_options.find(option);
     if (got == config_options.end()) {
-        throw std::runtime_error(std::string("Could not get option: ") + option);
+        throw std::out_of_range(std::string("Could not get option: ") + option);
     } else {
         return got->second;
     }
+}
+
+uint32_t ConfigParser::get_config_uint32(const std::string &option) const {
+    std::string value = this->get_config_string(option);
+    uint64_t result = std::stoull(value);
+    if (result > std::numeric_limits<uint32_t>::max()) {
+        throw std::range_error("Number is too large for uint32_t. Config option " + option + " with value " + value);
+    }
+    return result;
 }

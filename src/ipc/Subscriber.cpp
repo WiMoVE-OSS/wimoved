@@ -11,9 +11,8 @@ const std::string HOSTAPD_ASSOC_STRING = "<3>EAPOL-4WAY-HS-COMPLETED ";
 const std::string HOSTAPD_AUTH_STRING = "<3>AP-STA-CONNECTED ";
 const std::string HOSTAPD_DISASSOC_STRING = "<3>AP-STA-DISCONNECTED ";
 
-ipc::Subscriber::Subscriber(SynchronizedQueue<Event>& queue, const std::chrono::duration<int>& timeout,
-                            const std::string& socket_path)
-    : socket(socket_path, timeout), queue(queue) {}
+ipc::Subscriber::Subscriber(SynchronizedQueue<Event>& queue, const std::chrono::duration<int>& timeout)
+    : socket(timeout), queue(queue) {}
 
 void ipc::Subscriber::loop(const std::future<void>& future) {
     std::string result = socket.send_and_receive({"ATTACH"});
