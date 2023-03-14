@@ -10,4 +10,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Start linting
-        run: find src -iname *.h -o -iname *.cpp | xargs clang-format -i -v
+        run: find src -iname *.h -o -iname *.cpp | xargs clang-format -i
