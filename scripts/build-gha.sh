@@ -1,14 +1,9 @@
 #!/bin/bash
-set -xe
-mkdir -p out package/src/src
-chmod -R ogu+rwx out
-cp scripts/Makefile package/
-cp CMakeLists.txt package/src/
-cp -r src package/src/
-
-docker run --rm \
-  -v "$(pwd)"/scripts/stage2.sh:/home/build/openwrt/stage2.sh \
-  -v "$(pwd)"/package/:/home/build/openwrt/package/network/services/gaffa \
-  -v "$(pwd)"/out/:/home/build/openwrt/out\
-  wimove-buildenv/arm:$TAG \
-  bash stage2.sh
+cp scripts/stage2.sh /home/build/openwrt/stage2.sh
+mkdir -p /home/build/openwrt/package/network/services/gaffa/src/src
+cp scripts/Makefile /home/build/openwrt/package/network/services/gaffa/
+cp CMakeLists.txt /home/build/openwrt/package/network/services/gaffa/src/
+cp -r src /home/build/openwrt/package/network/services/gaffa/src/
+mkdir -p /home/build/openwrt/out
+bash /home/build/openwrt/stage2.sh
+cp /home/build/openwrt/out/gaffa*.ipk /builds/bp2022hk1/Gaffa/
