@@ -19,6 +19,7 @@ jobs:
       with:
         push: false
         context: ./scripts
+        load: true
         tags: wimove-buildenv/arm:${{ env.BRANCH }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
