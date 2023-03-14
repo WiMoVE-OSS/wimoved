@@ -46,19 +46,16 @@ static int interface_event_handler(struct nl_msg *msg, void *arg) {
                 }
             }
         case NL80211_CMD_NEW_STATION:
+            if (attrs[NL80211_ATTR_IFNAME] == nullptr) {
+                break;
+            }
+            std::string interface_name(nla_get_string(attrs[NL80211_ATTR_IFNAME]));
             std::string mac = format_mac(static_cast<uint8_t *>(nla_data(attrs[NL80211_ATTR_MAC])));
-            ifindex = nla_get_u32(attrs[NL80211_ATTR_IFINDEX]);
-            char name[IFNAMSIZ];
-            if (if_indextoname(ifindex, name) == nullptr) {
-                GAFFALOG(DEBUG) << "NL80211_CMD_NEW_STATION mac=" << mac << " ifindex=" << ifindex << " with no associated name";
-            } else {
-                GAFFALOG(DEBUG) << "NL80211_CMD_NEW_STATION mac=" << mac << " ifindex=" << ifindex << " name=" << name;
-                std::string ifacename(name);
-                if (ifacename.rfind(VLAN_INTERFACE_PREFIX, 0) == 0) {
-                    socket->station_counter_received.Increment();
-                    // TODO: improve
-                    socket->new_stations.emplace_back(mac, std::strtoull(ifacename.substr(4).c_str(), nullptr, 10));
-                }
+            GAFFALOG(DEBUG) << "NL80211_CMD_NEW_STATION mac=" << mac << " name=" << interface_name;
+            if (interface_name.rfind(VLAN_INTERFACE_PREFIX, 0) == 0) {
+                socket->station_counter_received.Increment();
+                // TODO: improve
+                socket->new_stations.emplace_back(mac, std::strtoull(interface_name.substr(4).c_str(), nullptr, 10));
             }
             break;
     }
