@@ -7,13 +7,9 @@ static std::shared_ptr<prometheus::Registry> registry = std::make_shared<prometh
 
 MetricsManager::MetricsManager()
     : exposer("0.0.0.0:9500"),
-      hostapd_counter(prometheus::BuildCounter()
-                          .Name("hostapd_events")
-                          .Help("Number of received hostapd events")
-                          .Register(*registry)),
-      netlink_counter(prometheus::BuildCounter()
+      station_counter(prometheus::BuildCounter()
                           .Name("netlink_events")
-                          .Help("Number of received netlink events")
+                          .Help("Number of station events")
                           .Register(*registry)),
       connection_gauge(
           prometheus::BuildGauge().Name("connections").Help("Number of connections to the AP").Register(*registry)),
@@ -29,16 +25,12 @@ MetricsManager &MetricsManager::get_instance() {
     return instance;
 }
 
-prometheus::Counter &MetricsManager::get_hostapd_counter_for_type(const std::string &type) {
-    return hostapd_counter.Add({{"type", type}});
+prometheus::Counter &MetricsManager::get_station_counter_processed() {
+    return station_counter.Add({{"type", "processed"}});
 }
 
-prometheus::Counter &MetricsManager::get_netlink_counter_processed() {
-    return netlink_counter.Add({{"type", "processed"}});
-}
-
-prometheus::Counter &MetricsManager::get_netlink_counter_received() {
-    return netlink_counter.Add({{"type", "received"}});
+prometheus::Counter &MetricsManager::get_station_counter_received() {
+    return station_counter.Add({{"type", "received"}});
 }
 
 prometheus::Gauge &MetricsManager::get_station_gauge() { return connection_gauge.Add({{"type", "stations"}}); }

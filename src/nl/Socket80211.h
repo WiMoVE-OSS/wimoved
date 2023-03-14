@@ -2,6 +2,7 @@
 #define GAFFA_SOCKET80211_H
 
 #include <netlink/netlink.h>
+#include <prometheus/counter.h>
 
 #include <chrono>
 #include <unordered_set>
@@ -17,6 +18,7 @@ class Socket80211 {
     std::vector<Station> wait_for_stations();
 
     std::vector<Station> new_stations;
+    prometheus::Counter& station_counter_received;
    private:
     nl_sock *socket;
 };

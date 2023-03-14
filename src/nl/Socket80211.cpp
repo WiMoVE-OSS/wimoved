@@ -12,6 +12,7 @@
 
 #include "../TimeoutException.h"
 #include "../logging/loginit.h"
+#include "../metrics/MetricsManager.h"
 
 static std::string format_mac(uint8_t mac[6]) {
     char formatted_mac[2 * 6 + 5 + 1];
@@ -54,6 +55,7 @@ static int interface_event_handler(struct nl_msg *msg, void *arg) {
                 GAFFALOG(DEBUG) << "NL80211_CMD_NEW_STATION mac=" << mac << " ifindex=" << ifindex << " name=" << name;
                 std::string ifacename(name);
                 if (ifacename.rfind(VLAN_INTERFACE_PREFIX, 0) == 0) {
+                    socket->station_counter_received.Increment();
                     // TODO: improve
                     socket->new_stations.emplace_back(mac, std::strtoull(ifacename.substr(4).c_str(), nullptr, 10));
                 }
@@ -64,7 +66,8 @@ static int interface_event_handler(struct nl_msg *msg, void *arg) {
 }
 
 
-nl::Socket80211::Socket80211(const std::chrono::duration<int>& timeout) {
+nl::Socket80211::Socket80211(const std::chrono::duration<int>& timeout)
+    : station_counter_received(MetricsManager::get_instance().get_station_counter_received()) {
     socket = nl_socket_alloc();
     if (socket == nullptr) {
         throw std::runtime_error(std::string("could not allocate netlink socket: ") + std::strerror(errno));

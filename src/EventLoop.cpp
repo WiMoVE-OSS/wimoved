@@ -17,11 +17,12 @@ EventLoop::EventLoop(NetworkRenderer& renderer, SynchronizedQueue<Station>& stat
       processing_time_histogram(MetricsManager::get_instance().get_event_histogram()) {}
 
 void EventLoop::loop_nl_queue(const std::future<void>& future) {
-    auto& processed_netlink_events_counter = MetricsManager::get_instance().get_netlink_counter_processed();
+    auto& station_counter_processed = MetricsManager::get_instance().get_station_counter_processed();
     while (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
         std::unique_ptr<Station> station;
         try {
             station = station_queue.dequeue(std::chrono::seconds(1));
+            station_counter_processed.Increment();
             GAFFALOG(DEBUG) << "setting up interface " << station->vlan_interface_name() << " for mac " << station->mac;
             try {
                 renderer.setup_vni(station->vni());
