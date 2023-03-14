@@ -1,11 +1,16 @@
 name: Build OpenWRT Image
 
 on:
-  push:
-  pull_request:
+  workflow_call:
+    inputs:
+      architecture:
+        required: true
+        type: string
+    secrets:
+      ghtoken:
+        required: true
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     permissions:
@@ -20,7 +25,7 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ secrets.ghtoken }}
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
     - name: Build and push
@@ -28,9 +33,11 @@ jobs:
       with:
         push: true
         context: ./scripts
-        tags: ghcr.io/wimove-oss/wimove/wimove-buildenv/arm:${{ env.BRANCH }}
+        tags: ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
+        build-args: |
+          TAG=${{ inputs.architecture }}
 
   binary:
     runs-on: ubuntu-latest
@@ -44,10 +51,10 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.ghtoken }}
       - name: Build OpenWRT
-        run: export IMAGE="ghcr.io/wimove-oss/wimove/wimove-buildenv/arm:${{ env.BRANCH }}" && chmod +x ./scripts/build-gha.sh && ./scripts/build-gha.sh
+        run: export IMAGE="ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}" && chmod +x ./scripts/build-gha.sh && ./scripts/build-gha.sh
       - uses: actions/upload-artifact@v3
         with:
-          name: wimove-arm.ipk
+          name: wimove-${{ input.architecture }}.ipk
           path: out/*.ipk
