@@ -1,6 +1,8 @@
 #ifndef GAFFA_BRIDGEPERVXLANRENDERER_H
 #define GAFFA_BRIDGEPERVXLANRENDERER_H
 
+#include <prometheus/gauge.h>
+
 #include <functional>
 #include <mutex>
 
@@ -11,6 +13,8 @@ class BridgePerVxlanRenderer : public NetworkRenderer {
    private:
     nl::Socket socket;
     std::mutex renderer_mutex;
+    prometheus::Gauge& station_gauge;
+    prometheus::Gauge& vni_gauge;
 
    public:
     BridgePerVxlanRenderer();

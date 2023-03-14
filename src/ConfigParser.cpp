@@ -43,7 +43,6 @@ ConfigParser::ConfigParser(const std::string &config_path) {
         // Make token lowercase
         std::transform(token.begin(), token.end(), token.begin(), [](unsigned char c) { return std::tolower(c); });
 
-
         std::string value = line.substr(split + 1, std::string::npos);
         trim(value);
         config_options[token] = value;

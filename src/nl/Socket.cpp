@@ -53,7 +53,7 @@ void nl::Socket::create_vxlan_iface(uint32_t vni) {
     err = rtnl_link_add(socket, vxlan.link, NLM_F_CREATE | NLM_F_EXCL);
     if (err < 0) {
         if (err == -NLE_EXIST) {
-            GAFFALOG(ERROR) << "rtnl_link_add: vxlan interface with vni " << vni << " already exists";
+            GAFFALOG(WARNING) << "rtnl_link_add: vxlan interface with vni " << vni << " already exists";
         } else {
             throw std::runtime_error(std::string("error in rtnl_link_add: ") + nl_geterror(err));
         }
@@ -72,7 +72,7 @@ void nl::Socket::create_bridge(const std::string &name) {
     err = rtnl_link_add(socket, bridge.link, NLM_F_CREATE | NLM_F_EXCL);
     if (err < 0) {
         if (err == -NLE_EXIST) {
-            GAFFALOG(ERROR) << "rtnl_link_add: bridge interface with name " << name << " already exists";
+            GAFFALOG(WARNING) << "rtnl_link_add: bridge interface with name " << name << " already exists";
         } else {
             throw std::runtime_error(std::string("error in rtnl_link_add: ") + nl_geterror(err));
         }

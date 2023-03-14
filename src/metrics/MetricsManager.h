@@ -16,11 +16,16 @@ class MetricsManager {
     prometheus::Counter& get_hostapd_counter_for_type(const std::string& type);
     prometheus::Counter& get_netlink_counter_received();
     prometheus::Counter& get_netlink_counter_processed();
+    prometheus::Gauge& get_station_gauge();
+    prometheus::Gauge& get_vni_gauge();
+    prometheus::Histogram& get_event_histogram();
 
    private:
     prometheus::Exposer exposer;
     prometheus::Family<prometheus::Counter>& hostapd_counter;
     prometheus::Family<prometheus::Counter>& netlink_counter;
+    prometheus::Family<prometheus::Gauge>& connection_gauge;
+    prometheus::Family<prometheus::Histogram>& histogram;
 };
 
 #endif  // GAFFA_METRICSMANAGER_H

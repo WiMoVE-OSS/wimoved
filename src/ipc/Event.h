@@ -4,6 +4,7 @@
 #include <string>
 
 #include "../Station.h"
+#include "chrono"
 
 class EventHandler;
 
@@ -17,6 +18,10 @@ class Event {
     virtual void handle(EventHandler *handler) = 0;
 
     Station station;
+    uint64_t finished_processing();
+
+   private:
+    std::chrono::time_point<std::chrono::high_resolution_clock> created_at;
 };
 }  // namespace ipc
 
