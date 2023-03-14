@@ -8,6 +8,7 @@
 #include "SynchronizedQueue.h"
 #include "ipc/Caller.h"
 #include "nl/Socket.h"
+#include "prometheus/histogram.h"
 
 class EventLoop : public EventHandler {
    private:
@@ -17,6 +18,7 @@ class EventLoop : public EventHandler {
     ipc::Caller caller;
     std::unordered_map<std::string, Station> stations_without_interface;
     std::mutex loop_mutex;
+    prometheus::Histogram& processing_time_histogram;
 
    public:
     EventLoop(NetworkRenderer& renderer, SynchronizedQueue<ipc::Event>& ipc_queue,

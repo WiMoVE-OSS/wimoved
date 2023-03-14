@@ -18,7 +18,8 @@ EventLoop::EventLoop(NetworkRenderer& renderer, SynchronizedQueue<ipc::Event>& i
       nl_queue(nl_queue),
       caller(),
       stations_without_interface(),
-      loop_mutex() {}
+      loop_mutex(),
+      processing_time_histogram(MetricsManager::get_instance().get_event_histogram()) {}
 
 void EventLoop::loop_ipc_queue(const std::future<void>& future) {
     while (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
@@ -72,6 +73,7 @@ void EventLoop::handle_assoc(ipc::AssocEvent* event) {
     GAFFALOG(INFO) << "Station " << event->station.mac << " connected to AP for VXLAN " << event->station.vni();
     try {
         renderer.setup_station(event->station);
+        processing_time_histogram.Observe(event->finished_processing());
     } catch (VlanMissingException&) {
         GAFFALOG(WARNING) << "vlan interface " << event->station.vlan_interface_name()
                           << " missing in setup_station. Waiting for it to be created.";
