@@ -1,6 +1,7 @@
 #!/bin/bash
 set -xe
 mkdir -p out package/src/src
+chmod -R ogu+rwx package
 cp scripts/Makefile package/
 cp CMakeLists.txt package/src/
 cp -r src package/src/
