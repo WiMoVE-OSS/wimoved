@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Build OpenWRT Image
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
     - name: Run Build script
-      run: cd scripts && chmod +x build-gha.sh && ./build-gha.sh
+      run: chmod +x ./scripts/build-gha.sh && ./scripts/build-gha.sh
     - uses: actions/upload-artifact@v3
       with:
           name: wimove-arm.ipk
