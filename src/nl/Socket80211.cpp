@@ -10,7 +10,6 @@
 #include <cstring>
 #include <stdexcept>
 
-#include "../Station.h"
 #include "../TimeoutException.h"
 #include "../logging/loginit.h"
 
@@ -24,18 +23,6 @@ nl::Socket80211::Socket80211() {
     if (ret < 0) {
         throw std::runtime_error(std::string("could not connect to generic netlink family: ") + std::strerror(errno));
     }
-    //nl80211_family = genl_ctrl_resolve(socket, "nl80211");
-
-    //struct nl_cache *cache;
-    //ret = genl_ctrl_alloc_cache(socket, &cache);
-    //if (ret < 0) {
-    //    throw std::runtime_error(std::string("could not alloc cache: ") + nl_geterror(ret));
-    //}
-    //struct genl_family* family = genl_ctrl_search_by_name(cache, "nl80211");
-    //if (!family) {
-    //    throw std::runtime_error(std::string("could not resolve nl80211 family: ") + nl_geterror(ret));
-    //}
-    //nl80211_family = static_cast<int>(genl_family_get_id(family));
 }
 
 nl::Socket80211::~Socket80211() {
