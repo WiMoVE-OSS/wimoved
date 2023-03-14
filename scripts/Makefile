@@ -28,6 +28,7 @@ define Package/gaffa
   CATEGORY:=Networking
   TITLE:=Scalable WiFi Daemon
   DEPENDS:=+libstdcpp +libnl +libatomic
+  EXTRA_DEPENDS:=frr, frr-bgpd, frr-zebra, frr-vtysh, frr-watchfrr
 endef
 
 define Package/gaffa/description

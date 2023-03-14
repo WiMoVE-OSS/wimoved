@@ -3,8 +3,12 @@
 #include <iostream>
 
 #include "logging/loginit.h"
+#include "metrics/MetricsManager.h"
 
-BridgePerVxlanRenderer::BridgePerVxlanRenderer() : socket() {}
+BridgePerVxlanRenderer::BridgePerVxlanRenderer()
+    : socket(),
+      station_gauge(MetricsManager::get_instance().get_station_gauge()),
+      vni_gauge(MetricsManager::get_instance().get_vni_gauge()) {}
 
 void BridgePerVxlanRenderer::setup_vni(uint32_t vni) {
     std::lock_guard g(renderer_mutex);
@@ -24,11 +28,13 @@ void BridgePerVxlanRenderer::cleanup(const std::function<std::vector<Station>()>
     std::lock_guard g(renderer_mutex);
     std::unordered_set<uint32_t> connected_station_vnis(0);
     GAFFALOG(DEBUG) << "Starting cleanup.";
-    int counter = 0;
+    int sta_counter = 0;
     for (auto& station : get_stations()) {
         connected_station_vnis.emplace(station.vni());
-        counter++;
+        sta_counter++;
     }
+    vni_gauge.Set(connected_station_vnis.size());
+    station_gauge.Set(sta_counter);
     auto existing_interfaces = socket.interface_list();
     for (const auto& vni : connected_station_vnis) {
         existing_interfaces.erase(vni);
@@ -46,5 +52,5 @@ void BridgePerVxlanRenderer::cleanup(const std::function<std::vector<Station>()>
             GAFFALOG(ERROR) << "Could not delete bridge vni: " << vni;
         }
     }
-    GAFFALOG(DEBUG) << "Cleanup finished, " << counter << " stations connected.";
+    GAFFALOG(DEBUG) << "Cleanup finished, " << sta_counter << " stations connected.";
 }

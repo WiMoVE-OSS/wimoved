@@ -1,6 +1,7 @@
 #ifndef GAFFA_STATION_H
 #define GAFFA_STATION_H
 
+#include <chrono>
 #include <optional>
 #include <string>
 
@@ -15,6 +16,9 @@ class Station {
     std::string mac;
 
     std::string vlan_interface_name() const;
+    uint64_t finished_processing();
+   private:
+    std::chrono::time_point<std::chrono::high_resolution_clock> created_at;
 };
 
 #endif  // GAFFA_STATION_H

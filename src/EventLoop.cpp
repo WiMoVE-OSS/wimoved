@@ -13,7 +13,8 @@
 EventLoop::EventLoop(NetworkRenderer& renderer, SynchronizedQueue<Station>& station_queue)
     : renderer(renderer),
       station_queue(station_queue),
-      socket(std::chrono::seconds(1)) {}
+      socket(std::chrono::seconds(1)),
+      processing_time_histogram(MetricsManager::get_instance().get_event_histogram()) {}
 
 void EventLoop::loop_nl_queue(const std::future<void>& future) {
     auto& processed_netlink_events_counter = MetricsManager::get_instance().get_netlink_counter_processed();
@@ -30,6 +31,7 @@ void EventLoop::loop_nl_queue(const std::future<void>& future) {
             } catch (const std::runtime_error& e) {
                 GAFFALOG(ERROR) << "station could not be bridged to vxlan interface: " << e.what();
             }
+            processing_time_histogram.Observe(station->finished_processing());
         } catch (const TimeoutException& e) {
             continue;
         }
