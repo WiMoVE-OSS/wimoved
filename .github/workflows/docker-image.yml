@@ -34,3 +34,6 @@ jobs:
     container:
       image: ghcr.io/wimove-oss/wimove/wimove-buildenv/arm:${{ env.BRANCH }}
     needs: build
+    steps:
+      - name: Test
+        run: echo "Hello World"
