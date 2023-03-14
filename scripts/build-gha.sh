@@ -1,9 +1,14 @@
 #!/bin/bash
-cp scripts/stage2.sh /home/build/openwrt/stage2.sh
-mkdir -p /home/build/openwrt/package/network/services/gaffa/src/src
-cp scripts/Makefile /home/build/openwrt/package/network/services/gaffa/
-cp CMakeLists.txt /home/build/openwrt/package/network/services/gaffa/src/
-cp -r src /home/build/openwrt/package/network/services/gaffa/src/
-mkdir -p /home/build/openwrt/out
-bash /home/build/openwrt/stage2.sh
-cp /home/build/openwrt/out/gaffa*.ipk /builds/bp2022hk1/Gaffa/
+set -xe
+rm -r out package || true
+mkdir -p out package/src/src
+cp scripts/Makefile package/
+cp CMakeLists.txt package/src/
+cp -r src package/src/
+
+docker run --rm \
+  -v "$(pwd)"/scripts/stage2.sh:/home/build/openwrt/stage2.sh \
+  -v "$(pwd)"/package/:/home/build/openwrt/package/network/services/gaffa \
+  -v "$(pwd)"/out/:/home/build/openwrt/out \
+  $IMAGE \
+  bash stage2.sh

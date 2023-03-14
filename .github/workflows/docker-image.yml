@@ -34,16 +34,14 @@ jobs:
 
   binary:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/wimove-oss/wimove/wimove-buildenv/arm:github-ci
     needs: build
     steps:
       - uses: actions/checkout@v3
       - name: Extract metadata
         run: echo "BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
       - name: Build OpenWRT
-        run: chmod +x ./scripts/build-gha.sh && ./scripts/build-gha.sh
+        run: export IMAGE="ghcr.io/wimove-oss/wimove/wimove-buildenv/arm:${{ env.BRANCH }}" && chmod +x ./scripts/build-gha.sh && ./scripts/build-gha.sh
       - uses: actions/upload-artifact@v3
         with:
           name: wimove-arm.ipk
-          path: /builds/bp2022hk1/Gaffa/*.ipk
+          path: out/*.ipk
