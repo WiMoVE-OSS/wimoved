@@ -4,6 +4,8 @@
 #include <optional>
 #include <string>
 
+static const std::string VLAN_INTERFACE_PREFIX = "vlan";
+
 class Station {
    public:
     Station(std::string mac, uint32_t vlan_id);

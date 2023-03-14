@@ -53,7 +53,7 @@ static int interface_event_handler(struct nl_msg *msg, void *arg) {
             } else {
                 GAFFALOG(DEBUG) << "NL80211_CMD_NEW_STATION mac=" << mac << " ifindex=" << ifindex << " name=" << name;
                 std::string ifacename(name);
-                if (ifacename.rfind("vlan", 0) == 0) {
+                if (ifacename.rfind(VLAN_INTERFACE_PREFIX, 0) == 0) {
                     // TODO: improve
                     socket->new_stations.emplace_back(mac, std::strtoull(ifacename.substr(4).c_str(), nullptr, 10));
                 }

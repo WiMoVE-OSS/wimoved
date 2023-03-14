@@ -24,4 +24,4 @@ uint32_t Station::vni() const {
     return x % Configuration::get_instance().max_vni;
 }
 
-std::string Station::vlan_interface_name() const { return "vlan" + std::to_string(vlan_id); }
+std::string Station::vlan_interface_name() const { return VLAN_INTERFACE_PREFIX + std::to_string(vlan_id); }

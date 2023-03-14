@@ -3,7 +3,6 @@
 
 #include <future>
 
-#include "EventHandler.h"
 #include "NetworkRenderer.h"
 #include "SynchronizedQueue.h"
 #include "ipc/Caller.h"
