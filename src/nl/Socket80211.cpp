@@ -21,10 +21,10 @@ static std::string format_mac(uint8_t mac[6]) {
 }
 
 static int interface_event_handler(struct nl_msg *msg, void *arg) {
-    auto *hdr = static_cast<genlmsghdr *>(nlmsg_data(nlmsg_hdr(msg)));
+    auto *header = static_cast<genlmsghdr*>(nlmsg_data(nlmsg_hdr(msg)));
     struct nlattr *attrs[NL80211_ATTR_MAX + 1];
 
-    int err = nla_parse(attrs, NL80211_ATTR_MAX, genlmsg_attrdata(hdr, 0), genlmsg_attrlen(hdr, 0), nullptr);
+    int err = nla_parse(attrs, NL80211_ATTR_MAX, genlmsg_attrdata(header, 0), genlmsg_attrlen(header, 0), nullptr);
     if (err < 0) {
         throw std::runtime_error(std::string("could not create attribute index: ") + nl_geterror(err));
     }
@@ -33,7 +33,7 @@ static int interface_event_handler(struct nl_msg *msg, void *arg) {
 
     auto *socket = reinterpret_cast<nl::Socket80211*>(arg);
 
-    switch(hdr->cmd) {
+    switch(header->cmd) {
         case NL80211_CMD_NEW_INTERFACE:
             iftype = nla_get_u32(attrs[NL80211_ATTR_IFTYPE]);
             if (iftype == NL80211_IFTYPE_AP_VLAN) {
@@ -72,7 +72,7 @@ nl::Socket80211::Socket80211(const std::chrono::duration<int>& timeout)
     nl_socket_disable_seq_check(socket);
     int ret = genl_connect(socket);
     if (ret < 0) {
-        throw std::runtime_error(std::string("could not connect to generic netlink family: ") + std::strerror(errno));
+        throw std::runtime_error(std::string("could not connect to generic netlink: ") + std::strerror(errno));
     }
 
     for (const std::string& family : {"config",	"mlme"}) {
