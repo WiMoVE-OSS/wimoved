@@ -7,7 +7,6 @@
 #include <queue>
 
 #include "TimeoutException.h"
-#include "ipc/Event.h"
 
 template <typename T>
 class SynchronizedQueue {

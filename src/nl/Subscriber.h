@@ -4,19 +4,18 @@
 #include <future>
 
 #include "../SynchronizedQueue.h"
-#include "Event.h"
-#include "Socket.h"
+#include "Socket80211.h"
 
 namespace nl {
 class Subscriber {
    public:
-    Subscriber(SynchronizedQueue<Event> &queue, const std::chrono::duration<int> &timeout);
+    Subscriber(SynchronizedQueue<Station> &queue, const std::chrono::duration<int> &timeout);
 
     void loop(const std::future<void> &future);
 
    private:
-    ::SynchronizedQueue<Event> &queue;
-    Socket socket;
+    ::SynchronizedQueue<Station> &queue;
+    Socket80211 socket;
 };
 }  // namespace nl
 
