@@ -11,7 +11,7 @@ on:
         required: true
 
 jobs:
-  build:
+  build-env:
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -39,7 +39,7 @@ jobs:
         build-args: |
           TAG=${{ inputs.architecture }}
 
-  binary:
+  build:
     runs-on: ubuntu-latest
     needs: build
     steps:

@@ -1,3 +1,10 @@
+
+name: Build Binaries
+
+on:
+  push:
+  pull_request:
+
 jobs:
   build-arm:
     uses: ./.github/workflows/build-openwrt.yml
