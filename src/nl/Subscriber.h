@@ -4,7 +4,6 @@
 #include <future>
 
 #include "../SynchronizedQueue.h"
-#include "Event.h"
 #include "Socket80211.h"
 
 namespace nl {

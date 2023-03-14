@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "../Station.h"
-#include "Event.h"
 
 namespace nl {
 class Socket80211 {

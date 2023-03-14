@@ -1,10 +1,7 @@
 #include "Subscriber.h"
 
-#include <iostream>
-
 #include "../logging/loginit.h"
 #include "../metrics/MetricsManager.h"
-#include "Event.h"
 #include "prometheus/counter.h"
 
 nl::Subscriber::Subscriber(::SynchronizedQueue<Station> &queue, const std::chrono::duration<int> &timeout)

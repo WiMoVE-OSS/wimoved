@@ -45,8 +45,6 @@ add_executable(gaffa
         src/Station.h
         src/TimeoutException.cpp
         src/TimeoutException.h
-        src/nl/Event.cpp
-        src/nl/Event.h
         src/nl/Subscriber.cpp
         src/nl/Subscriber.h
         src/VlanMissingException.cpp

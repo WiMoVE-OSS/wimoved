@@ -8,7 +8,6 @@
 #include "VlanMissingException.h"
 #include "logging/loginit.h"
 #include "metrics/MetricsManager.h"
-#include "nl/Event.h"
 #include "prometheus/counter.h"
 
 EventLoop::EventLoop(NetworkRenderer& renderer, SynchronizedQueue<Station>& station_queue)
