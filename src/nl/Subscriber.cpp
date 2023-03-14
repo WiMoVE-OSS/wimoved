@@ -9,7 +9,6 @@ nl::Subscriber::Subscriber(::SynchronizedQueue<Station> &queue, const std::chron
 }
 
 void nl::Subscriber::loop(const std::future<void> &future) {
-    prometheus::Counter &receivedNetlinkCounter = MetricsManager::get_instance().get_netlink_counter_received();
     while (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
         std::vector<Station> stations;
         try {
@@ -18,7 +17,6 @@ void nl::Subscriber::loop(const std::future<void> &future) {
             continue;
         }
         for (auto &station : stations) {
-            receivedNetlinkCounter.Increment();
             queue.enqueue(std::make_unique<Station>(std::move(station)));
         }
     }

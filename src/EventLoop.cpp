@@ -32,6 +32,7 @@ void EventLoop::loop_nl_queue(const std::future<void>& future) {
             } catch (const std::runtime_error& e) {
                 GAFFALOG(ERROR) << "station could not be bridged to vxlan interface: " << e.what();
             }
+            // TODO: Disconnect station on bridging failure
             processing_time_histogram.Observe(station->finished_processing());
         } catch (const TimeoutException& e) {
             continue;
