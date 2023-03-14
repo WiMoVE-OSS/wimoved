@@ -19,6 +19,12 @@ jobs:
       with:
         push: false
         context: ./scripts
-        tags: wimove-arm/app:${{ env.BRANCH }}
+        tags: wimove-buildenv/arm:${{ env.BRANCH }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
+    - name: Run Build script
+      run: cd scripts && chmod +x build-gha.sh && ./build-gha.sh
+    - uses: actions/upload-artifact@v3
+      with:
+          name: wimove-arm.ipk
+          path: out/*.ipk
