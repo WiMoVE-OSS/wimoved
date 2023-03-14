@@ -1,5 +1,5 @@
-#ifndef GAFFA_STATION_H
-#define GAFFA_STATION_H
+#ifndef WM_STATION_H
+#define WM_STATION_H
 
 #include <chrono>
 #include <optional>
@@ -21,4 +21,4 @@ class Station {
     std::chrono::time_point<std::chrono::high_resolution_clock> created_at;
 };
 
-#endif  // GAFFA_STATION_H
+#endif  // WM_STATION_H

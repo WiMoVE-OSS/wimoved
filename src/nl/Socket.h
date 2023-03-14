@@ -1,5 +1,5 @@
-#ifndef GAFFA_NL_SOCKET_H
-#define GAFFA_NL_SOCKET_H
+#ifndef WM_NL_SOCKET_H
+#define WM_NL_SOCKET_H
 
 #include <netlink/list.h>
 #include <netlink/netlink.h>
@@ -26,4 +26,4 @@ class Socket {
 };
 }  // namespace nl
 
-#endif  // GAFFA_NL_SOCKET_H
+#endif  // WM_NL_SOCKET_H

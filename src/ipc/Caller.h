@@ -1,5 +1,5 @@
-#ifndef GAFFA_CALLER_H
-#define GAFFA_CALLER_H
+#ifndef WM_CALLER_H
+#define WM_CALLER_H
 
 #include "../Station.h"
 #include "Socket.h"
@@ -16,4 +16,4 @@ class Caller {
 };
 }  // namespace ipc
 
-#endif  // GAFFA_CALLER_H
+#endif  // WM_CALLER_H

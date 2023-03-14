@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(gaffa LANGUAGES CXX)
+project(wimove LANGUAGES CXX)
 
 find_package(prometheus-cpp CONFIG REQUIRED)
 
@@ -13,15 +13,15 @@ add_compile_definitions(ELPP_THREAD_SAFE)
 add_compile_definitions(ELPP_FEATURE_CRASH_LOG)
 
 if(DEFINED STAGING_DIR)
-    add_compile_definitions(GAFFA_IPC_SOCKET_GROUP="network")
+    add_compile_definitions(WIMOVE_IPC_SOCKET_GROUP="network")
     include_directories(${STAGING_DIR}/usr/include/libnl3)
     add_compile_definitions(ELPP_SYSLOG)
 else()
-    add_compile_definitions(GAFFA_IPC_SOCKET_GROUP="root")
+    add_compile_definitions(WIMOVE_IPC_SOCKET_GROUP="root")
     include_directories(/usr/include/libnl3)
 endif()
 
-add_executable(gaffa
+add_executable(wimove
         src/ipc/Socket.cpp src/main.cpp
         src/SynchronizedQueue.cpp
         src/SynchronizedQueue.h
@@ -61,7 +61,7 @@ add_executable(gaffa
         src/Configuration.h
         src/nl/Socket80211.cpp
         src/nl/Socket80211.h)
-target_link_libraries(gaffa nl-3 nl-route-3 nl-genl-3 prometheus-cpp::pull prometheus-cpp::core)
+target_link_libraries(wimove nl-3 nl-route-3 nl-genl-3 prometheus-cpp::pull prometheus-cpp::core)
 
 include_directories(src/hostapd)
 

@@ -1,5 +1,5 @@
-#ifndef GAFFA_SOCKET80211_H
-#define GAFFA_SOCKET80211_H
+#ifndef WM_SOCKET80211_H
+#define WM_SOCKET80211_H
 
 #include <netlink/netlink.h>
 #include <prometheus/counter.h>
@@ -24,4 +24,4 @@ class Socket80211 {
 };
 }
 
-#endif  // GAFFA_SOCKET80211_H
+#endif  // WM_SOCKET80211_H

@@ -40,9 +40,9 @@ static int interface_event_handler(struct nl_msg *msg, void *arg) {
                 ifindex = nla_get_u32(attrs[NL80211_ATTR_IFINDEX]);
                 char name[IFNAMSIZ];
                 if (if_indextoname(ifindex, name) == nullptr) {
-                    GAFFALOG(WARNING) << "NL80211_CMD_NEW_INTERFACE ifindex=" << ifindex << " has no associated name";
+                    WMLOG(WARNING) << "NL80211_CMD_NEW_INTERFACE ifindex=" << ifindex << " has no associated name";
                 } else {
-                    GAFFALOG(DEBUG) << "NL80211_CMD_NEW_INTERFACE ifindex=" << ifindex << " name=" << name;
+                    WMLOG(DEBUG) << "NL80211_CMD_NEW_INTERFACE ifindex=" << ifindex << " name=" << name;
                 }
             }
         case NL80211_CMD_NEW_STATION:
@@ -51,7 +51,7 @@ static int interface_event_handler(struct nl_msg *msg, void *arg) {
             }
             std::string interface_name(nla_get_string(attrs[NL80211_ATTR_IFNAME]));
             std::string mac = format_mac(static_cast<uint8_t *>(nla_data(attrs[NL80211_ATTR_MAC])));
-            GAFFALOG(DEBUG) << "NL80211_CMD_NEW_STATION mac=" << mac << " name=" << interface_name;
+            WMLOG(DEBUG) << "NL80211_CMD_NEW_STATION mac=" << mac << " name=" << interface_name;
             if (interface_name.rfind(VLAN_INTERFACE_PREFIX, 0) == 0) {
                 socket->station_counter_received.Increment();
                 // TODO: improve

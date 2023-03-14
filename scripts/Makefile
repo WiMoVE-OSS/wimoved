@@ -3,7 +3,7 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=gaffa
+PKG_NAME:=wimove
 PKG_RELEASE:=1
 
 PKG_FLAGS:=nonshared
@@ -23,7 +23,7 @@ CMAKE_OPTIONS += \
 
 CMAKE_INSTALL:=1
 
-define Package/gaffa
+define Package/wimove
   SECTION:=network
   CATEGORY:=Networking
   TITLE:=Scalable WiFi Daemon
@@ -31,16 +31,16 @@ define Package/gaffa
   EXTRA_DEPENDS:=frr, frr-bgpd, frr-zebra, frr-vtysh, frr-watchfrr
 endef
 
-define Package/gaffa/description
+define Package/wimove/description
   Scalable WiFi Daemon
 endef
 
-define Package/gaffa/config
+define Package/wimove/config
 endef
 
-define Package/gaffa/install
+define Package/wimove/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/gaffa $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/wimove $(1)/usr/bin
 endef
 
-$(eval $(call BuildPackage,gaffa))
+$(eval $(call BuildPackage,wimove))

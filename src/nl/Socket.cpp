@@ -53,12 +53,12 @@ void nl::Socket::create_vxlan_iface(uint32_t vni) {
     err = rtnl_link_add(socket, vxlan.link, NLM_F_CREATE | NLM_F_EXCL);
     if (err < 0) {
         if (err == -NLE_EXIST) {
-            GAFFALOG(WARNING) << "rtnl_link_add: vxlan interface with vni " << vni << " already exists";
+            WMLOG(WARNING) << "rtnl_link_add: vxlan interface with vni " << vni << " already exists";
         } else {
             throw std::runtime_error(std::string("error in rtnl_link_add: ") + nl_geterror(err));
         }
     }
-    GAFFALOG(INFO) << "Created VXLAN " << vni;
+    WMLOG(INFO) << "Created VXLAN " << vni;
 }
 
 void nl::Socket::create_bridge_for_vni(uint32_t vni) { create_bridge(BRIDGE_IFACE_PREFIX + std::to_string(vni)); }
@@ -72,13 +72,13 @@ void nl::Socket::create_bridge(const std::string &name) {
     err = rtnl_link_add(socket, bridge.link, NLM_F_CREATE | NLM_F_EXCL);
     if (err < 0) {
         if (err == -NLE_EXIST) {
-            GAFFALOG(WARNING) << "rtnl_link_add: bridge interface with name " << name << " already exists";
+            WMLOG(WARNING) << "rtnl_link_add: bridge interface with name " << name << " already exists";
         } else {
             throw std::runtime_error(std::string("error in rtnl_link_add: ") + nl_geterror(err));
         }
     }
 
-    GAFFALOG(INFO) << "Created Bridge " << name;
+    WMLOG(INFO) << "Created Bridge " << name;
 }
 
 void nl::Socket::add_iface_bridge(const std::string &bridgeName, const std::string &ifaceName) {
@@ -101,7 +101,7 @@ void nl::Socket::add_iface_bridge(const std::string &bridgeName, const std::stri
                                  nl_geterror(err));
     }
 
-    GAFFALOG(INFO) << "Connected " << ifaceName << " to " << bridgeName;
+    WMLOG(INFO) << "Connected " << ifaceName << " to " << bridgeName;
 }
 
 void nl::Socket::delete_interface(const std::string &name) {
@@ -113,7 +113,7 @@ void nl::Socket::delete_interface(const std::string &name) {
     if ((err = rtnl_link_delete(socket, link.link)) < 0) {
         throw std::runtime_error(std::string("Could not delete link: ") + nl_geterror(err));
     }
-    GAFFALOG(INFO) << "Deleted " << name;
+    WMLOG(INFO) << "Deleted " << name;
 }
 
 std::unordered_set<uint32_t> nl::Socket::interface_list() {

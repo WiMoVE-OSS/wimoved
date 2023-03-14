@@ -1,5 +1,5 @@
-#ifndef GAFFA_LINK_H
-#define GAFFA_LINK_H
+#ifndef WM_LINK_H
+#define WM_LINK_H
 
 #include <netlink/route/link.h>
 
@@ -16,4 +16,4 @@ class Link {
 
 }  // namespace nl
 
-#endif  // GAFFA_LINK_H
+#endif  // WM_LINK_H

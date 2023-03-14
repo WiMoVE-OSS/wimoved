@@ -1,5 +1,5 @@
-#ifndef GAFFA_EVENTLOOP_H
-#define GAFFA_EVENTLOOP_H
+#ifndef WM_EVENTLOOP_H
+#define WM_EVENTLOOP_H
 
 #include <future>
 
@@ -22,4 +22,4 @@ class EventLoop {
     void loop_nl_queue(const std::future<void>& future);
 };
 
-#endif  // GAFFA_EVENTLOOP_H
+#endif  // WM_EVENTLOOP_H

@@ -1,5 +1,5 @@
-#ifndef GAFFA_BRIDGEPERVXLANRENDERER_H
-#define GAFFA_BRIDGEPERVXLANRENDERER_H
+#ifndef WM_BRIDGEPERVXLANRENDERER_H
+#define WM_BRIDGEPERVXLANRENDERER_H
 
 #include <prometheus/gauge.h>
 
@@ -23,4 +23,4 @@ class BridgePerVxlanRenderer : public NetworkRenderer {
     void cleanup(const std::function<std::vector<Station>()>& get_stations) override;
 };
 
-#endif  // GAFFA_BRIDGEPERVXLANRENDERER_H
+#endif  // WM_BRIDGEPERVXLANRENDERER_H

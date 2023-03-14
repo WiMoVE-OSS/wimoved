@@ -1,5 +1,5 @@
-#ifndef GAFFA_NL_SUBSCRIBER_H
-#define GAFFA_NL_SUBSCRIBER_H
+#ifndef WM_NL_SUBSCRIBER_H
+#define WM_NL_SUBSCRIBER_H
 
 #include <future>
 
@@ -19,4 +19,4 @@ class Subscriber {
 };
 }  // namespace nl
 
-#endif  // GAFFA_NL_SUBSCRIBER_H
+#endif  // WM_NL_SUBSCRIBER_H

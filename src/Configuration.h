@@ -2,8 +2,8 @@
 // Created by aarons on 08.03.23.
 //
 
-#ifndef GAFFA_CONFIGURATION_H
-#define GAFFA_CONFIGURATION_H
+#ifndef WM_CONFIGURATION_H
+#define WM_CONFIGURATION_H
 
 #include <cstdint>
 #include <string>
@@ -20,7 +20,7 @@ class Configuration {
     void operator=(Configuration const&) = delete;
     uint32_t max_vni = 20;
     std::string hapd_sock = "/var/run/hostapd/wlan0";
-    std::string log_path = "gaffa.log";
+    std::string log_path = "wimove.log";
     uint32_t cleanup_interval = 30;
 
    private:
@@ -29,4 +29,4 @@ class Configuration {
     void set_uint32_if_valid(const ConfigParser& parser, uint32_t& config_target, const std::string& key);
 };
 
-#endif  // GAFFA_CONFIGURATION_H
+#endif  // WM_CONFIGURATION_H
