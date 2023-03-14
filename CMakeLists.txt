@@ -72,8 +72,10 @@ add_executable(gaffa
         src/logging/loginit.h
         src/logging/loginit.h
         src/Configuration.cpp
-        src/Configuration.h)
-target_link_libraries(gaffa nl-3 nl-route-3 prometheus-cpp::pull prometheus-cpp::core)
+        src/Configuration.h
+        src/nl/Socket80211.cpp
+        src/nl/Socket80211.h)
+target_link_libraries(gaffa nl-3 nl-route-3 nl-genl-3 prometheus-cpp::pull prometheus-cpp::core)
 
 include_directories(src/hostapd)
 

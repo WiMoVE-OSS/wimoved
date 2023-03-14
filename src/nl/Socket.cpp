@@ -155,7 +155,7 @@ static int interface_event_handler(struct nl_msg *msg, void *arg) {
         return NL_OK;
     }
     auto *sock = static_cast<nl::Socket *>(arg);
-    sock->events.push_back(nl::Event{std::string(ifname)});
+    //sock->events.push_back(nl::Event{std::string(ifname)});
     return NL_OK;
 }
 

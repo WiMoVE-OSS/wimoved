@@ -50,7 +50,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             std::string station_mac =
                 event.substr(HOSTAPD_ASSOC_STRING.size(), HOSTAPD_ASSOC_STRING.size() + MAC_ADDRESS_LENGTH);
             try {
-                Station station(station_mac);
+                Station station(station_mac, 0);
                 queue.enqueue(std::make_unique<AssocEvent>(std::move(station)));
                 hostapd_association_counter.Increment();
             } catch (const std::runtime_error& e) {
@@ -60,7 +60,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             std::string station_mac =
                 event.substr(HOSTAPD_AUTH_STRING.size(), HOSTAPD_AUTH_STRING.size() + MAC_ADDRESS_LENGTH);
             try {
-                Station station(station_mac);
+                Station station(station_mac, 0);
                 queue.enqueue(std::make_unique<AuthEvent>(std::move(station)));
                 hostapd_authentication_counter.Increment();
             } catch (const std::runtime_error& e) {
@@ -70,7 +70,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             std::string station_mac =
                 event.substr(HOSTAPD_DISASSOC_STRING.size(), HOSTAPD_DISASSOC_STRING.size() + MAC_ADDRESS_LENGTH);
             try {
-                Station station(station_mac);
+                Station station(station_mac, 0);
                 queue.enqueue(std::make_unique<DisassocEvent>(std::move(station)));
                 hostapd_disassociation_counter.Increment();
             } catch (const std::runtime_error& e) {

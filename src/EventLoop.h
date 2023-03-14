@@ -8,26 +8,17 @@
 #include "SynchronizedQueue.h"
 #include "ipc/Caller.h"
 #include "nl/Socket.h"
+#include "nl/Socket80211.h"
 
-class EventLoop : public EventHandler {
+class EventLoop {
    private:
     NetworkRenderer& renderer;
-    SynchronizedQueue<ipc::Event>& ipc_queue;
-    SynchronizedQueue<nl::Event>& nl_queue;
-    ipc::Caller caller;
-    std::unordered_map<std::string, Station> stations_without_interface;
-    std::mutex loop_mutex;
+    SynchronizedQueue<Station>& station_queue;
+    nl::Socket80211 socket;
 
    public:
-    EventLoop(NetworkRenderer& renderer, SynchronizedQueue<ipc::Event>& ipc_queue,
-              SynchronizedQueue<nl::Event>& nl_queue);
-
-    void loop_ipc_queue(const std::future<void>& future);
+    EventLoop(NetworkRenderer& renderer, SynchronizedQueue<Station>& nl_queue);
     void loop_nl_queue(const std::future<void>& future);
-
-    void handle_assoc(ipc::AssocEvent* event) override;
-    void handle_auth(ipc::AuthEvent* event) override;
-    void handle_disassoc(ipc::DisassocEvent* event) override;
 };
 
 #endif  // GAFFA_EVENTLOOP_H
