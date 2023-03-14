@@ -16,12 +16,13 @@
 
 static std::string format_mac(uint8_t mac[6]) {
     char formatted_mac[2 * 6 + 5 + 1];
-    snprintf(formatted_mac, sizeof(formatted_mac), "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+    snprintf(formatted_mac, sizeof(formatted_mac), "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3],
+             mac[4], mac[5]);
     return formatted_mac;
 }
 
 static int interface_event_handler(struct nl_msg *msg, void *arg) {
-    auto *header = static_cast<genlmsghdr*>(nlmsg_data(nlmsg_hdr(msg)));
+    auto *header = static_cast<genlmsghdr *>(nlmsg_data(nlmsg_hdr(msg)));
     struct nlattr *attrs[NL80211_ATTR_MAX + 1];
 
     int err = nla_parse(attrs, NL80211_ATTR_MAX, genlmsg_attrdata(header, 0), genlmsg_attrlen(header, 0), nullptr);
@@ -31,9 +32,9 @@ static int interface_event_handler(struct nl_msg *msg, void *arg) {
     uint32_t ifindex;
     uint32_t iftype;
 
-    auto *socket = reinterpret_cast<nl::Socket80211*>(arg);
+    auto *socket = reinterpret_cast<nl::Socket80211 *>(arg);
 
-    switch(header->cmd) {
+    switch (header->cmd) {
         case NL80211_CMD_NEW_INTERFACE:
             iftype = nla_get_u32(attrs[NL80211_ATTR_IFTYPE]);
             if (iftype == NL80211_IFTYPE_AP_VLAN) {
@@ -62,8 +63,7 @@ static int interface_event_handler(struct nl_msg *msg, void *arg) {
     return NL_OK;
 }
 
-
-nl::Socket80211::Socket80211(const std::chrono::duration<int>& timeout)
+nl::Socket80211::Socket80211(const std::chrono::duration<int> &timeout)
     : station_counter_received(MetricsManager::get_instance().get_station_counter_received()) {
     socket = nl_socket_alloc();
     if (socket == nullptr) {
@@ -75,10 +75,11 @@ nl::Socket80211::Socket80211(const std::chrono::duration<int>& timeout)
         throw std::runtime_error(std::string("could not connect to generic netlink: ") + std::strerror(errno));
     }
 
-    for (const std::string& family : {"config",	"mlme"}) {
+    for (const std::string &family : {"config", "mlme"}) {
         ret = genl_ctrl_resolve_grp(socket, "nl80211", family.c_str());
         if (ret < 0) {
-            throw std::runtime_error(std::string("could not resolve netlink group " + family + ": ") + nl_geterror(ret));
+            throw std::runtime_error(std::string("could not resolve netlink group " + family + ": ") +
+                                     nl_geterror(ret));
         }
 
         ret = nl_socket_add_membership(socket, ret);

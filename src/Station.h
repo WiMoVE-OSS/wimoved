@@ -17,6 +17,7 @@ class Station {
 
     std::string vlan_interface_name() const;
     uint64_t finished_processing();
+
    private:
     std::chrono::time_point<std::chrono::high_resolution_clock> created_at;
 };

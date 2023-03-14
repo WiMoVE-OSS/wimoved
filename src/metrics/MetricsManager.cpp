@@ -7,10 +7,8 @@ static std::shared_ptr<prometheus::Registry> registry = std::make_shared<prometh
 
 MetricsManager::MetricsManager()
     : exposer("0.0.0.0:9500"),
-      station_counter(prometheus::BuildCounter()
-                          .Name("netlink_events")
-                          .Help("Number of station events")
-                          .Register(*registry)),
+      station_counter(
+          prometheus::BuildCounter().Name("netlink_events").Help("Number of station events").Register(*registry)),
       connection_gauge(
           prometheus::BuildGauge().Name("connections").Help("Number of connections to the AP").Register(*registry)),
       histogram(prometheus::BuildHistogram()

@@ -9,9 +9,7 @@
 const auto MAC_REGEX = std::regex("^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$");
 
 Station::Station(std::string mac, uint32_t vlan_id)
-    : vlan_id(vlan_id),
-      mac(std::move(mac)),
-      created_at(std::chrono::high_resolution_clock::now()) {
+    : vlan_id(vlan_id), mac(std::move(mac)), created_at(std::chrono::high_resolution_clock::now()) {
     if (!std::regex_match(this->mac, MAC_REGEX)) {
         throw std::runtime_error("MAC address not valid");
     }
@@ -27,9 +25,7 @@ uint32_t Station::vni() const {
     return x % Configuration::get_instance().max_vni;
 }
 
-std::string Station::vlan_interface_name() const {
-    return VLAN_INTERFACE_PREFIX + std::to_string(vlan_id);
-}
+std::string Station::vlan_interface_name() const { return VLAN_INTERFACE_PREFIX + std::to_string(vlan_id); }
 
 uint64_t Station::finished_processing() {
     std::chrono::time_point<std::chrono::high_resolution_clock> now = std::chrono::high_resolution_clock::now();

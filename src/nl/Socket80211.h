@@ -19,9 +19,10 @@ class Socket80211 {
 
     std::vector<Station> new_stations;
     prometheus::Counter& station_counter_received;
+
    private:
-    nl_sock *socket;
+    nl_sock* socket;
 };
-}
+}  // namespace nl
 
 #endif  // WM_SOCKET80211_H
