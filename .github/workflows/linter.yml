@@ -1,13 +1,11 @@
 name: Run clang linter
 
-on:
-  push:
-  pull_request:
+on: pull_request
 
 jobs:
   cpp-linter:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Start linting
-        run: clang-format .clang-format
+        run: find src -iname *.h -o -iname *.cpp | xargs clang-format -i
