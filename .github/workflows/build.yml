@@ -1,13 +1,13 @@
 jobs:
   build-arm:
-    uses: ./.github/build-openwrt.yml@github-ci
+    uses: ./.github/workflows/build-openwrt.yml@github-ci
     with:
       architecture: mvebu-cortexa9-22.03.3
     secrets:
       ghtoken: ${{ secrets.GITHUB_TOKEN }}
 
   build-ramips:
-    uses: ./.github/build-openwrt.yml@github-ci
+    uses: ./.github/workflows/build-openwrt.yml@github-ci
     with:
       architecture: ramips-mt7621-22.03.3
     secrets:
