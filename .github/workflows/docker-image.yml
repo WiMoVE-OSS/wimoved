@@ -32,7 +32,7 @@ jobs:
   binary:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/wimove-oss/wimove/wimove-buildenv/arm:${{ env.BRANCH }}
+      image: ghcr.io/wimove-oss/wimove/wimove-buildenv/arm:github-ci
     needs: build
     steps:
       - name: Test
