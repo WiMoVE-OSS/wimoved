@@ -1,7 +1,7 @@
 #!/bin/bash
 set -xe
 rm -r out package || true
-chmod -R ogu +rw out
+chmod -R ogu+rw out
 mkdir -p out package/src/src
 cp scripts/Makefile package/
 cp CMakeLists.txt package/src/
