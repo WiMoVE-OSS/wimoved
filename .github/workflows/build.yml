@@ -7,6 +7,9 @@ on:
 
 jobs:
   build-arm:
+    permissions:
+      packages: write
+      contents: read
     uses: ./.github/workflows/build-openwrt.yml
     with:
       architecture: mvebu-cortexa9-22.03.3
@@ -14,6 +17,9 @@ jobs:
       ghtoken: ${{ secrets.GITHUB_TOKEN }}
 
   build-ramips:
+    permissions:
+      packages: write
+      contents: read
     uses: ./.github/workflows/build-openwrt.yml
     with:
       architecture: ramips-mt7621-22.03.3
