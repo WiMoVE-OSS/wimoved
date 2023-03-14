@@ -8,9 +8,7 @@
 #include "prometheus/counter.h"
 
 nl::Subscriber::Subscriber(::SynchronizedQueue<Station> &queue, const std::chrono::duration<int> &timeout)
-    : queue(queue), socket() {
-    socket.subscribe();
-    socket.set_receive_timeout(timeout);
+    : queue(queue), socket(timeout) {
 }
 
 void nl::Subscriber::loop(const std::future<void> &future) {

@@ -14,7 +14,7 @@
 EventLoop::EventLoop(NetworkRenderer& renderer, SynchronizedQueue<Station>& station_queue)
     : renderer(renderer),
       station_queue(station_queue),
-      socket() {}
+      socket(std::chrono::seconds(1)) {}
 
 void EventLoop::loop_nl_queue(const std::future<void>& future) {
     auto& processed_netlink_events_counter = MetricsManager::get_instance().get_netlink_counter_processed();

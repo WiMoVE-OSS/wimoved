@@ -13,12 +13,9 @@
 namespace nl {
 class Socket80211 {
    public:
-    Socket80211();
+    Socket80211(const std::chrono::duration<int>& timeout);
     ~Socket80211();
     std::vector<Station> wait_for_stations();
-    //Station station_for_event(const Event& event);
-    void set_receive_timeout(const std::chrono::duration<int>& timeout);
-    void subscribe();
 
     std::vector<Station> new_stations;
    private:

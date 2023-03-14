@@ -13,23 +13,6 @@
 #include "../TimeoutException.h"
 #include "../logging/loginit.h"
 
-nl::Socket80211::Socket80211() {
-    socket = nl_socket_alloc();
-    if (socket == nullptr) {
-        throw std::runtime_error(std::string("could not allocate netlink socket: ") + std::strerror(errno));
-    }
-    nl_socket_disable_seq_check(socket);
-    int ret = genl_connect(socket);
-    if (ret < 0) {
-        throw std::runtime_error(std::string("could not connect to generic netlink family: ") + std::strerror(errno));
-    }
-}
-
-nl::Socket80211::~Socket80211() {
-    nl_close(socket);
-    nl_socket_free(socket);
-}
-
 static std::string format_mac(uint8_t mac[6]) {
     char formatted_mac[2 * 6 + 5 + 1];
     snprintf(formatted_mac, sizeof(formatted_mac), "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
@@ -80,9 +63,20 @@ static int interface_event_handler(struct nl_msg *msg, void *arg) {
     return NL_OK;
 }
 
-void nl::Socket80211::subscribe() {
+
+nl::Socket80211::Socket80211(const std::chrono::duration<int>& timeout) {
+    socket = nl_socket_alloc();
+    if (socket == nullptr) {
+        throw std::runtime_error(std::string("could not allocate netlink socket: ") + std::strerror(errno));
+    }
+    nl_socket_disable_seq_check(socket);
+    int ret = genl_connect(socket);
+    if (ret < 0) {
+        throw std::runtime_error(std::string("could not connect to generic netlink family: ") + std::strerror(errno));
+    }
+
     for (const std::string& family : {"config",	"mlme"}) {
-        int ret = genl_ctrl_resolve_grp(socket, "nl80211", family.c_str());
+        ret = genl_ctrl_resolve_grp(socket, "nl80211", family.c_str());
         if (ret < 0) {
             throw std::runtime_error(std::string("could not resolve netlink group " + family + ": ") + nl_geterror(ret));
         }
@@ -97,8 +91,20 @@ void nl::Socket80211::subscribe() {
         throw std::runtime_error(std::string("could not set interface callback: ") + nl_geterror(err));
     }
 
-
+    auto timeout_usec = std::chrono::duration_cast<std::chrono::microseconds>(timeout);
+    struct timeval tv {};
+    tv.tv_sec = timeout_usec.count() / 1000000;
+    tv.tv_usec = timeout_usec.count() % 1000000;
+    if (setsockopt(nl_socket_get_fd(socket), SOL_SOCKET, SO_RCVTIMEO, (const char *)&tv, sizeof(tv)) == -1) {
+        throw std::runtime_error(std::string("could not set netlink socket receive timeout: ") + std::strerror(errno));
+    }
 }
+
+nl::Socket80211::~Socket80211() {
+    nl_close(socket);
+    nl_socket_free(socket);
+}
+
 std::vector<Station> nl::Socket80211::wait_for_stations() {
     int err = nl_recvmsgs_default(socket);
     if (err < 0) {
@@ -111,14 +117,4 @@ std::vector<Station> nl::Socket80211::wait_for_stations() {
     std::vector<Station> ret = std::move(new_stations);
     new_stations.clear();
     return ret;
-}
-void nl::Socket80211::set_receive_timeout(const std::chrono::duration<int> &timeout) {
-    auto timeout_usec = std::chrono::duration_cast<std::chrono::microseconds>(timeout);
-    struct timeval tv {};
-    tv.tv_sec = timeout_usec.count() / 1000000;
-    tv.tv_usec = timeout_usec.count() % 1000000;
-    if (setsockopt(nl_socket_get_fd(socket), SOL_SOCKET, SO_RCVTIMEO, (const char *)&tv, sizeof(tv)) == -1) {
-        throw std::runtime_error(std::string("could not set netlink socket receive timeout: ") + std::strerror(errno));
-    }
-
 }
