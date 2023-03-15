@@ -11,5 +11,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Start formatting
         run: find src -iname *.h -o -iname *.cpp | xargs clang-format -i
+      - name: Start CMake
+        run: cmake CMakeLists.txt
       - name: Start linting
-        run: clang-tidy --config-file=.clang-tidy src/*
+        run: clang-tidy --config-file=.clang-tidy src/**/*.h src/**/*.cpp -p compile_commands.json
