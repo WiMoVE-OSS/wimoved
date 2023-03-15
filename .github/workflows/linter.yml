@@ -11,10 +11,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Start formatting
         run: find src -iname *.h -o -iname *.cpp | xargs clang-format -i
-      - name: Clone prometheus-cpp
-        run: git clone https://github.com/jupp0r/prometheus-cpp.git && cd prometheus-cpp
-      - name: Build prometheus-cpp
-        run: git submodule init && git submodule update && cd _build && cmake .. -DBUILD_SHARED_LIBS=ON -DENABLE_PUSH=OFF -DENABLE_COMPRESSION=OFF && cmake --build . --parallel 4 && ctest -V && cmake --install . 
+      - name: Clone and build prometheus-cpp
+        run: git clone https://github.com/jupp0r/prometheus-cpp.git && cd prometheus-cpp && git submodule init && git submodule update && cd _build && cmake .. -DBUILD_SHARED_LIBS=ON -DENABLE_PUSH=OFF -DENABLE_COMPRESSION=OFF && cmake --build . --parallel 4 && ctest -V && cmake --install .
       - name: Start CMake
         run: cmake CMakeLists.txt
       - name: Start linting
