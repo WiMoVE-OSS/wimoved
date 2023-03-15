@@ -7,14 +7,12 @@ on:
 jobs:
   cpp-linter:
     runs-on: ubuntu-latest
-    secrets:
-      ghtoken: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v3
       - name: Start formatting
         run: find src -iname *.h -o -iname *.cpp | xargs clang-format -i
       - name: Clone prometheus-cpp
-        run: gh repo clone ArcherMarkI/prometheus-cpp
+        run: https://github.com/jupp0r/prometheus-cpp.git
       - name: Build prometheus-cpp
         run: git submodule init && git submodule update && cd _build && cmake .. -DBUILD_SHARED_LIBS=ON -DENABLE_PUSH=OFF -DENABLE_COMPRESSION=OFF && cmake --build . --parallel 4 && ctest -V && cmake --install . 
       - name: Start CMake
