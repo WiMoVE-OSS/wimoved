@@ -9,5 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Start linting
+      - name: Start formatting
         run: find src -iname *.h -o -iname *.cpp | xargs clang-format -i
+      - name: Start linting
+        run: clang-tidy --config-file=.clang-tidy src/*

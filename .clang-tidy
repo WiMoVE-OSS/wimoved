@@ -1,0 +1,17 @@
+---
+WarningsAsErrors: '*'
+Checks: >-
+  bugprone-*
+  cert-*
+  clang-analyzer-*
+  concurrency-
+  cppcoreguidelines-*
+  modernize-*
+  performance-*
+  portability-*
+  readability-*
+  -modernize-use-trailing-return-type
+  -cert-err58-cpp
+  -cppcoreguidelines-pro-bounds-array-to-pointer-decay
+  -readability-identifier-length
+  -cppcoreguidelines-pro-type-vararg
