@@ -35,6 +35,4 @@ Our documentation is still pretty early stage with some rough edges. If somethin
 
 ## Acknowledgements
 
-The article series of Vincent Bernat is a great starting point to learn about BGP EVPN with VXLAN. It helped us getting started so please check it out [Link)(https://vincent.bernat.ch/en/blog/2017-vxlan-bgp-evpn)
-
-The OpenWRT cross compiling toolchain made it very easy to develop for all our access points 
+The article series of Vincent Bernat is a great starting point to learn about BGP EVPN with VXLAN. It helped us getting started so please check it out [Link](https://vincent.bernat.ch/en/blog/2017-vxlan-bgp-evpn)
