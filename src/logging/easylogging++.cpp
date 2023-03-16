@@ -14,6 +14,8 @@
 //  http://muflihun.com
 //
 
+// NOLINTBEGIN
+
 #include "easylogging++.h"
 
 #if defined(AUTO_INITIALIZE_EASYLOGGINGPP)
@@ -3118,3 +3120,5 @@ const std::string VersionInfo::releaseDate(void) {
 }
 
 } // namespace el
+
+// NOLINTEND
