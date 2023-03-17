@@ -23,4 +23,4 @@ jobs:
       - name: Start CMake
         run: cmake CMakeLists.txt
       - name: Start linting
-        run: clang-tidy --config-file=.clang-tidy src/**/!(easylogging++).{cpp,h} -p compile_commands.json
+        run: clang-tidy --config-file=.clang-tidy src/**/*.h src/**/*.cpp -p compile_commands.json
