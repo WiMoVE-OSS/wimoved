@@ -2,7 +2,7 @@
 set -ex
 shopt -s globstar
 cd /home/build/openwrt
-while [ ! -d "package/network/services/gaffa" ]; do
+while [ ! -f "package/network/services/gaffa/Makefile" ]; do
   echo "waiting for package/network/services/gaffa"
   sleep 1
 done
