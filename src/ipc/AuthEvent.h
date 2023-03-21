@@ -1,5 +1,5 @@
-#ifndef GAFFA_AUTHEVENT_H
-#define GAFFA_AUTHEVENT_H
+#ifndef WIMOVED_AUTHEVENT_H
+#define WIMOVED_AUTHEVENT_H
 
 namespace ipc {
 class AuthEvent;
@@ -16,4 +16,4 @@ class AuthEvent : public Event {
 };
 }  // namespace ipc
 
-#endif  // GAFFA_AUTHEVENT_H
+#endif  // WIMOVED_AUTHEVENT_H

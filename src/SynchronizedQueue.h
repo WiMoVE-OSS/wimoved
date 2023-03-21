@@ -1,5 +1,5 @@
-#ifndef GAFFA_SYNCHRONIZEDQUEUE_H
-#define GAFFA_SYNCHRONIZEDQUEUE_H
+#ifndef WIMOVED_SYNCHRONIZEDQUEUE_H
+#define WIMOVED_SYNCHRONIZEDQUEUE_H
 
 #include <condition_variable>
 #include <cstdlib>
@@ -43,4 +43,4 @@ class SynchronizedQueue {
     }
 };
 
-#endif  // GAFFA_SYNCHRONIZEDQUEUE_H
+#endif  // WIMOVED_SYNCHRONIZEDQUEUE_H

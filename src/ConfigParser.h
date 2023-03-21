@@ -1,5 +1,5 @@
-#ifndef GAFFA_CONFIGPARSER_H
-#define GAFFA_CONFIGPARSER_H
+#ifndef WIMOVED_CONFIGPARSER_H
+#define WIMOVED_CONFIGPARSER_H
 
 #include <cstdint>
 #include <string>
@@ -15,4 +15,4 @@ class ConfigParser {
     std::unordered_map<std::string, std::string> config_options;
 };
 
-#endif  // GAFFA_CONFIGPARSER_H
+#endif  // WIMOVED_CONFIGPARSER_H

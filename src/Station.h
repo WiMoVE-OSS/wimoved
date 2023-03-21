@@ -1,5 +1,5 @@
-#ifndef GAFFA_STATION_H
-#define GAFFA_STATION_H
+#ifndef WIMOVED_STATION_H
+#define WIMOVED_STATION_H
 
 #include <optional>
 #include <string>
@@ -14,4 +14,4 @@ class Station {
     std::string vlan_interface_name() const;
 };
 
-#endif  // GAFFA_STATION_H
+#endif  // WIMOVED_STATION_H

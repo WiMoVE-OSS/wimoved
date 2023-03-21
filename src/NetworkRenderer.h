@@ -1,5 +1,5 @@
-#ifndef GAFFA_NETWORKRENDERER_H
-#define GAFFA_NETWORKRENDERER_H
+#ifndef WIMOVED_NETWORKRENDERER_H
+#define WIMOVED_NETWORKRENDERER_H
 
 #include <cstdint>
 #include <functional>
@@ -14,4 +14,4 @@ class NetworkRenderer {
     virtual void cleanup(const std::function<std::vector<Station>()>& get_stations) = 0;
 };
 
-#endif  // GAFFA_NETWORKRENDERER_H
+#endif  // WIMOVED_NETWORKRENDERER_H

@@ -1,5 +1,5 @@
-#ifndef GAFFA_SUBSCRIBER_H
-#define GAFFA_SUBSCRIBER_H
+#ifndef WIMOVED_SUBSCRIBER_H
+#define WIMOVED_SUBSCRIBER_H
 
 #include <future>
 
@@ -24,4 +24,4 @@ class Subscriber {
 };
 }  // namespace ipc
 
-#endif  // GAFFA_SUBSCRIBER_H
+#endif  // WIMOVED_SUBSCRIBER_H

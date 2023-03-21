@@ -1,5 +1,5 @@
-#ifndef GAFFA_CALLER_H
-#define GAFFA_CALLER_H
+#ifndef WIMOVED_CALLER_H
+#define WIMOVED_CALLER_H
 
 #include "../Station.h"
 #include "Socket.h"
@@ -18,4 +18,4 @@ class Caller {
 };
 }  // namespace ipc
 
-#endif  // GAFFA_CALLER_H
+#endif  // WIMOVED_CALLER_H
