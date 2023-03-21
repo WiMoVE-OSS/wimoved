@@ -13,11 +13,9 @@ add_compile_definitions(ELPP_THREAD_SAFE)
 add_compile_definitions(ELPP_FEATURE_CRASH_LOG)
 
 if(DEFINED STAGING_DIR)
-    add_compile_definitions(WIMOVED_IPC_SOCKET_GROUP="network")
     include_directories(${STAGING_DIR}/usr/include/libnl3)
     add_compile_definitions(ELPP_SYSLOG)
 else()
-    add_compile_definitions(WIMOVED_IPC_SOCKET_GROUP="root")
     include_directories(/usr/include/libnl3)
 endif()
 
