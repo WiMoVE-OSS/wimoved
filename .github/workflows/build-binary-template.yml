@@ -1,0 +1,32 @@
+name: Build OpenWRT Image
+
+on:
+  workflow_call:
+    inputs:
+      architecture:
+        required: true
+        type: string
+    secrets:
+      ghtoken:
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    needs: build-env
+    steps:
+      - uses: actions/checkout@v3
+      - name: Extract metadata
+        run: echo "BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.ghtoken }}
+      - name: Build OpenWRT
+        run: export IMAGE="ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}" && chmod +x ./scripts/build-gha.sh && ./scripts/build-gha.sh
+      - uses: actions/upload-artifact@v3
+        with:
+          name: wimove-${{ inputs.architecture }}.ipk
+          path: out/*.ipk

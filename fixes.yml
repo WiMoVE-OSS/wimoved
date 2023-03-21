@@ -1,0 +1,1444 @@
+---
+MainSourceFile:  '/home/aarons/Projects/BP/Gaffa/./src/ipc/Caller.cpp'
+Diagnostics:
+  - DiagnosticName:  cppcoreguidelines-avoid-non-const-global-variables
+    DiagnosticMessage:
+      Message:         'variable ''random_device'' is non-const and globally accessible, consider making it const'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      633
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-non-const-global-variables
+    DiagnosticMessage:
+      Message:         'variable ''twister'' is non-const and globally accessible, consider making it const'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      668
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-non-const-global-variables
+    DiagnosticMessage:
+      Message:         'variable ''twister_mutex'' is non-const and globally accessible, consider making it const'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      712
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      1419
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         '(skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)'
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CDEBUG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152926
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126720
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_FUNC'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      9476
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-vararg
+    DiagnosticMessage:
+      Message:         do not call c-style vararg functions
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      1419
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         expanded from here
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CDEBUG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152926
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126747
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '1000000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      1820
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '1000000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      1869
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-cstyle-cast
+    DiagnosticMessage:
+      Message:         do not use C-style cast to convert between unrelated types
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      1927
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      2010
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-cstyle-cast
+    DiagnosticMessage:
+      Message:         do not use C-style cast to convert between unrelated types
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      2148
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '200 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      2387
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '0775 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      2883
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      3063
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-cstyle-cast
+    DiagnosticMessage:
+      Message:         do not use C-style cast to convert between unrelated types
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      3201
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      3450
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         '(skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)'
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CERROR'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      153162
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126720
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_FUNC'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      9476
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-vararg
+    DiagnosticMessage:
+      Message:         do not call c-style vararg functions
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      3450
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         expanded from here
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CERROR'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      153162
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126747
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      3550
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      3582
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         '(skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)'
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CERROR'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      153162
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126720
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_FUNC'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      9476
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-vararg
+    DiagnosticMessage:
+      Message:         do not call c-style vararg functions
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      3582
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         expanded from here
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CERROR'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      153162
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126747
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '4096 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/Socket.cpp'
+      FileOffset:      4296
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-non-const-global-variables
+    DiagnosticMessage:
+      Message:         'variable ''registry'' is non-const and globally accessible, consider making it const'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/metrics/MetricsManager.cpp'
+      FileOffset:      141
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '30000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/metrics/MetricsManager.cpp'
+      FileOffset:      1630
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '35000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/metrics/MetricsManager.cpp'
+      FileOffset:      1637
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '40000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/metrics/MetricsManager.cpp'
+      FileOffset:      1644
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '45000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/metrics/MetricsManager.cpp'
+      FileOffset:      1651
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '50000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/metrics/MetricsManager.cpp'
+      FileOffset:      1658
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '55000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/metrics/MetricsManager.cpp'
+      FileOffset:      1665
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '60000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/metrics/MetricsManager.cpp'
+      FileOffset:      1672
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '65000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/metrics/MetricsManager.cpp'
+      FileOffset:      1679
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '70000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/metrics/MetricsManager.cpp'
+      FileOffset:      1751
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '75000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/metrics/MetricsManager.cpp'
+      FileOffset:      1758
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '80000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/metrics/MetricsManager.cpp'
+      FileOffset:      1765
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '85000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/metrics/MetricsManager.cpp'
+      FileOffset:      1772
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '90000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/metrics/MetricsManager.cpp'
+      FileOffset:      1779
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '95000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/metrics/MetricsManager.cpp'
+      FileOffset:      1786
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '100000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/metrics/MetricsManager.cpp'
+      FileOffset:      1793
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-prefer-member-initializer
+    DiagnosticMessage:
+      Message:         '''socket'' should be initialized in a member initializer of the constructor'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      467
+      Replacements:
+        - FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+          Offset:          460
+          Length:          0
+          ReplacementText: ' : socket(nl_socket_alloc())'
+        - FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+          Offset:          467
+          Length:          27
+          ReplacementText: ''
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '4789 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      1299
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      1626
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         '(skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)'
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CWARNING'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152684
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126720
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_FUNC'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      9476
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-vararg
+    DiagnosticMessage:
+      Message:         do not call c-style vararg functions
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      1626
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         expanded from here
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CWARNING'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152684
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126747
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      1854
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         '(skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)'
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CINFO'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152447
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126720
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_FUNC'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      9476
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-vararg
+    DiagnosticMessage:
+      Message:         do not call c-style vararg functions
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      1854
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         expanded from here
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CINFO'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152447
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126747
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-init-variables
+    DiagnosticMessage:
+      Message:         'variable ''err'' is not initialized'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      2199
+      Replacements:
+        - FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+          Offset:          2202
+          Length:          0
+          ReplacementText: ' = 0'
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      2341
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         '(skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)'
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CWARNING'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152684
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126720
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_FUNC'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      9476
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-vararg
+    DiagnosticMessage:
+      Message:         do not call c-style vararg functions
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      2341
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         expanded from here
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CWARNING'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152684
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126747
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      2573
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         '(skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)'
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CINFO'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152447
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126720
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_FUNC'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      9476
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-vararg
+    DiagnosticMessage:
+      Message:         do not call c-style vararg functions
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      2573
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         expanded from here
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CINFO'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152447
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126747
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-init-variables
+    DiagnosticMessage:
+      Message:         'variable ''err'' is not initialized'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      2760
+      Replacements:
+        - FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+          Offset:          2763
+          Length:          0
+          ReplacementText: ' = 0'
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      3521
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         '(skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)'
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CINFO'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152447
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126720
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_FUNC'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      9476
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-vararg
+    DiagnosticMessage:
+      Message:         do not call c-style vararg functions
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      3521
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         expanded from here
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CINFO'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152447
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126747
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-init-variables
+    DiagnosticMessage:
+      Message:         'variable ''err'' is not initialized'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      3677
+      Replacements:
+        - FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+          Offset:          3680
+          Length:          0
+          ReplacementText: ' = 0'
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      3895
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         '(skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)'
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CINFO'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152447
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126720
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_FUNC'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      9476
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-vararg
+    DiagnosticMessage:
+      Message:         do not call c-style vararg functions
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      3895
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         expanded from here
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CINFO'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152447
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126747
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-init-variables
+    DiagnosticMessage:
+      Message:         'variable ''cache'' is not initialized'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      4017
+      Replacements:
+        - FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+          Offset:          4022
+          Length:          0
+          ReplacementText: ' = nullptr'
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-init-variables
+    DiagnosticMessage:
+      Message:         'variable ''err'' is not initialized'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      4032
+      Replacements:
+        - FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+          Offset:          4035
+          Length:          0
+          ReplacementText: ' = 0'
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-init-variables
+    DiagnosticMessage:
+      Message:         'variable ''object'' is not initialized'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      4231
+      Replacements:
+        - FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+          Offset:          4237
+          Length:          0
+          ReplacementText: ' = nullptr'
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-init-variables
+    DiagnosticMessage:
+      Message:         'variable ''link'' is not initialized'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      4363
+      Replacements:
+        - FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+          Offset:          4367
+          Length:          0
+          ReplacementText: ' = nullptr'
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-cstyle-cast
+    DiagnosticMessage:
+      Message:         do not use C-style cast to convert between unrelated types
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      4384
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-init-variables
+    DiagnosticMessage:
+      Message:         'variable ''id'' is not initialized'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+      FileOffset:      4466
+      Replacements:
+        - FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket.cpp'
+          Offset:          4468
+          Length:          0
+          ReplacementText: ' = 0'
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-c-arrays
+    DiagnosticMessage:
+      Message:         'do not declare C-style arrays, use std::array<> instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      374
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '6 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      386
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-c-arrays
+    DiagnosticMessage:
+      Message:         'do not declare C-style arrays, use std::array<> instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      396
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '6 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      419
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '5 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      423
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-vararg
+    DiagnosticMessage:
+      Message:         do not call c-style vararg functions
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      435
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      444
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-pointer-arithmetic
+    DiagnosticMessage:
+      Message:         do not use pointer arithmetic
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      515
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-pointer-arithmetic
+    DiagnosticMessage:
+      Message:         do not use pointer arithmetic
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      523
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-pointer-arithmetic
+    DiagnosticMessage:
+      Message:         do not use pointer arithmetic
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      531
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-pointer-arithmetic
+    DiagnosticMessage:
+      Message:         do not use pointer arithmetic
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      539
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-pointer-arithmetic
+    DiagnosticMessage:
+      Message:         do not use pointer arithmetic
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      547
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-pointer-arithmetic
+    DiagnosticMessage:
+      Message:         do not use pointer arithmetic
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      555
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '5 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      559
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      575
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-c-arrays
+    DiagnosticMessage:
+      Message:         'do not declare C-style arrays, use std::array<> instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      738
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      807
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-init-variables
+    DiagnosticMessage:
+      Message:         'variable ''ifindex'' is not initialized'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      1041
+      Replacements:
+        - FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+          Offset:          1048
+          Length:          0
+          ReplacementText: ' = 0'
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-init-variables
+    DiagnosticMessage:
+      Message:         'variable ''iftype'' is not initialized'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      1063
+      Replacements:
+        - FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+          Offset:          1069
+          Length:          0
+          ReplacementText: ' = 0'
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-reinterpret-cast
+    DiagnosticMessage:
+      Message:         do not use reinterpret_cast
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      1091
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-c-arrays
+    DiagnosticMessage:
+      Message:         'do not declare C-style arrays, use std::array<> instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      1397
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      1462
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      1502
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         '(skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)'
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CWARNING'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152684
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126720
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_FUNC'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      9476
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-vararg
+    DiagnosticMessage:
+      Message:         do not call c-style vararg functions
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      1502
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         expanded from here
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CWARNING'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152684
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126747
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      1646
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         '(skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)'
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CDEBUG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152926
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126720
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_FUNC'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      9476
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-vararg
+    DiagnosticMessage:
+      Message:         do not call c-style vararg functions
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      1646
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         expanded from here
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CDEBUG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152926
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126747
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-bounds-array-to-pointer-decay
+    DiagnosticMessage:
+      Message:         'do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      2095
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         '(skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)'
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CDEBUG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152926
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126720
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_FUNC'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      9476
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-vararg
+    DiagnosticMessage:
+      Message:         do not call c-style vararg functions
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      2095
+      Replacements:    []
+    Notes:
+      - Message:         'expanded from macro ''GAFFALOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/../logging/loginit.h'
+        FileOffset:      230
+        Replacements:    []
+      - Message:         'expanded from macro ''LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      164545
+        Replacements:    []
+      - Message:         'expanded from macro ''CLOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      162671
+        Replacements:    []
+      - Message:         expanded from here
+        FilePath:        ''
+        FileOffset:      0
+        Replacements:    []
+      - Message:         'expanded from macro ''CDEBUG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      152926
+        Replacements:    []
+      - Message:         'expanded from macro ''ELPP_WRITE_LOG'''
+        FilePath:        '/home/aarons/Projects/BP/Gaffa/src/ipc/../logging/easylogging++.h'
+        FileOffset:      126747
+        Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '10 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      2461
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-prefer-member-initializer
+    DiagnosticMessage:
+      Message:         '''socket'' should be initialized in a member initializer of the constructor'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      2700
+      Replacements:
+        - FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+          Offset:          2693
+          Length:          0
+          ReplacementText: ', socket(nl_socket_alloc())'
+        - FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+          Offset:          2700
+          Length:          27
+          ReplacementText: ''
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '1000000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      3970
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-avoid-magic-numbers
+    DiagnosticMessage:
+      Message:         '1000000 is a magic number; consider replacing it with a named constant'
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      4019
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+  - DiagnosticName:  cppcoreguidelines-pro-type-cstyle-cast
+    DiagnosticMessage:
+      Message:         do not use C-style cast to convert between unrelated types
+      FilePath:        '/home/aarons/Projects/BP/Gaffa/src/nl/Socket80211.cpp'
+      FileOffset:      4098
+      Replacements:    []
+    Level:           Warning
+    BuildDirectory:  '/home/aarons/Projects/BP/Gaffa'
+...

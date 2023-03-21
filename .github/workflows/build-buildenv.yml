@@ -1,0 +1,42 @@
+
+name: Build Build Environments
+
+on:
+  push:
+    paths:
+      - 'scripts/**.*'
+
+jobs:
+  build-arm:
+    permissions:
+      packages: write
+      contents: read
+    uses: ./.github/workflows/build-buildenv-template.yml
+    with:
+      architecture: mvebu-cortexa9-22.03.3
+    secrets:
+      ghtoken: ${{ secrets.GITHUB_TOKEN }}
+
+  build-ramips:
+    permissions:
+      packages: write
+      contents: read
+    uses: ./.github/workflows/build-buildenv-template.yml
+    with:
+      architecture: ramips-mt7621-22.03.3
+    secrets:
+      ghtoken: ${{ secrets.GITHUB_TOKEN }}
+
+  build-bin-arm:
+    uses: ./.github/workflows/build-binary-template.yml
+    with:
+      architecture: mvebu-cortexa9-22.03.3
+    secrets:
+      ghtoken: ${{ secrets.GITHUB_TOKEN }}
+
+  build-bin-ramips:
+    uses: ./.github/workflows/build-binary-template.yml
+    with:
+      architecture: ramips-mt7621-22.03.3
+    secrets:
+      ghtoken: ${{ secrets.GITHUB_TOKEN }}
