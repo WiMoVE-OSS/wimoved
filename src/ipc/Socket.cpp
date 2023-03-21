@@ -72,7 +72,7 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout) : local{AF_UNIX, 
     std::array<char, 200> buf{};
     struct group grp {};
     struct group* grp_result = nullptr;
-    getgrnam_r(WIMOVED_IPC_SOCKET_GROUP, &grp, &buf[0], buf.size(), &grp_result);
+    getgrnam_r(Configuration::get_instance().hapd_group.c_str(), &grp, &buf[0], buf.size(), &grp_result);
     if (grp_result == nullptr) {
         throw std::runtime_error(std::string("getgrnam failed: ") + std::strerror(errno));
     }
