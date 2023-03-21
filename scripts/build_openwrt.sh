@@ -6,10 +6,10 @@ cp scripts/Makefile package/
 cp CMakeLists.txt package/src/
 cp -r src package/src/
 
-docker build "$(pwd)/$(dirname -- "$0")" -t gaffa-buildenv
+docker build "$(pwd)/$(dirname -- "$0")" -t wimoved-buildenv
 
 docker run --rm \
   -v "$(pwd)"/scripts/stage2.sh:/home/build/openwrt/stage2.sh \
-  -v "$(pwd)"/package/:/home/build/openwrt/package/network/services/gaffa \
-  -v "$(pwd)"/out/:/home/build/openwrt/out gaffa-buildenv \
+  -v "$(pwd)"/package/:/home/build/openwrt/package/network/services/wimoved \
+  -v "$(pwd)"/out/:/home/build/openwrt/out wimoved-buildenv \
   bash stage2.sh

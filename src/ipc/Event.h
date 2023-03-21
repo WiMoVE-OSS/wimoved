@@ -1,5 +1,5 @@
-#ifndef GAFFA_IPC_EVENT_H
-#define GAFFA_IPC_EVENT_H
+#ifndef WIMOVED_IPC_EVENT_H
+#define WIMOVED_IPC_EVENT_H
 
 #include <string>
 
@@ -27,4 +27,4 @@ class Event {
 
 #include "../EventHandler.h"
 
-#endif  // GAFFA_IPC_EVENT_H
+#endif  // WIMOVED_IPC_EVENT_H

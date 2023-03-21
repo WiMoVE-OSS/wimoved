@@ -1,5 +1,5 @@
-#ifndef GAFFA_IPC_SOCKET_H
-#define GAFFA_IPC_SOCKET_H
+#ifndef WIMOVED_IPC_SOCKET_H
+#define WIMOVED_IPC_SOCKET_H
 
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -32,4 +32,4 @@ class Socket {
 };
 }  // namespace ipc
 
-#endif  // GAFFA_IPC_SOCKET_H
+#endif  // WIMOVED_IPC_SOCKET_H

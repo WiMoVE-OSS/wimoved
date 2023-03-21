@@ -1,5 +1,5 @@
-#ifndef GAFFA_DISASSOCEVENT_H
-#define GAFFA_DISASSOCEVENT_H
+#ifndef WIMOVED_DISASSOCEVENT_H
+#define WIMOVED_DISASSOCEVENT_H
 
 namespace ipc {
 class DisassocEvent;
@@ -16,4 +16,4 @@ class DisassocEvent : public Event {
 };
 }  // namespace ipc
 
-#endif  // GAFFA_DISASSOCEVENT_H
+#endif  // WIMOVED_DISASSOCEVENT_H

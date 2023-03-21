@@ -1,5 +1,5 @@
-#ifndef GAFFA_ASSOCEVENT_H
-#define GAFFA_ASSOCEVENT_H
+#ifndef WIMOVED_ASSOCEVENT_H
+#define WIMOVED_ASSOCEVENT_H
 
 namespace ipc {
 class AssocEvent;
@@ -16,4 +16,4 @@ class AssocEvent : public Event {
 };
 }  // namespace ipc
 
-#endif  // GAFFA_ASSOCEVENT_H
+#endif  // WIMOVED_ASSOCEVENT_H
