@@ -14,15 +14,11 @@ class EventLoop : public EventHandler {
    private:
     NetworkRenderer& renderer;
     SynchronizedQueue<ipc::Event>& ipc_queue;
-    SynchronizedQueue<nl::Event>& nl_queue;
     ipc::Caller caller;
-    std::unordered_map<std::string, Station> stations_without_interface;
-    std::mutex loop_mutex;
     prometheus::Histogram& processing_time_histogram;
 
    public:
-    EventLoop(NetworkRenderer& renderer, SynchronizedQueue<ipc::Event>& ipc_queue,
-              SynchronizedQueue<nl::Event>& nl_queue);
+    EventLoop(NetworkRenderer& renderer, SynchronizedQueue<ipc::Event>& ipc_queue);
 
     void loop_ipc_queue(const std::future<void>& future);
     void loop_nl_queue(const std::future<void>& future);
