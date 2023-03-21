@@ -33,6 +33,7 @@ jobs:
         pull: true
         context: ./scripts
         tags: ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}
+        cache-from: ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}
         build-args: |
           TAG=${{ inputs.architecture }}
     - name: Build Binary
