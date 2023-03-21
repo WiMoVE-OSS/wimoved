@@ -8,6 +8,7 @@
 #include "../metrics/MetricsManager.h"
 #include "AssocEvent.h"
 
+const std::string HOSTAPD_PONG = "PONG\n";
 const std::string HOSTAPD_ASSOC_STRING = "<3>EAPOL-4WAY-HS-COMPLETED ";
 const std::string HOSTAPD_AUTH_STRING = "<3>AP-STA-CONNECTED ";
 const std::string HOSTAPD_DISASSOC_STRING = "<3>AP-STA-DISCONNECTED ";
@@ -32,20 +33,18 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             event = socket.receive();
         } catch (const TimeoutException& e) {
             try {
-                std::string ping_result = socket.send_and_receive({"PING"});
-                if (ping_result != "PONG\n") {
-                    GAFFALOG(FATAL) << "timeout in Subscriber::loop_ipc_queue(), hostapd did not respond pong: "
-                                    << ping_result;
-                    break;
-                } else {
-                    continue;
-                }
+                event = socket.send_and_receive({"PING"});
             } catch (const TimeoutException& e) {
                 GAFFALOG(FATAL)
                     << "timeout in Subscriber::loop_ipc_queue(), hostapd timed out while responding to ping";
                 break;
             }
         }
+        // This is a PONG in response to a previous PING where another event came first, ignore.
+        if (event == HOSTAPD_PONG) {
+            continue;
+        }
+
         if (event.rfind(HOSTAPD_ASSOC_STRING) == 0) {
             std::string station_mac =
                 event.substr(HOSTAPD_ASSOC_STRING.size(), HOSTAPD_ASSOC_STRING.size() + MAC_ADDRESS_LENGTH);
