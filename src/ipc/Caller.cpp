@@ -36,3 +36,7 @@ std::vector<Station> ipc::Caller::connected_stations() {
     }
     return stations;
 }
+
+void ipc::Caller::deauth_station(const std::string &station_mac) {
+    socket.send_and_receive({"DEAUTHENTICATE", station_mac});
+};

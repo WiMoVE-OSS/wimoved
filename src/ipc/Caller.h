@@ -9,9 +9,10 @@ class Caller {
    public:
     Caller();
 
-    uint32_t vlan_for_station(const std::string &station_mac);
+    uint32_t vlan_for_station(const std::string& station_mac);
 
     std::vector<Station> connected_stations();
+    void deauth_station(const std::string& station_mac);
 
    private:
     Socket socket;

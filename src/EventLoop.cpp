@@ -34,15 +34,16 @@ void EventLoop::handle_auth(ipc::AuthEvent* event) {
 void EventLoop::handle_assoc(ipc::AssocEvent* event) {
     event->station.vlan_id = caller.vlan_for_station(event->station.mac);
     WMLOG(DEBUG) << "handle_assoc called " << event->station.mac << " with vlan_id "
-                    << event->station.vlan_id.value_or(0);
+                 << event->station.vlan_id.value_or(0);
     WMLOG(INFO) << "Station " << event->station.mac << " connected to AP for VXLAN " << event->station.vni();
     try {
         renderer.setup_station(event->station);
         processing_time_histogram.Observe(event->finished_processing());
     } catch (std::runtime_error& err) {
-        WMLOG(ERROR) << "station could not be bridged to vxlan interface: " << err.what();
+        WMLOG(ERROR) << "station could not be bridged to vxlan interface: " << err.what()
+                     << " - Will now send deauth packet";
+        caller.deauth_station(event->station.mac);
     }
-    // TODO: Disconnect station on bridging failure
 }
 
 void EventLoop::handle_disassoc(ipc::DisassocEvent* event) {
