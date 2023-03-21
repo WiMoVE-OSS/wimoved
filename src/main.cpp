@@ -46,7 +46,7 @@ void setup_logger() {
     defaultConf.setGlobally(el::ConfigurationType::Format, "[%level] %datetime %fbase:%line - %msg");
 
 #ifdef ELPP_SYSLOG
-    el::SysLogInitializer elSyslogInit("WiMoVEd", LOG_PID | LOG_CONS | LOG_PERROR, LOG_USER);
+    el::SysLogInitializer elSyslogInit("wimoved", LOG_PID | LOG_CONS | LOG_PERROR, LOG_USER);
     el::Loggers::reconfigureLogger("syslog", defaultConf);
 #else
     defaultConf.setGlobally(el::ConfigurationType::Filename, Configuration::get_instance().log_path);
@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
     if (argc >= 2) {
         config_path = argv[1];
     }
-    WMLOG(INFO) << "WiMoVEd is starting";
+    WMLOG(INFO) << "wimoved is starting";
     ConfigParser bla(config_path);
     setup_logger();
 
