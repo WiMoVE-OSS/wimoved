@@ -41,7 +41,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             continue;
         }
 
-        if (event.rfind(HOSTAPD_ASSOC_STRING) == 0) {
+        if (event.rfind(HOSTAPD_CONNECT_STRING) == 0) {
             std::string station_mac =
                 event.substr(HOSTAPD_CONNECT_STRING.size(), HOSTAPD_CONNECT_STRING.size() + MAC_ADDRESS_LENGTH);
             try {
