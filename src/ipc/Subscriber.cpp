@@ -9,6 +9,7 @@
 
 const std::string HOSTAPD_CONNECT_STRING = "<3>AP-STA-CONNECTED ";
 const std::string HOSTAPD_DISCONNECT_STRING = "<3>AP-STA-DISCONNECTED ";
+const std::string HOSTAPD_PONG = "PONG\n";
 
 ipc::Subscriber::Subscriber(SynchronizedQueue<Event>& queue, const std::chrono::duration<int>& timeout)
     : socket(timeout),
@@ -29,20 +30,18 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             event = socket.receive();
         } catch (const TimeoutException& e) {
             try {
-                std::string ping_result = socket.send_and_receive({"PING"});
-                if (ping_result != "PONG\n") {
-                    WMLOG(FATAL) << "timeout in Subscriber::loop_ipc_queue(), hostapd did not respond pong: "
-                                 << ping_result;
-                    break;
-                } else {
-                    continue;
-                }
+                event = socket.send_and_receive({"PING"});
             } catch (const TimeoutException& e) {
                 WMLOG(FATAL) << "timeout in Subscriber::loop_ipc_queue(), hostapd timed out while responding to ping";
                 break;
             }
         }
-        if (event.rfind(HOSTAPD_CONNECT_STRING) == 0) {
+        // This is a PONG in response to a previous PING where another event came first, ignore.
+        if (event == HOSTAPD_PONG) {
+            continue;
+        }
+
+        if (event.rfind(HOSTAPD_ASSOC_STRING) == 0) {
             std::string station_mac =
                 event.substr(HOSTAPD_CONNECT_STRING.size(), HOSTAPD_CONNECT_STRING.size() + MAC_ADDRESS_LENGTH);
             try {
