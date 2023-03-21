@@ -43,4 +43,4 @@ void ipc::Caller::deauth_station(const std::string &station_mac) {
     if (result != "OK") {
         WMLOG(WARNING) << "Did not receive OK on DEAUTH request: " << result;
     }
-};
+}
