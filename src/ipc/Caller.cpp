@@ -6,6 +6,7 @@
 #include <thread>
 
 #include "../Station.h"
+#include "../logging/loginit.h"
 
 const std::string VLAN_ID_PREFIX = "vlan_id=";
 
@@ -35,4 +36,11 @@ std::vector<Station> ipc::Caller::connected_stations() {
         ipc_result = socket.send_and_receive({"STA-NEXT", stations[stations.size() - 1].mac});
     }
     return stations;
+}
+
+void ipc::Caller::deauth_station(const std::string &station_mac) {
+    std::string result = socket.send_and_receive({"DEAUTHENTICATE", station_mac});
+    if (result != Socket::HOSTAPD_OK) {
+        WMLOG(WARNING) << "Did not receive OK on DEAUTH request: " << result;
+    }
 }
