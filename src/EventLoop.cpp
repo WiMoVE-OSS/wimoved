@@ -32,7 +32,6 @@ void EventLoop::handle_connect(ipc::ConnectEvent* event) {
                  << event->station.vlan_id.value_or(0);
     WMLOG(INFO) << "Station " << event->station.mac << " connected to AP for VXLAN " << event->station.vni();
     try {
-        renderer.setup_vni(event->station.vni());
         renderer.setup_station(event->station);
         processing_time_histogram.Observe(event->finished_processing());
     } catch (std::runtime_error& err) {
