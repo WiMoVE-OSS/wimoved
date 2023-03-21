@@ -11,10 +11,6 @@ MetricsManager::MetricsManager()
                           .Name("hostapd_events")
                           .Help("Number of received hostapd events")
                           .Register(*registry)),
-      netlink_counter(prometheus::BuildCounter()
-                          .Name("netlink_events")
-                          .Help("Number of received netlink events")
-                          .Register(*registry)),
       connection_gauge(
           prometheus::BuildGauge().Name("connections").Help("Number of connections to the AP").Register(*registry)),
       histogram(prometheus::BuildHistogram()
@@ -31,14 +27,6 @@ MetricsManager &MetricsManager::get_instance() {
 
 prometheus::Counter &MetricsManager::get_hostapd_counter_for_type(const std::string &type) {
     return hostapd_counter.Add({{"type", type}});
-}
-
-prometheus::Counter &MetricsManager::get_netlink_counter_processed() {
-    return netlink_counter.Add({{"type", "processed"}});
-}
-
-prometheus::Counter &MetricsManager::get_netlink_counter_received() {
-    return netlink_counter.Add({{"type", "received"}});
 }
 
 prometheus::Gauge &MetricsManager::get_station_gauge() { return connection_gauge.Add({{"type", "stations"}}); }
