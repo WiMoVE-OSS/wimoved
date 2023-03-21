@@ -21,11 +21,9 @@ class EventLoop : public EventHandler {
     EventLoop(NetworkRenderer& renderer, SynchronizedQueue<ipc::Event>& ipc_queue);
 
     void loop_ipc_queue(const std::future<void>& future);
-    void loop_nl_queue(const std::future<void>& future);
 
-    void handle_assoc(ipc::AssocEvent* event) override;
-    void handle_auth(ipc::AuthEvent* event) override;
-    void handle_disassoc(ipc::DisassocEvent* event) override;
+    void handle_connect(ipc::ConnectEvent* event) override;
+    void handle_disconnect(ipc::DisconnectEvent* event) override;
 };
 
 #endif  // WIMOVED_EVENTLOOP_H

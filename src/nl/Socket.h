@@ -21,6 +21,7 @@ class Socket {
     void create_bridge(const std::string& name);
     void delete_interface(const std::string& name);
     std::unordered_set<uint32_t> interface_list();
+
    private:
     struct nl_sock* socket;
 };

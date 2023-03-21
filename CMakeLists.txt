@@ -29,12 +29,10 @@ add_executable(wimoved
         src/SynchronizedQueue.h
         src/ipc/Event.cpp
         src/ipc/Event.h
-        src/ipc/AssocEvent.cpp
-        src/ipc/AssocEvent.h
-        src/ipc/AuthEvent.cpp
-        src/ipc/AuthEvent.h
-        src/ipc/DisassocEvent.cpp
-        src/ipc/DisassocEvent.h
+        src/ipc/ConnectEvent.cpp
+        src/ipc/ConnectEvent.h
+        src/ipc/DisconnectEvent.cpp
+        src/ipc/DisconnectEvent.h
         src/ipc/Caller.cpp
         src/ipc/Caller.h
         src/nl/Socket.cpp

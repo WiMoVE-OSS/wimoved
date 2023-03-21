@@ -17,9 +17,8 @@ class Subscriber {
    private:
     Socket socket;
     SynchronizedQueue<Event> &queue;
-    prometheus::Counter &hostapd_association_counter;
-    prometheus::Counter &hostapd_disassociation_counter;
-    prometheus::Counter &hostapd_authentication_counter;
+    prometheus::Counter &hostapd_disconnect_counter;
+    prometheus::Counter &hostapd_connect_counter;
     prometheus::Counter &hostapd_unknown_counter;
 };
 }  // namespace ipc
