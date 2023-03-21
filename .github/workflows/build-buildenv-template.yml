@@ -26,15 +26,14 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.ghtoken }}
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
     - name: Build and push
       uses: docker/build-push-action@v4
       with:
         push: true
+        pull: true
         context: ./scripts
         tags: ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
         build-args: |
           TAG=${{ inputs.architecture }}
+    - name: Build Binary
+      run: export IMAGE="ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}" && chmod +x ./scripts/build-gha.sh && ./scripts/build-gha.sh

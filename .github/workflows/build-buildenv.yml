@@ -3,9 +3,6 @@ name: Build Build Environments
 
 on:
   push:
-    paths:
-      - 'scripts/**.*'
-  workflow_dispatch:
 
 jobs:
   build-arm:
