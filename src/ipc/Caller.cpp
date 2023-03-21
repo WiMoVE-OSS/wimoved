@@ -9,7 +9,6 @@
 #include "../logging/loginit.h"
 
 const std::string VLAN_ID_PREFIX = "vlan_id=";
-const std::string HOSTAPD_OK = "OK\n";
 
 ipc::Caller::Caller() : socket(std::chrono::seconds(1)) {}
 
@@ -41,7 +40,7 @@ std::vector<Station> ipc::Caller::connected_stations() {
 
 void ipc::Caller::deauth_station(const std::string &station_mac) {
     std::string result = socket.send_and_receive({"DEAUTHENTICATE", station_mac});
-    if (result != HOSTAPD_OK) {
+    if (result != Socket::HOSTAPD_OK) {
         WMLOG(WARNING) << "Did not receive OK on DEAUTH request: " << result;
     }
 }

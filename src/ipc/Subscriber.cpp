@@ -23,7 +23,7 @@ ipc::Subscriber::Subscriber(SynchronizedQueue<Event>& queue, const std::chrono::
 
 void ipc::Subscriber::loop(const std::future<void>& future) {
     std::string result = socket.send_and_receive({"ATTACH"});
-    if (result != "OK\n") {
+    if (result != Socket::HOSTAPD_OK) {
         throw std::runtime_error(std::string("could not attach to hostapd: ") + result);
     }
     WMLOG(INFO) << "attached to hostapd";

@@ -23,6 +23,8 @@ class Socket {
 
     std::string receive() const;
 
+    inline static const std::string HOSTAPD_OK = "OK\n";
+
     ~Socket();
 
    private:
