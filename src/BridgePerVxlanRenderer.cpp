@@ -10,7 +10,6 @@ BridgePerVxlanRenderer::BridgePerVxlanRenderer()
       station_gauge(MetricsManager::get_instance().get_station_gauge()),
       vni_gauge(MetricsManager::get_instance().get_vni_gauge()) {}
 
-
 void BridgePerVxlanRenderer::setup_station(const Station& station) {
     std::lock_guard g(renderer_mutex);
     WMLOG(DEBUG) << "Calling: setup_station(" << station.mac << ")";
