@@ -34,8 +34,8 @@ jobs:
         push: true
         context: ./scripts
         tags: ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+        cache-from: type=gha,scope=$GITHUB_REF_NAME-${{ inputs.architecture }}
+        cache-to: type=gha,mode=max,scope=$GITHUB_REF_NAME-${{ inputs.architecture }}
         build-args: |
           TAG=${{ inputs.architecture }}
 
