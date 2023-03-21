@@ -35,9 +35,10 @@ void EventLoop::handle_connect(ipc::ConnectEvent* event) {
         renderer.setup_station(event->station);
         processing_time_histogram.Observe(event->finished_processing());
     } catch (std::runtime_error& err) {
-        WMLOG(ERROR) << "station could not be bridged to vxlan interface: " << err.what();
+        WMLOG(ERROR) << "station could not be bridged to vxlan interface: " << err.what()
+                     << " - Will now send deauth packet";
+        caller.deauth_station(event->station.mac);
     }
-    // TODO: Disconnect station on bridging failure
 }
 
 void EventLoop::handle_disconnect(ipc::DisconnectEvent* event) {
