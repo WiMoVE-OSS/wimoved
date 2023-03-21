@@ -1,24 +1,17 @@
 #ifndef GAFFA_STATION_H
 #define GAFFA_STATION_H
 
-#include <chrono>
 #include <optional>
 #include <string>
 
-static const std::string VLAN_INTERFACE_PREFIX = "vlan";
-
 class Station {
    public:
-    Station(std::string mac, uint32_t vlan_id);
+    Station(std::string mac);
     uint32_t vni() const;
-
-    uint32_t vlan_id;
+    std::optional<uint32_t> vlan_id;
     std::string mac;
 
     std::string vlan_interface_name() const;
-    uint64_t finished_processing();
-   private:
-    std::chrono::time_point<std::chrono::high_resolution_clock> created_at;
 };
 
 #endif  // GAFFA_STATION_H

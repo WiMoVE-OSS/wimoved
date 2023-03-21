@@ -23,8 +23,18 @@ endif()
 
 add_executable(gaffa
         src/ipc/Socket.cpp src/main.cpp
+        src/ipc/Subscriber.cpp
+        src/ipc/Subscriber.h
         src/SynchronizedQueue.cpp
         src/SynchronizedQueue.h
+        src/ipc/Event.cpp
+        src/ipc/Event.h
+        src/ipc/AssocEvent.cpp
+        src/ipc/AssocEvent.h
+        src/ipc/AuthEvent.cpp
+        src/ipc/AuthEvent.h
+        src/ipc/DisassocEvent.cpp
+        src/ipc/DisassocEvent.h
         src/ipc/Caller.cpp
         src/ipc/Caller.h
         src/nl/Socket.cpp
@@ -37,6 +47,8 @@ add_executable(gaffa
         src/nl/Link.h
         src/EventLoop.cpp
         src/EventLoop.h
+        src/EventHandler.cpp
+        src/EventHandler.h
         src/NetworkRenderer.cpp
         src/NetworkRenderer.h
         src/BridgePerVxlanRenderer.cpp
@@ -45,6 +57,8 @@ add_executable(gaffa
         src/Station.h
         src/TimeoutException.cpp
         src/TimeoutException.h
+        src/nl/Event.cpp
+        src/nl/Event.h
         src/nl/Subscriber.cpp
         src/nl/Subscriber.h
         src/VlanMissingException.cpp
@@ -58,10 +72,8 @@ add_executable(gaffa
         src/logging/loginit.h
         src/logging/loginit.h
         src/Configuration.cpp
-        src/Configuration.h
-        src/nl/Socket80211.cpp
-        src/nl/Socket80211.h)
-target_link_libraries(gaffa nl-3 nl-route-3 nl-genl-3 prometheus-cpp::pull prometheus-cpp::core)
+        src/Configuration.h)
+target_link_libraries(gaffa nl-3 nl-route-3 prometheus-cpp::pull prometheus-cpp::core)
 
 include_directories(src/hostapd)
 

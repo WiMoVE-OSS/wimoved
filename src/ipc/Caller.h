@@ -9,6 +9,8 @@ class Caller {
    public:
     Caller();
 
+    uint32_t vlan_for_station(const std::string &station_mac);
+
     std::vector<Station> connected_stations();
 
    private:
