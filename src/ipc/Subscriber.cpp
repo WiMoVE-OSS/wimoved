@@ -49,7 +49,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
                 queue.enqueue(std::make_unique<ConnectEvent>(std::move(station)));
                 hostapd_connect_counter.Increment();
             } catch (const std::runtime_error& e) {
-                WMLOG(ERROR) << "Unable to create station: " << e.what();
+                WMLOG(ERROR) << "Unable to create event: " << e.what();
             }
         } else if (event.rfind(HOSTAPD_DISCONNECT_STRING) == 0) {
             std::string station_mac =
@@ -59,7 +59,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
                 queue.enqueue(std::make_unique<DisconnectEvent>(std::move(station)));
                 hostapd_disconnect_counter.Increment();
             } catch (const std::runtime_error& e) {
-                WMLOG(ERROR) << "Unable to create station: " << e.what();
+                WMLOG(ERROR) << "Unable to create event: " << e.what();
             }
         } else {
             hostapd_unknown_counter.Increment();
