@@ -4,7 +4,6 @@
 #include <utility>
 
 void ipc::DisconnectEvent::handle(EventHandler *handler) {
-    assert(handler != nullptr);
     handler->handle_disconnect(this);
 }
 

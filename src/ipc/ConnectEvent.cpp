@@ -4,7 +4,6 @@
 #include <utility>
 
 void ipc::ConnectEvent::handle(EventHandler *handler) {
-    assert(handler != nullptr);
     handler->handle_connect(this);
 }
 
