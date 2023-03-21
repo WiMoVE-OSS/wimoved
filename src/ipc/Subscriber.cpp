@@ -6,19 +6,16 @@
 
 #include "../logging/loginit.h"
 #include "../metrics/MetricsManager.h"
-#include "AssocEvent.h"
 
+const std::string HOSTAPD_CONNECT_STRING = "<3>AP-STA-CONNECTED ";
+const std::string HOSTAPD_DISCONNECT_STRING = "<3>AP-STA-DISCONNECTED ";
 const std::string HOSTAPD_PONG = "PONG\n";
-const std::string HOSTAPD_ASSOC_STRING = "<3>EAPOL-4WAY-HS-COMPLETED ";
-const std::string HOSTAPD_AUTH_STRING = "<3>AP-STA-CONNECTED ";
-const std::string HOSTAPD_DISASSOC_STRING = "<3>AP-STA-DISCONNECTED ";
 
 ipc::Subscriber::Subscriber(SynchronizedQueue<Event>& queue, const std::chrono::duration<int>& timeout)
     : socket(timeout),
       queue(queue),
-      hostapd_association_counter(MetricsManager::get_instance().get_hostapd_counter_for_type("assoc")),
-      hostapd_disassociation_counter(MetricsManager::get_instance().get_hostapd_counter_for_type("disassoc")),
-      hostapd_authentication_counter(MetricsManager::get_instance().get_hostapd_counter_for_type("auth")),
+      hostapd_disconnect_counter(MetricsManager::get_instance().get_hostapd_counter_for_type("disconnect")),
+      hostapd_connect_counter(MetricsManager::get_instance().get_hostapd_counter_for_type("connect")),
       hostapd_unknown_counter(MetricsManager::get_instance().get_hostapd_counter_for_type("unknown")) {}
 
 void ipc::Subscriber::loop(const std::future<void>& future) {
@@ -44,39 +41,29 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             continue;
         }
 
-        if (event.rfind(HOSTAPD_ASSOC_STRING) == 0) {
+        if (event.rfind(HOSTAPD_CONNECT_STRING) == 0) {
             std::string station_mac =
-                event.substr(HOSTAPD_ASSOC_STRING.size(), HOSTAPD_ASSOC_STRING.size() + MAC_ADDRESS_LENGTH);
+                event.substr(HOSTAPD_CONNECT_STRING.size(), HOSTAPD_CONNECT_STRING.size() + MAC_ADDRESS_LENGTH);
             try {
                 Station station(station_mac);
-                queue.enqueue(std::make_unique<AssocEvent>(std::move(station)));
-                hostapd_association_counter.Increment();
+                queue.enqueue(std::make_unique<ConnectEvent>(std::move(station)));
+                hostapd_connect_counter.Increment();
             } catch (const std::runtime_error& e) {
-                WMLOG(ERROR) << "Unable to create station: " << e.what();
+                WMLOG(ERROR) << "Unable to create event: " << e.what();
             }
-        } else if (event.rfind(HOSTAPD_AUTH_STRING) == 0) {
+        } else if (event.rfind(HOSTAPD_DISCONNECT_STRING) == 0) {
             std::string station_mac =
-                event.substr(HOSTAPD_AUTH_STRING.size(), HOSTAPD_AUTH_STRING.size() + MAC_ADDRESS_LENGTH);
+                event.substr(HOSTAPD_DISCONNECT_STRING.size(), HOSTAPD_DISCONNECT_STRING.size() + MAC_ADDRESS_LENGTH);
             try {
                 Station station(station_mac);
-                queue.enqueue(std::make_unique<AuthEvent>(std::move(station)));
-                hostapd_authentication_counter.Increment();
+                queue.enqueue(std::make_unique<DisconnectEvent>(std::move(station)));
+                hostapd_disconnect_counter.Increment();
             } catch (const std::runtime_error& e) {
-                WMLOG(ERROR) << "Unable to create station: " << e.what();
-            }
-        } else if (event.rfind(HOSTAPD_DISASSOC_STRING) == 0) {
-            std::string station_mac =
-                event.substr(HOSTAPD_DISASSOC_STRING.size(), HOSTAPD_DISASSOC_STRING.size() + MAC_ADDRESS_LENGTH);
-            try {
-                Station station(station_mac);
-                queue.enqueue(std::make_unique<DisassocEvent>(std::move(station)));
-                hostapd_disassociation_counter.Increment();
-            } catch (const std::runtime_error& e) {
-                WMLOG(ERROR) << "Unable to create station: " << e.what();
+                WMLOG(ERROR) << "Unable to create event: " << e.what();
             }
         } else {
             hostapd_unknown_counter.Increment();
-            WMLOG(DEBUG) << "Received unknown event" << event;
+            WMLOG(DEBUG) << "Received unknown event " << event;
         }
     }
 }
