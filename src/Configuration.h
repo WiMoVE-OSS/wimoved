@@ -20,6 +20,7 @@ class Configuration {
     void operator=(Configuration const&) = delete;
     uint32_t max_vni = 20;
     std::string hapd_sock = "/var/run/hostapd/wlan0";
+    std::string hapd_group = "root";
     std::string log_path = "wimoved.log";
     uint32_t cleanup_interval = 30;
 
