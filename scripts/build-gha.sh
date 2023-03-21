@@ -7,8 +7,6 @@ cp scripts/Makefile package/
 cp CMakeLists.txt package/src/
 cp -r src package/src/
 
-ls -lisa /home/build/openwrt/package/network/services/
-
 docker run --rm \
   -v "$(pwd)"/scripts/stage2.sh:/home/build/openwrt/stage2.sh \
   -v "$(pwd)"/package:/home/build/openwrt/package/network/services/gaffa \
