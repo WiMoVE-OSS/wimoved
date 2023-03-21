@@ -6,15 +6,15 @@
 #include "BridgePerVxlanRenderer.h"
 #include "ConfigParser.h"
 #include "EventLoop.h"
+#include "ipc/Subscriber.h"
 #include "logging/loginit.h"
 #include "nl/Subscriber.h"
 
 INITIALIZE_EASYLOGGINGPP
 #include "Configuration.h"
 #include "logging/loginit.h"
-#include "nl/Socket80211.h"
 
-std::vector<std::promise<void>> promises(3);
+std::vector<std::promise<void>> promises(5);
 bool promises_resolved = false;
 std::mutex promises_mutex;
 
@@ -68,25 +68,30 @@ int main(int argc, char* argv[]) {
     std::signal(SIGINT, handle_signal);
     std::signal(SIGTERM, handle_signal);
 
-    SynchronizedQueue<Station> station_queue;
+    SynchronizedQueue<ipc::Event> ipc_queue;
+    SynchronizedQueue<nl::Event> nl_queue;
     BridgePerVxlanRenderer renderer;
 
     std::chrono::duration timeout = std::chrono::seconds(1);
-    EventLoop event_loop(renderer, station_queue);
+    EventLoop event_loop(renderer, ipc_queue, nl_queue);
 
+    std::thread ipc_subscriber_thread(
+        [&ipc_queue, &timeout]() { ipc::Subscriber(ipc_queue, timeout).loop(promises[0].get_future()); });
     std::thread nl_subscriber_thread(
-        [&station_queue, &timeout]() { nl::Subscriber(station_queue, timeout).loop(promises[0].get_future()); });
-    std::thread event_loop_nl_thread([&event_loop]() { event_loop.loop_nl_queue(promises[1].get_future()); });
+        [&nl_queue, &timeout]() { nl::Subscriber(nl_queue, timeout).loop(promises[1].get_future()); });
+    std::thread event_loop_ipc_thread([&event_loop]() { event_loop.loop_ipc_queue(promises[2].get_future()); });
+    std::thread event_loop_nl_thread([&event_loop]() { event_loop.loop_nl_queue(promises[3].get_future()); });
     std::thread cleanup_thread([&renderer]() {
-        std::future<void> future = promises[2].get_future();
+        std::future<void> future = promises[4].get_future();
         ipc::Caller caller;
         while (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
             std::this_thread::sleep_for(std::chrono::seconds(Configuration::get_instance().cleanup_interval));
             renderer.cleanup([&caller]() { return caller.connected_stations(); });
         }
     });
+    ipc_subscriber_thread.join();
     nl_subscriber_thread.join();
+    event_loop_ipc_thread.join();
     event_loop_nl_thread.join();
     cleanup_thread.join();
-    GAFFALOG(INFO) << "Gaffa is exiting";
 }
