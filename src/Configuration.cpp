@@ -8,6 +8,7 @@
 
 void Configuration::populate(const ConfigParser& parser) {
     set_string_if_valid(parser, this->hapd_sock, "hapd_sock");
+    set_string_if_valid(parser, this->hapd_group, "hapd_group");
     set_string_if_valid(parser, this->log_path, "log_path");
     set_uint32_if_valid(parser, this->cleanup_interval, "cleanup_interval");
     set_uint32_if_valid(parser, this->max_vni, "max_vni");

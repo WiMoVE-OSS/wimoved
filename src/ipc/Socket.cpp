@@ -68,11 +68,10 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout) : local{AF_UNIX, 
         throw std::runtime_error("could not bind to socket " + socket_path + ": " + std::strerror(errno));
     }
 
-#ifdef WIMOVED_IPC_SOCKET_GROUP
     std::array<char, 200> buf{};
     struct group grp {};
     struct group* grp_result = nullptr;
-    getgrnam_r(WIMOVED_IPC_SOCKET_GROUP, &grp, &buf[0], buf.size(), &grp_result);
+    getgrnam_r(Configuration::get_instance().hapd_group.c_str(), &grp, &buf[0], buf.size(), &grp_result);
     if (grp_result == nullptr) {
         throw std::runtime_error(std::string("getgrnam failed: ") + std::strerror(errno));
     }
@@ -82,7 +81,6 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout) : local{AF_UNIX, 
     if (chmod(local_path.c_str(), 0775) == -1) {
         throw std::runtime_error(std::string("could not set socket permissions: ") + std::strerror(errno));
     }
-#endif
 
     dest.sun_family = AF_UNIX;
     strncpy(dest.sun_path, socket_path.c_str(), sizeof(dest.sun_path));
