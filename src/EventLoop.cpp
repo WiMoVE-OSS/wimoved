@@ -27,25 +27,25 @@ void EventLoop::loop_ipc_queue(const std::future<void>& future) {
 }
 
 void EventLoop::handle_auth(ipc::AuthEvent* event) {
-    GAFFALOG(DEBUG) << "handle_auth called " << event->station.mac;
+    WMLOG(DEBUG) << "handle_auth called " << event->station.mac;
     renderer.setup_vni(event->station.vni());
 }
 
 void EventLoop::handle_assoc(ipc::AssocEvent* event) {
     event->station.vlan_id = caller.vlan_for_station(event->station.mac);
-    GAFFALOG(DEBUG) << "handle_assoc called " << event->station.mac << " with vlan_id "
+    WMLOG(DEBUG) << "handle_assoc called " << event->station.mac << " with vlan_id "
                     << event->station.vlan_id.value_or(0);
-    GAFFALOG(INFO) << "Station " << event->station.mac << " connected to AP for VXLAN " << event->station.vni();
+    WMLOG(INFO) << "Station " << event->station.mac << " connected to AP for VXLAN " << event->station.vni();
     try {
         renderer.setup_station(event->station);
         processing_time_histogram.Observe(event->finished_processing());
     } catch (std::runtime_error& err) {
-        GAFFALOG(ERROR) << "station could not be bridged to vxlan interface: " << err.what();
+        WMLOG(ERROR) << "station could not be bridged to vxlan interface: " << err.what();
     }
     // TODO: Disconnect station on bridging failure
 }
 
 void EventLoop::handle_disassoc(ipc::DisassocEvent* event) {
-    GAFFALOG(INFO) << "Station " << event->station.mac << " disconnected from AP";
-    // GAFFALOG(DEBUG) << "handle_disassoc called " << event->station_mac ;
+    WMLOG(INFO) << "Station " << event->station.mac << " disconnected from AP";
+    // WMLOG(DEBUG) << "handle_disassoc called " << event->station_mac ;
 }

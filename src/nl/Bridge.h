@@ -1,5 +1,5 @@
-#ifndef GAFFA_BRIDGE_H
-#define GAFFA_BRIDGE_H
+#ifndef WIMOVED_BRIDGE_H
+#define WIMOVED_BRIDGE_H
 
 #include <netlink/route/link/bridge.h>
 
@@ -14,4 +14,4 @@ class Bridge {
 };
 }  // namespace nl
 
-#endif  // GAFFA_BRIDGE_H
+#endif  // WIMOVED_BRIDGE_H

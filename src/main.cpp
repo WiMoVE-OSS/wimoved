@@ -30,15 +30,15 @@ void handle_signal(int signal) {
 
 void setup_logger() {
     std::set_terminate([]() -> void {
-        GAFFALOG(ERROR) << "An Exception was thrown that was not caught.";
+        WMLOG(ERROR) << "An Exception was thrown that was not caught.";
         try {
             std::rethrow_exception(std::current_exception());
         } catch (const std::exception& ex) {
-            GAFFALOG(FATAL) << typeid(ex).name() << ": " << ex.what();
+            WMLOG(FATAL) << typeid(ex).name() << ": " << ex.what();
         } catch (...) {
-            GAFFALOG(FATAL) << "Error while handling exception: " << typeid(std::current_exception()).name();
+            WMLOG(FATAL) << "Error while handling exception: " << typeid(std::current_exception()).name();
         }
-        GAFFALOG(ERROR) << "errno: " << errno << ": " << std::strerror(errno) << std::endl;
+        WMLOG(ERROR) << "errno: " << errno << ": " << std::strerror(errno) << std::endl;
         std::abort();
     });
     el::Configurations defaultConf;
@@ -46,7 +46,7 @@ void setup_logger() {
     defaultConf.setGlobally(el::ConfigurationType::Format, "[%level] %datetime %fbase:%line - %msg");
 
 #ifdef ELPP_SYSLOG
-    el::SysLogInitializer elSyslogInit("Gaffa", LOG_PID | LOG_CONS | LOG_PERROR, LOG_USER);
+    el::SysLogInitializer elSyslogInit("WiMoVEd", LOG_PID | LOG_CONS | LOG_PERROR, LOG_USER);
     el::Loggers::reconfigureLogger("syslog", defaultConf);
 #else
     defaultConf.setGlobally(el::ConfigurationType::Filename, Configuration::get_instance().log_path);
@@ -56,11 +56,11 @@ void setup_logger() {
 }
 
 int main(int argc, char* argv[]) {
-    std::string config_path = "/etc/gaffa/config";
+    std::string config_path = "/etc/wimoved/config";
     if (argc >= 2) {
         config_path = argv[1];
     }
-    GAFFALOG(INFO) << "Gaffa is starting";
+    WMLOG(INFO) << "WiMoVEd is starting";
     ConfigParser bla(config_path);
     setup_logger();
 

@@ -1,5 +1,5 @@
-#ifndef GAFFA_EVENTHANDLER_H
-#define GAFFA_EVENTHANDLER_H
+#ifndef WIMOVED_EVENTHANDLER_H
+#define WIMOVED_EVENTHANDLER_H
 
 #include "ipc/AssocEvent.h"
 #include "ipc/AuthEvent.h"
@@ -12,4 +12,4 @@ class EventHandler {
     virtual void handle_disassoc(ipc::DisassocEvent* event) = 0;
 };
 
-#endif  // GAFFA_EVENTHANDLER_H
+#endif  // WIMOVED_EVENTHANDLER_H

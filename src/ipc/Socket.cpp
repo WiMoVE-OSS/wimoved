@@ -45,9 +45,9 @@ static std::string random_name() {
 
 ipc::Socket::Socket(const std::chrono::duration<int>& timeout) : local{AF_UNIX, "\0"}, dest() {
     std::string socket_path = Configuration::get_instance().hapd_sock;
-    std::string local_path = "/var/run/gaffa." + random_name();
+    std::string local_path = "/var/run/wimoved." + random_name();
     if (unlink(local_path.c_str()) == 0) {
-        GAFFALOG(DEBUG) << "Successfully unlinked socket" << local_path;
+        WMLOG(DEBUG) << "Successfully unlinked socket" << local_path;
     }
 
     sock_fd = socket(AF_UNIX, SOCK_DGRAM, 0);
@@ -68,11 +68,11 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout) : local{AF_UNIX, 
         throw std::runtime_error("could not bind to socket " + socket_path + ": " + std::strerror(errno));
     }
 
-#ifdef GAFFA_IPC_SOCKET_GROUP
+#ifdef WIMOVED_IPC_SOCKET_GROUP
     std::array<char, 200> buf{};
     struct group grp {};
     struct group* grp_result = nullptr;
-    getgrnam_r(GAFFA_IPC_SOCKET_GROUP, &grp, &buf[0], buf.size(), &grp_result);
+    getgrnam_r(WIMOVED_IPC_SOCKET_GROUP, &grp, &buf[0], buf.size(), &grp_result);
     if (grp_result == nullptr) {
         throw std::runtime_error(std::string("getgrnam failed: ") + std::strerror(errno));
     }
@@ -95,10 +95,10 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout) : local{AF_UNIX, 
 
 ipc::Socket::~Socket() {
     if (close(sock_fd) == -1) {
-        GAFFALOG(ERROR) << "Could not close socket: " << std::strerror(errno) << "\n";
+        WMLOG(ERROR) << "Could not close socket: " << std::strerror(errno) << "\n";
     }
     if (unlink(local.sun_path) != 0) {
-        GAFFALOG(ERROR) << "Could not unlink socket: " << std::strerror(errno) << "\n";
+        WMLOG(ERROR) << "Could not unlink socket: " << std::strerror(errno) << "\n";
     };
 }
 

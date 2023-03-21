@@ -1,5 +1,5 @@
-#ifndef GAFFA_METRICSMANAGER_H
-#define GAFFA_METRICSMANAGER_H
+#ifndef WIMOVED_METRICSMANAGER_H
+#define WIMOVED_METRICSMANAGER_H
 
 #include <prometheus/exposer.h>
 #include <prometheus/registry.h>
@@ -25,4 +25,4 @@ class MetricsManager {
     prometheus::Family<prometheus::Histogram>& histogram;
 };
 
-#endif  // GAFFA_METRICSMANAGER_H
+#endif  // WIMOVED_METRICSMANAGER_H

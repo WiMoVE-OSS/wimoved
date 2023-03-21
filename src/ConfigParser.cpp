@@ -29,7 +29,7 @@ ConfigParser::ConfigParser(const std::string &config_path) {
     std::string line;
     std::ifstream config_file(config_path);
     if (!config_file.is_open()) {
-        GAFFALOG(ERROR) << "Unable to read config file " << config_path << ". Using default config";
+        WMLOG(ERROR) << "Unable to read config file " << config_path << ". Using default config";
         return;
     }
 

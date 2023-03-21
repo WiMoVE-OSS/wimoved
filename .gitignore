@@ -16,7 +16,7 @@ _deps
 !.gitignore
 !.github
 *.cbp
-gaffa
+wimoved
 out/
 package/
 *.log

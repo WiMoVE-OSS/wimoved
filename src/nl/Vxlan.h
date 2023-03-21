@@ -1,5 +1,5 @@
-#ifndef GAFFA_VXLAN_H
-#define GAFFA_VXLAN_H
+#ifndef WIMOVED_VXLAN_H
+#define WIMOVED_VXLAN_H
 
 #include <netlink/route/link/vxlan.h>
 
@@ -14,4 +14,4 @@ class Vxlan {
 };
 }  // namespace nl
 
-#endif  // GAFFA_VXLAN_H
+#endif  // WIMOVED_VXLAN_H

@@ -1,5 +1,5 @@
-#ifndef GAFFA_EVENTLOOP_H
-#define GAFFA_EVENTLOOP_H
+#ifndef WIMOVED_EVENTLOOP_H
+#define WIMOVED_EVENTLOOP_H
 
 #include <future>
 
@@ -28,4 +28,4 @@ class EventLoop : public EventHandler {
     void handle_disassoc(ipc::DisassocEvent* event) override;
 };
 
-#endif  // GAFFA_EVENTLOOP_H
+#endif  // WIMOVED_EVENTLOOP_H
