@@ -2,7 +2,7 @@
 name: Build Binaries
 
 on:
-  push:
+  workflow_call:
 
 jobs:
   build-arm:
