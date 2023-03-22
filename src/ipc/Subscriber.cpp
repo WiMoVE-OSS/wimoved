@@ -4,9 +4,9 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "../Configuration.h"
 #include "../logging/loginit.h"
 #include "../metrics/MetricsManager.h"
-#include "../Configuration.h"
 
 const std::string HOSTAPD_CONNECT_STRING = "<3>AP-STA-CONNECTED ";
 const std::string HOSTAPD_DISCONNECT_STRING = "<3>AP-STA-DISCONNECTED ";
@@ -50,10 +50,9 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
         std::string event = parsedLine[1];
 
         std::vector<std::string> interface_names = Configuration::get_instance().ifnames;
-        if (std::find(interface_names.begin(), interface_names.end(), ifname) == interface_names.end())
-        {
+        if (std::find(interface_names.begin(), interface_names.end(), ifname) == interface_names.end()) {
             WMLOG(DEBUG) << "Received event on interface that is not configured " << ifname << ": " << event;
-            continue ;
+            continue;
         }
 
         if (event.rfind(HOSTAPD_CONNECT_STRING) == 0) {
@@ -83,17 +82,17 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
     }
 }
 
-std::vector<std::string> ipc::Subscriber::split_at_first_space(const std::string &line) {
+std::vector<std::string> ipc::Subscriber::split_at_first_space(const std::string& line) {
     auto position = line.find(' ');
-    if(position < 0) throw std::runtime_error("Could not parse event line: " + line);
+    if (position < 0) throw std::runtime_error("Could not parse event line: " + line);
     std::vector<std::string> result;
     result.push_back(line.substr(0, position));
-    result.push_back(line.substr(position+1));
+    result.push_back(line.substr(position + 1));
     return result;
 }
 
-std::string ipc::Subscriber::get_ifname(const std::string &eventprefix) {
-    if(eventprefix.rfind(HOSTAPD_IFPREFIX) != 0) {
+std::string ipc::Subscriber::get_ifname(const std::string& eventprefix) {
+    if (eventprefix.rfind(HOSTAPD_IFPREFIX) != 0) {
         throw std::runtime_error("interface name could not be parsed from event prefix: " + eventprefix);
     }
     return eventprefix.substr(HOSTAPD_IFPREFIX.size());

@@ -5,9 +5,9 @@
 #include <stdexcept>
 #include <thread>
 
+#include "../Configuration.h"
 #include "../Station.h"
 #include "../logging/loginit.h"
-#include "../Configuration.h"
 
 const std::string VLAN_ID_PREFIX = "vlan_id=";
 
@@ -29,8 +29,7 @@ uint32_t ipc::Caller::vlan_for_station(const Station &station) {
 std::vector<Station> ipc::Caller::connected_stations() {
     std::vector<std::string> interface_names = Configuration::get_instance().ifnames;
     std::vector<Station> stations;
-    for (auto & ifname : interface_names)
-    {
+    for (auto &ifname : interface_names) {
         Socket &socket = get_socket(ifname);
         std::string ipc_result = socket.send_and_receive({"STA-FIRST"});
         while (!ipc_result.empty()) {
@@ -51,7 +50,7 @@ void ipc::Caller::deauth_station(const Station &station) {
     }
 }
 ipc::Socket &ipc::Caller::get_socket(std::string name) {
-    if(sockets.find(name) == sockets.end()) {
+    if (sockets.find(name) == sockets.end()) {
         sockets.emplace(name, Socket{std::chrono::seconds(1), name});
     }
     return sockets.at(name);

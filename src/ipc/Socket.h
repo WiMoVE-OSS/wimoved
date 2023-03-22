@@ -27,9 +27,9 @@ class Socket {
 
     ~Socket();
 
-    Socket(Socket const&) = delete;
-    void operator=(Socket const&) = delete;
-    Socket ( Socket && );
+    Socket(Socket const &) = delete;
+    void operator=(Socket const &) = delete;
+    Socket(Socket &&);
 
    private:
     int sock_fd;

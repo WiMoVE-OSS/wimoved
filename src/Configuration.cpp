@@ -30,7 +30,8 @@ void Configuration::set_uint32_if_valid(const ConfigParser& parser, uint32_t& co
     }
 }
 
-void Configuration::set_string_vector_if_valid(const ConfigParser& parser, std::vector<std::string>& config_target, const std::string& key) {
+void Configuration::set_string_vector_if_valid(const ConfigParser& parser, std::vector<std::string>& config_target,
+                                               const std::string& key) {
     try {
         config_target = parser.get_config_string_vector(key);
     } catch (const std::out_of_range& err) {

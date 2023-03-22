@@ -43,7 +43,8 @@ static std::string random_name() {
     return s;
 }
 
-ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string &ifname) : local{AF_UNIX, "\0"}, dest() {
+ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string& ifname)
+    : local{AF_UNIX, "\0"}, dest() {
     std::string socket_path = Configuration::get_instance().hapd_sockdir + ifname;
     std::string local_path = "/var/run/wimoved." + random_name();
     if (unlink(local_path.c_str()) == 0) {
@@ -92,7 +93,7 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string
 }
 
 ipc::Socket::~Socket() {
-    if(sock_fd == -1) return;
+    if (sock_fd == -1) return;
     WMLOG(DEBUG) << "Closing socket" << sock_fd << " " << dest.sun_path;
     if (close(sock_fd) == -1) {
         WMLOG(ERROR) << "Could not close socket: " << std::strerror(errno) << "\n";
@@ -131,6 +132,4 @@ std::string ipc::Socket::receive() const {
         }
     }
 }
-ipc::Socket::Socket(ipc::Socket&& old) : sock_fd(old.sock_fd), local(old.local), dest(old.dest) {
-    old.sock_fd = -1;
-}
+ipc::Socket::Socket(ipc::Socket&& old) : sock_fd(old.sock_fd), local(old.local), dest(old.dest) { old.sock_fd = -1; }

@@ -18,7 +18,7 @@ class Caller {
 
    private:
     std::unordered_map<std::string, Socket> sockets;
-    Socket &get_socket(std::string name);
+    Socket& get_socket(std::string name);
 };
 }  // namespace ipc
 
