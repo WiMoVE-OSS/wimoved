@@ -67,3 +67,17 @@ uint32_t ConfigParser::get_config_uint32(const std::string &option) const {
     }
     return result;
 }
+
+std::vector<std::string> ConfigParser::get_config_string_vector(const std::string &option) const {
+    std::string value = this->get_config_string(option);
+    std::vector<std::string> strings;
+
+    std::stringstream stream(value); //create string stream from the string
+    while(stream.good()) {
+        std::string substring;
+        getline(stream, substring, ','); //get first string delimited by comma
+        trim(substring);
+        strings.push_back(substring);
+    }
+    return strings;
+}

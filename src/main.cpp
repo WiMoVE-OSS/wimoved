@@ -80,8 +80,8 @@ int main(int argc, char* argv[]) {
         std::future<void> future = promises[2].get_future();
         ipc::Caller caller;
         while (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
-            std::this_thread::sleep_for(std::chrono::seconds(Configuration::get_instance().cleanup_interval));
             renderer.cleanup([&caller]() { return caller.connected_stations(); });
+            std::this_thread::sleep_for(std::chrono::seconds(Configuration::get_instance().cleanup_interval));
         }
     });
     ipc_subscriber_thread.join();

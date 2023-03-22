@@ -1,6 +1,8 @@
 #ifndef WIMOVED_CALLER_H
 #define WIMOVED_CALLER_H
 
+#include <unordered_map>
+
 #include "../Station.h"
 #include "Socket.h"
 
@@ -9,13 +11,14 @@ class Caller {
    public:
     Caller();
 
-    uint32_t vlan_for_station(const std::string& station_mac);
+    uint32_t vlan_for_station(const Station& station);
 
     std::vector<Station> connected_stations();
-    void deauth_station(const std::string& station_mac);
+    void deauth_station(const Station& station);
 
    private:
-    Socket socket;
+    std::unordered_map<std::string, Socket> sockets;
+    Socket &get_socket(std::string name);
 };
 }  // namespace ipc
 
