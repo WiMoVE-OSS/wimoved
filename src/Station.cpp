@@ -8,12 +8,10 @@
 
 const auto MAC_REGEX = std::regex("^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$");
 
-Station::Station(std::string sockname, std::string mac) : vlan_id(std::nullopt) {
+Station::Station(std::string sockname, std::string mac) : vlan_id(std::nullopt), mac(mac), sockname(sockname) {
     if (!std::regex_match(mac, MAC_REGEX)) {
         throw new std::runtime_error("MAC address not valid");
     }
-    this->mac = mac;
-    this->sockname = sockname;
 }
 
 uint32_t Station::vni() const {

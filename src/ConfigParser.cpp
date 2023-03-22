@@ -69,7 +69,7 @@ uint32_t ConfigParser::get_config_uint32(const std::string &option) const {
 }
 
 std::vector<std::string> ConfigParser::get_config_string_vector(const std::string &option) const {
-    std::string value = this->get_config_string(option);
+    std::string value = get_config_string(option);
     std::vector<std::string> strings;
 
     std::stringstream stream(value);  // create string stream from the string

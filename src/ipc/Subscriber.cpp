@@ -45,9 +45,8 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
         }
 
         // Split up a hostAPD global event in the form IFNAME=wlan1-1 <3>AP-STA-CONNECTED 12:34:56:78:90:ab
-        auto parsedLine = split_at_first_space(line);
-        std::string sockname = get_ifname(parsedLine[0]);
-        std::string event = parsedLine[1];
+        auto [ifname_part, event] = split_at_first_space(line);
+        std::string sockname = get_ifname(ifname_part);
 
         std::vector<std::string> interface_names = Configuration::get_instance().socknames;
         if (std::find(interface_names.begin(), interface_names.end(), sockname) == interface_names.end()) {
@@ -82,13 +81,10 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
     }
 }
 
-std::vector<std::string> ipc::Subscriber::split_at_first_space(const std::string& line) {
+std::pair<std::string, std::string> ipc::Subscriber::split_at_first_space(const std::string& line) {
     auto position = line.find(' ');
-    if (position < 0) throw std::runtime_error("Could not parse event line: " + line);
-    std::vector<std::string> result;
-    result.push_back(line.substr(0, position));
-    result.push_back(line.substr(position + 1));
-    return result;
+    if (position == std::string::npos) throw std::runtime_error("Could not parse event line: " + line);
+    return {line.substr(0, position), line.substr(position + 1)};
 }
 
 std::string ipc::Subscriber::get_ifname(const std::string& eventprefix) {

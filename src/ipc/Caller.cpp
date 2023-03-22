@@ -22,14 +22,13 @@ uint32_t ipc::Caller::vlan_for_station(const Station &station) {
             return std::stol(line.substr(VLAN_ID_PREFIX.size(), line.size()));
         }
     }
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
     throw std::runtime_error("no vlan_id attribute found for station");
 }
 
 std::vector<Station> ipc::Caller::connected_stations() {
     std::vector<std::string> socknames = Configuration::get_instance().socknames;
     std::vector<Station> stations;
-    for (auto &sockname : socknames) {
+    for (const auto &sockname : socknames) {
         Socket &socket = get_socket(sockname);
         std::string ipc_result = socket.send_and_receive({"STA-FIRST"});
         while (!ipc_result.empty()) {
