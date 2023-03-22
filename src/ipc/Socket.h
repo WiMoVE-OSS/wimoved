@@ -15,7 +15,7 @@ const size_t MAC_ADDRESS_LENGTH = 2 * 6 + 5;
 
 class Socket {
    public:
-    explicit Socket(const std::chrono::duration<int> &timeout, const std::string &ifname);
+    explicit Socket(const std::chrono::duration<int> &timeout, const std::string &sockname);
 
     std::string send_and_receive(const std::vector<std::string> &args) const;
 

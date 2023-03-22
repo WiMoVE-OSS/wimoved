@@ -23,7 +23,7 @@ class Configuration {
     std::string hapd_sockdir = "/var/run/hostapd/";
     std::string hapd_group = "root";
     std::string log_path = "wimoved.log";
-    std::vector<std::string> ifnames = {"wlan0"};
+    std::vector<std::string> socknames = {"wlan0"};
     uint32_t cleanup_interval = 10;
 
    private:

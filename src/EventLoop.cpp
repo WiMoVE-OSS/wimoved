@@ -31,7 +31,7 @@ void EventLoop::handle_connect(ipc::ConnectEvent* event) {
     WMLOG(DEBUG) << "handle_connect called " << event->station.mac << " with vlan_id "
                  << event->station.vlan_id.value_or(0);
     WMLOG(INFO) << "Station " << event->station.mac << " connected to AP for VXLAN " << event->station.vni()
-                << " at interface " << event->station.ifname;
+                << " at interface " << event->station.sockname;
     try {
         renderer.setup_station(event->station);
         processing_time_histogram.Observe(event->finished_processing());

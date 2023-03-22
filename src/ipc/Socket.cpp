@@ -43,9 +43,9 @@ static std::string random_name() {
     return s;
 }
 
-ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string& ifname)
+ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string& sockname)
     : local{AF_UNIX, "\0"}, dest() {
-    std::string socket_path = Configuration::get_instance().hapd_sockdir + ifname;
+    std::string socket_path = Configuration::get_instance().hapd_sockdir + sockname;
     std::string local_path = "/var/run/wimoved." + random_name();
     if (unlink(local_path.c_str()) == 0) {
         WMLOG(DEBUG) << "Successfully unlinked socket" << local_path;

@@ -12,7 +12,7 @@ void Configuration::populate(const ConfigParser& parser) {
     set_string_if_valid(parser, this->log_path, "log_path");
     set_uint32_if_valid(parser, this->cleanup_interval, "cleanup_interval");
     set_uint32_if_valid(parser, this->max_vni, "max_vni");
-    set_string_vector_if_valid(parser, this->ifnames, "ifaces");
+    set_string_vector_if_valid(parser, this->socknames, "sockets");
 }
 
 void Configuration::set_string_if_valid(const ConfigParser& parser, std::string& config_target,

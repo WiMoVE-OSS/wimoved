@@ -46,12 +46,12 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
 
         // Split up a hostAPD global event in the form IFNAME=wlan1-1 <3>AP-STA-CONNECTED 12:34:56:78:90:ab
         auto parsedLine = split_at_first_space(line);
-        std::string ifname = get_ifname(parsedLine[0]);
+        std::string sockname = get_ifname(parsedLine[0]);
         std::string event = parsedLine[1];
 
-        std::vector<std::string> interface_names = Configuration::get_instance().ifnames;
-        if (std::find(interface_names.begin(), interface_names.end(), ifname) == interface_names.end()) {
-            WMLOG(DEBUG) << "Received event on interface that is not configured " << ifname << ": " << event;
+        std::vector<std::string> interface_names = Configuration::get_instance().socknames;
+        if (std::find(interface_names.begin(), interface_names.end(), sockname) == interface_names.end()) {
+            WMLOG(DEBUG) << "Received event on interface that is not configured " << sockname << ": " << event;
             continue;
         }
 
@@ -59,7 +59,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             std::string station_mac =
                 event.substr(HOSTAPD_CONNECT_STRING.size(), HOSTAPD_CONNECT_STRING.size() + MAC_ADDRESS_LENGTH);
             try {
-                Station station(ifname, station_mac);
+                Station station(sockname, station_mac);
                 queue.enqueue(std::make_unique<ConnectEvent>(std::move(station)));
                 hostapd_connect_counter.Increment();
             } catch (const std::runtime_error& e) {
@@ -69,7 +69,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             std::string station_mac =
                 event.substr(HOSTAPD_DISCONNECT_STRING.size(), HOSTAPD_DISCONNECT_STRING.size() + MAC_ADDRESS_LENGTH);
             try {
-                Station station(ifname, station_mac);
+                Station station(sockname, station_mac);
                 queue.enqueue(std::make_unique<DisconnectEvent>(std::move(station)));
                 hostapd_disconnect_counter.Increment();
             } catch (const std::runtime_error& e) {
