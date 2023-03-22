@@ -72,10 +72,10 @@ std::vector<std::string> ConfigParser::get_config_string_vector(const std::strin
     std::string value = get_config_string(option);
     std::vector<std::string> strings;
 
-    std::stringstream stream(value);  // create string stream from the string
+    std::stringstream stream(value);
     while (stream.good()) {
         std::string substring;
-        getline(stream, substring, ',');  // get first string delimited by comma
+        getline(stream, substring, ',');
         trim(substring);
         strings.push_back(substring);
     }
