@@ -19,14 +19,17 @@ else()
     include_directories(/usr/include/libnl3)
 endif()
 
-file(GLOB_RECURSE ALL_FILES src/*.h src/*.cpp src/**/*.h src/**/*.cpp)
+file(GLOB_RECURSE SRC_FILES src/*.h src/*.cpp src/**/*.h src/**/*.cpp)
+file(GLOB_RECURSE VENDOR_FILES vendor/*.h vendor/*.cpp vendor/**/*.h vendor/**/*.cpp)
+list(APPEND ALL_FILES ${SRC_FILES} ${VENDOR_FILES})
 
 add_executable(wimoved ${ALL_FILES})
 target_link_libraries(wimoved nl-3 nl-route-3 prometheus-cpp::pull prometheus-cpp::core)
 
-include_directories(src/hostapd)
+include_directories(vendor)
 
-add_custom_target(format COMMAND clang-format -i ${ALL_FILES})
-add_custom_target(format-check COMMAND clang-format --dry-run --Werror ${ALL_FILES})
-add_custom_target(lint COMMAND run-clang-tidy -config-file=.clang-tidy ${ALL_FILES})
+add_custom_target(format COMMAND clang-format -i ${SRC_FILES})
+add_custom_target(format-check COMMAND clang-format --dry-run --Werror ${SRC_FILES})
+add_custom_target(lint COMMAND run-clang-tidy -quiet -config-file=.clang-tidy ${SRC_FILES})
+add_custom_target(precommit DEPENDS lint format)
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)

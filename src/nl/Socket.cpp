@@ -10,10 +10,10 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "../logging/loginit.h"
 #include "Bridge.h"
 #include "Link.h"
 #include "Vxlan.h"
+#include "logging/loginit.h"
 
 const std::string VXLAN_IFACE_PREFIX = "vxlan";
 const std::string BRIDGE_IFACE_PREFIX = "bridge";

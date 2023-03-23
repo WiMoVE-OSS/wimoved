@@ -7,7 +7,7 @@
 
 #include "../Configuration.h"
 #include "../Station.h"
-#include "../logging/loginit.h"
+#include "logging/loginit.h"
 
 const std::string VLAN_ID_PREFIX = "vlan_id=";
 

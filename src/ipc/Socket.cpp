@@ -15,7 +15,7 @@
 
 #include "../Configuration.h"
 #include "../TimeoutException.h"
-#include "../logging/loginit.h"
+#include "logging/loginit.h"
 
 static std::string join(const std::vector<std::string>& strings, char separator) {
     std::ostringstream o;

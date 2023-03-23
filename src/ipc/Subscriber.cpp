@@ -5,8 +5,8 @@
 #include <stdexcept>
 
 #include "../Configuration.h"
-#include "../logging/loginit.h"
 #include "../metrics/MetricsManager.h"
+#include "logging/loginit.h"
 
 const std::string HOSTAPD_CONNECT_STRING = "<3>AP-STA-CONNECTED ";
 const std::string HOSTAPD_DISCONNECT_STRING = "<3>AP-STA-DISCONNECTED ";
