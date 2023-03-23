@@ -34,10 +34,10 @@ ConfigParser ConfigParser::from_file(const std::string &config_path) {
     return ConfigParser(config_file);
 }
 
-ConfigParser::ConfigParser(std::istream &config_file) {
+ConfigParser::ConfigParser(std::istream &istream) {
     std::string line;
     std::string delimiter = "=";
-    while (std::getline(config_file, line, '\n')) {
+    while (std::getline(istream, line, '\n')) {
         auto split = line.find(delimiter);
         trim(line);
         std::string token = line.substr(0, split);
@@ -82,4 +82,4 @@ std::vector<std::string> ConfigParser::get_config_string_vector(const std::strin
     return strings;
 }
 
-void ConfigParser::populate_configuration(Configuration &config) { config.populate(*this); }
+void ConfigParser::populate_configuration(Configuration &config) const { config.populate(*this); }

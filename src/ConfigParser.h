@@ -17,7 +17,7 @@ class ConfigParser {
     std::string get_config_string(const std::string& option) const;
     uint32_t get_config_uint32(const std::string& option) const;
     std::vector<std::string> get_config_string_vector(const std::string& option) const;
-    void populate_configuration(Configuration& config);
+    void populate_configuration(Configuration& config) const;
 
    private:
     std::unordered_map<std::string, std::string> config_options;
