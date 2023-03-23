@@ -69,7 +69,8 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
         }
 
         if (event.rfind(HOSTAPD_CONNECT_STRING) == 0) {
-            MacAddress station_mac(event.substr(HOSTAPD_CONNECT_STRING.size(), HOSTAPD_CONNECT_STRING.size() + MAC_ADDRESS_LENGTH));
+            MacAddress station_mac(
+                event.substr(HOSTAPD_CONNECT_STRING.size(), HOSTAPD_CONNECT_STRING.size() + MAC_ADDRESS_LENGTH));
             try {
                 Station station(sockname, station_mac);
                 queue.enqueue(std::make_unique<ConnectEvent>(std::move(station)));
@@ -78,7 +79,8 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
                 WMLOG(ERROR) << "Unable to create event: " << e.what();
             }
         } else if (event.rfind(HOSTAPD_DISCONNECT_STRING) == 0) {
-            MacAddress station_mac(event.substr(HOSTAPD_DISCONNECT_STRING.size(), HOSTAPD_DISCONNECT_STRING.size() + MAC_ADDRESS_LENGTH));
+            MacAddress station_mac(
+                event.substr(HOSTAPD_DISCONNECT_STRING.size(), HOSTAPD_DISCONNECT_STRING.size() + MAC_ADDRESS_LENGTH));
             try {
                 Station station(sockname, station_mac);
                 queue.enqueue(std::make_unique<DisconnectEvent>(std::move(station)));
