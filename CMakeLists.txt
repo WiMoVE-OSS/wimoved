@@ -12,13 +12,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_compile_definitions(ELPP_THREAD_SAFE)
 add_compile_definitions(ELPP_FEATURE_CRASH_LOG)
 
-include_directories(vendor)
-
 if(DEFINED STAGING_DIR)
-    include_directories(${INCLUDE_DIRECTORIES} ${STAGING_DIR}/usr/include/libnl3)
+    include_directories(vendor ${STAGING_DIR}/usr/include/libnl3)
     add_compile_definitions(ELPP_SYSLOG)
 else()
-    include_directories(${INCLUDE_DIRECTORIES} /usr/include/libnl3)
+    include_directories(vendor /usr/include/libnl3)
 endif()
 
 file(GLOB_RECURSE SRC_FILES src/*.h src/*.cpp src/**/*.h src/**/*.cpp)
