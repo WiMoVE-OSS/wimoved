@@ -31,6 +31,7 @@ class Configuration {
     std::string log_path = DEFAULT_LOG_PATH;
     std::vector<std::string> socknames = DEFAULT_SOCKNAMES;
     uint32_t cleanup_interval = DEFAULT_CLEANUP_INTERVAL;
+
    private:
     Configuration() = default;
 };

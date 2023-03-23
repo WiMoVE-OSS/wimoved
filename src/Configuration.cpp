@@ -2,7 +2,6 @@
 
 #include <stdexcept>
 
-
 const uint32_t Configuration::DEFAULT_MAX_VNI = 20;
 const std::string Configuration::DEFAULT_HAPD_SOCKDIR = "/var/run/hostapd/";
 const std::string Configuration::DEFAULT_HAPD_GROUP = "root";
