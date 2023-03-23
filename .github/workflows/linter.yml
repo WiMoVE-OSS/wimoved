@@ -5,14 +5,7 @@ on:
   pull_request:
 
 jobs:
-  formatting:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Start formatting
-        run: make format-check
-
-  linting:
+  linting-formatting:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -22,5 +15,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install libnl-3-dev
       - name: Start CMake
         run: cmake CMakeLists.txt
+      - name: Start formatting
+        run: make format-check
       - name: Start linting
         run: make lint
