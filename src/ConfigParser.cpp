@@ -11,12 +11,12 @@
 
 // trim from start (in place)
 static inline void ltrim(std::string &s) {
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) { return !std::isspace(ch); }));
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) { return std::isspace(ch) == 0; }));
 }
 
 // trim from end (in place)
 static inline void rtrim(std::string &s) {
-    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(), s.end());
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) { return std::isspace(ch) == 0; }).base(), s.end());
 }
 
 // trim from both ends (in place)
@@ -54,9 +54,8 @@ std::string ConfigParser::get_config_string(const std::string &option) const {
     auto got = config_options.find(option);
     if (got == config_options.end()) {
         throw std::out_of_range(std::string("Could not get option: ") + option);
-    } else {
-        return got->second;
     }
+    return got->second;
 }
 
 uint32_t ConfigParser::get_config_uint32(const std::string &option) const {

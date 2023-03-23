@@ -1,18 +1,32 @@
 #include "Subscriber.h"
 
 #include <chrono>
-#include <iostream>
 #include <stdexcept>
 
 #include "../Configuration.h"
-#include "../logging/loginit.h"
 #include "../metrics/MetricsManager.h"
+#include "logging/loginit.h"
 
 const std::string HOSTAPD_CONNECT_STRING = "<3>AP-STA-CONNECTED ";
 const std::string HOSTAPD_DISCONNECT_STRING = "<3>AP-STA-DISCONNECTED ";
 const std::string HOSTAPD_PONG = "PONG\n";
 const std::string HOSTAPD_IFPREFIX = "IFNAME=";
 const std::string HOSTAPD_GLOBAL = "global";
+
+static std::pair<std::string, std::string> split_at_first_space(const std::string& line) {
+    auto position = line.find(' ');
+    if (position == std::string::npos) {
+        throw std::runtime_error("Could not parse event line: " + line);
+    }
+    return {line.substr(0, position), line.substr(position + 1)};
+}
+
+static std::string get_ifname(const std::string& eventprefix) {
+    if (eventprefix.rfind(HOSTAPD_IFPREFIX) != 0) {
+        throw std::runtime_error("interface name could not be parsed from event prefix: " + eventprefix);
+    }
+    return eventprefix.substr(HOSTAPD_IFPREFIX.size());
+}
 
 ipc::Subscriber::Subscriber(SynchronizedQueue<Event>& queue, const std::chrono::duration<int>& timeout)
     : socket(timeout, HOSTAPD_GLOBAL),
@@ -55,8 +69,8 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
         }
 
         if (event.rfind(HOSTAPD_CONNECT_STRING) == 0) {
-            std::string station_mac =
-                event.substr(HOSTAPD_CONNECT_STRING.size(), HOSTAPD_CONNECT_STRING.size() + MAC_ADDRESS_LENGTH);
+            MacAddress station_mac(
+                event.substr(HOSTAPD_CONNECT_STRING.size(), HOSTAPD_CONNECT_STRING.size() + MAC_ADDRESS_LENGTH));
             try {
                 Station station(sockname, station_mac);
                 queue.enqueue(std::make_unique<ConnectEvent>(std::move(station)));
@@ -65,8 +79,8 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
                 WMLOG(ERROR) << "Unable to create event: " << e.what();
             }
         } else if (event.rfind(HOSTAPD_DISCONNECT_STRING) == 0) {
-            std::string station_mac =
-                event.substr(HOSTAPD_DISCONNECT_STRING.size(), HOSTAPD_DISCONNECT_STRING.size() + MAC_ADDRESS_LENGTH);
+            MacAddress station_mac(
+                event.substr(HOSTAPD_DISCONNECT_STRING.size(), HOSTAPD_DISCONNECT_STRING.size() + MAC_ADDRESS_LENGTH));
             try {
                 Station station(sockname, station_mac);
                 queue.enqueue(std::make_unique<DisconnectEvent>(std::move(station)));
@@ -79,17 +93,4 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             WMLOG(DEBUG) << "Received unknown event " << event;
         }
     }
-}
-
-std::pair<std::string, std::string> ipc::Subscriber::split_at_first_space(const std::string& line) {
-    auto position = line.find(' ');
-    if (position == std::string::npos) throw std::runtime_error("Could not parse event line: " + line);
-    return {line.substr(0, position), line.substr(position + 1)};
-}
-
-std::string ipc::Subscriber::get_ifname(const std::string& eventprefix) {
-    if (eventprefix.rfind(HOSTAPD_IFPREFIX) != 0) {
-        throw std::runtime_error("interface name could not be parsed from event prefix: " + eventprefix);
-    }
-    return eventprefix.substr(HOSTAPD_IFPREFIX.size());
 }

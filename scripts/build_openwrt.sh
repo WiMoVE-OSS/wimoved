@@ -5,6 +5,7 @@ mkdir -p out package/src/src
 cp scripts/Makefile package/
 cp CMakeLists.txt package/src/
 cp -r src package/src/
+cp -r vendor package/src/
 
 docker build "$(pwd)/$(dirname -- "$0")" -t wimoved-buildenv
 

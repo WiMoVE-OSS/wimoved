@@ -7,10 +7,13 @@ namespace nl {
 class Vxlan {
    public:
     Vxlan();
-    Vxlan(const Vxlan &other) = delete;
     ~Vxlan();
+    Vxlan(const Vxlan& other) = delete;
+    Vxlan operator=(const Vxlan& other) = delete;
+    Vxlan(Vxlan&& other) = delete;
+    Vxlan operator=(Vxlan&& other) = delete;
 
-    rtnl_link *link;
+    rtnl_link* link;
 };
 }  // namespace nl
 

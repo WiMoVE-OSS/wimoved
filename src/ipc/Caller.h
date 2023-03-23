@@ -9,8 +9,6 @@
 namespace ipc {
 class Caller {
    public:
-    Caller();
-
     uint32_t vlan_for_station(const Station& station);
 
     std::vector<Station> connected_stations();
@@ -18,7 +16,7 @@ class Caller {
 
    private:
     std::unordered_map<std::string, Socket> sockets;
-    Socket& get_socket(std::string name);
+    Socket& get_socket(const std::string& name);
 };
 }  // namespace ipc
 

@@ -1,23 +1,26 @@
 #include <csignal>
 #include <future>
 #include <iostream>
+#include <span>
 #include <thread>
 
 #include "BridgePerVxlanRenderer.h"
 #include "ConfigParser.h"
+#include "Configuration.h"
 #include "EventLoop.h"
 #include "ipc/Subscriber.h"
 #include "logging/loginit.h"
 
+// NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
 INITIALIZE_EASYLOGGINGPP
-#include "Configuration.h"
-#include "logging/loginit.h"
 
+// NOLINTBEGIN(cppcoreguidelines-avoid-non-const-global-variables)
 std::vector<std::promise<void>> promises(3);
 bool promises_resolved = false;
 std::mutex promises_mutex;
+// NOLINTEND(cppcoreguidelines-avoid-non-const-global-variables)
 
-void handle_signal(int signal) {
+void handle_signal(int __attribute__((unused)) signal) {
     std::lock_guard g(promises_mutex);
     if (promises_resolved) {
         return;
@@ -41,31 +44,33 @@ void setup_logger() {
         WMLOG(ERROR) << "errno: " << errno << ": " << std::strerror(errno) << std::endl;
         std::abort();
     });
-    el::Configurations defaultConf;
-    defaultConf.setToDefault();
-    defaultConf.setGlobally(el::ConfigurationType::Format, "[%level] %datetime %fbase:%line - %msg");
+    el::Configurations default_configuration;
+    default_configuration.setToDefault();
+    default_configuration.setGlobally(el::ConfigurationType::Format, "[%level] %datetime %fbase:%line - %msg");
 
 #ifdef ELPP_SYSLOG
     el::SysLogInitializer elSyslogInit("wimoved", LOG_PID | LOG_CONS | LOG_PERROR, LOG_USER);
-    el::Loggers::reconfigureLogger("syslog", defaultConf);
+    el::Loggers::reconfigureLogger("syslog", default_configuration);
 #else
-    defaultConf.setGlobally(el::ConfigurationType::Filename, Configuration::get_instance().log_path);
+    default_configuration.setGlobally(el::ConfigurationType::Filename, Configuration::get_instance().log_path);
 #endif
 
-    el::Loggers::reconfigureLogger("default", defaultConf);
+    el::Loggers::reconfigureLogger("default", default_configuration);
 }
 
 int main(int argc, char* argv[]) {
     std::string config_path = "/etc/wimoved/config";
-    if (argc >= 2) {
-        config_path = argv[1];
+    auto args = std::span(argv, argc);
+    if (args.size() >= 2) {
+        config_path = args[1];
     }
     WMLOG(INFO) << "wimoved is starting";
     ConfigParser bla(config_path);
     setup_logger();
 
-    std::signal(SIGINT, handle_signal);
-    std::signal(SIGTERM, handle_signal);
+    if (std::signal(SIGINT, handle_signal) == SIG_ERR || std::signal(SIGTERM, handle_signal) == SIG_ERR) {
+        WMLOG(FATAL) << "could not set up signal handlers " << std::strerror(errno);
+    }
 
     SynchronizedQueue<ipc::Event> ipc_queue;
     BridgePerVxlanRenderer renderer;

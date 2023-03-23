@@ -13,7 +13,6 @@
 //  https://amrayn.com
 //  http://muflihun.com
 //
-
 #ifndef EASYLOGGINGPP_H
 #define EASYLOGGINGPP_H
 // Compilers and C++0x/C++11 Evaluation

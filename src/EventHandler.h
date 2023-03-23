@@ -6,6 +6,7 @@
 
 class EventHandler {
    public:
+    virtual ~EventHandler() = default;
     virtual void handle_connect(ipc::ConnectEvent* event) = 0;
     virtual void handle_disconnect(ipc::DisconnectEvent* event) = 0;
 };
