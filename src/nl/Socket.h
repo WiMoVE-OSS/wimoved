@@ -1,5 +1,5 @@
-#ifndef GAFFA_NL_SOCKET_H
-#define GAFFA_NL_SOCKET_H
+#ifndef WIMOVED_NL_SOCKET_H
+#define WIMOVED_NL_SOCKET_H
 
 #include <netlink/list.h>
 #include <netlink/netlink.h>
@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "../SynchronizedQueue.h"
-#include "Event.h"
 
 namespace nl {
 class Socket {
@@ -23,14 +22,9 @@ class Socket {
     void delete_interface(const std::string& name);
     std::unordered_set<uint32_t> interface_list();
 
-    void subscribe();
-    void set_receive_timeout(const std::chrono::duration<int>& timeout);
-    std::vector<Event> wait_for_events();
-    std::vector<nl::Event> events;
-
    private:
     struct nl_sock* socket;
 };
 }  // namespace nl
 
-#endif  // GAFFA_NL_SOCKET_H
+#endif  // WIMOVED_NL_SOCKET_H

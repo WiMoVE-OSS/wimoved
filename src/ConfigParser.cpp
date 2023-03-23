@@ -29,7 +29,7 @@ ConfigParser::ConfigParser(const std::string &config_path) {
     std::string line;
     std::ifstream config_file(config_path);
     if (!config_file.is_open()) {
-        GAFFALOG(ERROR) << "Unable to read config file " << config_path << ". Using default config";
+        WMLOG(ERROR) << "Unable to read config file " << config_path << ". Using default config";
         return;
     }
 
@@ -66,4 +66,18 @@ uint32_t ConfigParser::get_config_uint32(const std::string &option) const {
         throw std::range_error("Number is too large for uint32_t. Config option " + option + " with value " + value);
     }
     return result;
+}
+
+std::vector<std::string> ConfigParser::get_config_string_vector(const std::string &option) const {
+    std::string value = get_config_string(option);
+    std::vector<std::string> strings;
+
+    std::stringstream stream(value);
+    while (stream.good()) {
+        std::string substring;
+        getline(stream, substring, ',');
+        trim(substring);
+        strings.push_back(substring);
+    }
+    return strings;
 }

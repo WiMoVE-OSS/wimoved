@@ -43,11 +43,12 @@ static std::string random_name() {
     return s;
 }
 
-ipc::Socket::Socket(const std::chrono::duration<int>& timeout) : local{AF_UNIX, "\0"}, dest() {
-    std::string socket_path = Configuration::get_instance().hapd_sock;
-    std::string local_path = "/var/run/gaffa." + random_name();
+ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string& sockname)
+    : local{AF_UNIX, "\0"}, dest() {
+    std::string dest_path = Configuration::get_instance().hapd_sockdir + "/" + sockname;
+    std::string local_path = "/var/run/wimoved." + random_name();
     if (unlink(local_path.c_str()) == 0) {
-        GAFFALOG(DEBUG) << "Successfully unlinked socket" << local_path;
+        WMLOG(DEBUG) << "Successfully unlinked socket" << local_path;
     }
 
     sock_fd = socket(AF_UNIX, SOCK_DGRAM, 0);
@@ -65,14 +66,13 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout) : local{AF_UNIX, 
     local.sun_path[sizeof(local.sun_path) - 1] = '\0';
     if (bind(sock_fd, (struct sockaddr*)&local, sizeof(local)) == -1) {
         close(sock_fd);
-        throw std::runtime_error("could not bind to socket " + socket_path + ": " + std::strerror(errno));
+        throw std::runtime_error("could not bind to socket " + dest_path + ": " + std::strerror(errno));
     }
 
-#ifdef GAFFA_IPC_SOCKET_GROUP
     std::array<char, 200> buf{};
     struct group grp {};
     struct group* grp_result = nullptr;
-    getgrnam_r(GAFFA_IPC_SOCKET_GROUP, &grp, &buf[0], buf.size(), &grp_result);
+    getgrnam_r(Configuration::get_instance().hapd_group.c_str(), &grp, &buf[0], buf.size(), &grp_result);
     if (grp_result == nullptr) {
         throw std::runtime_error(std::string("getgrnam failed: ") + std::strerror(errno));
     }
@@ -82,23 +82,25 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout) : local{AF_UNIX, 
     if (chmod(local_path.c_str(), 0775) == -1) {
         throw std::runtime_error(std::string("could not set socket permissions: ") + std::strerror(errno));
     }
-#endif
 
     dest.sun_family = AF_UNIX;
-    strncpy(dest.sun_path, socket_path.c_str(), sizeof(dest.sun_path));
+    strncpy(dest.sun_path, dest_path.c_str(), sizeof(dest.sun_path));
     dest.sun_path[sizeof(dest.sun_path) - 1] = '\0';
     if (connect(sock_fd, (struct sockaddr*)&dest, sizeof(dest)) == -1) {
         close(sock_fd);
-        throw std::runtime_error(std::string("could not connect to socket: ") + std::strerror(errno));
+        throw std::runtime_error("could not connect to socket at " + dest_path + " : " + std::strerror(errno));
     }
 }
 
 ipc::Socket::~Socket() {
+    if (sock_fd == -1) {
+        return;
+    }
     if (close(sock_fd) == -1) {
-        GAFFALOG(ERROR) << "Could not close socket: " << std::strerror(errno) << "\n";
+        WMLOG(ERROR) << "Could not close socket: " << std::strerror(errno) << "\n";
     }
     if (unlink(local.sun_path) != 0) {
-        GAFFALOG(ERROR) << "Could not unlink socket: " << std::strerror(errno) << "\n";
+        WMLOG(ERROR) << "Could not unlink socket: " << std::strerror(errno) << "\n";
     };
 }
 
@@ -133,3 +135,4 @@ std::string ipc::Socket::receive() {
         }
     }
 }
+ipc::Socket::Socket(ipc::Socket&& old) : sock_fd(old.sock_fd), local(old.local), dest(old.dest) { old.sock_fd = -1; }

@@ -1,5 +1,5 @@
-#ifndef GAFFA_METRICSMANAGER_H
-#define GAFFA_METRICSMANAGER_H
+#ifndef WIMOVED_METRICSMANAGER_H
+#define WIMOVED_METRICSMANAGER_H
 
 #include <prometheus/exposer.h>
 #include <prometheus/registry.h>
@@ -14,8 +14,6 @@ class MetricsManager {
 
     static MetricsManager& get_instance();
     prometheus::Counter& get_hostapd_counter_for_type(const std::string& type);
-    prometheus::Counter& get_netlink_counter_received();
-    prometheus::Counter& get_netlink_counter_processed();
     prometheus::Gauge& get_station_gauge();
     prometheus::Gauge& get_vni_gauge();
     prometheus::Histogram& get_event_histogram();
@@ -23,9 +21,8 @@ class MetricsManager {
    private:
     prometheus::Exposer exposer;
     prometheus::Family<prometheus::Counter>& hostapd_counter;
-    prometheus::Family<prometheus::Counter>& netlink_counter;
     prometheus::Family<prometheus::Gauge>& connection_gauge;
     prometheus::Family<prometheus::Histogram>& histogram;
 };
 
-#endif  // GAFFA_METRICSMANAGER_H
+#endif  // WIMOVED_METRICSMANAGER_H

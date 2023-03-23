@@ -10,7 +10,6 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "../VlanMissingException.h"
 #include "../logging/loginit.h"
 #include "Bridge.h"
 #include "Link.h"
@@ -53,12 +52,12 @@ void nl::Socket::create_vxlan_iface(uint32_t vni) {
     err = rtnl_link_add(socket, vxlan.link, NLM_F_CREATE | NLM_F_EXCL);
     if (err < 0) {
         if (err == -NLE_EXIST) {
-            GAFFALOG(WARNING) << "rtnl_link_add: vxlan interface with vni " << vni << " already exists";
+            WMLOG(WARNING) << "rtnl_link_add: vxlan interface with vni " << vni << " already exists";
         } else {
             throw std::runtime_error(std::string("error in rtnl_link_add: ") + nl_geterror(err));
         }
     }
-    GAFFALOG(INFO) << "Created VXLAN " << vni;
+    WMLOG(INFO) << "Created VXLAN " << vni;
 }
 
 void nl::Socket::create_bridge_for_vni(uint32_t vni) { create_bridge(BRIDGE_IFACE_PREFIX + std::to_string(vni)); }
@@ -72,13 +71,13 @@ void nl::Socket::create_bridge(const std::string &name) {
     err = rtnl_link_add(socket, bridge.link, NLM_F_CREATE | NLM_F_EXCL);
     if (err < 0) {
         if (err == -NLE_EXIST) {
-            GAFFALOG(WARNING) << "rtnl_link_add: bridge interface with name " << name << " already exists";
+            WMLOG(WARNING) << "rtnl_link_add: bridge interface with name " << name << " already exists";
         } else {
             throw std::runtime_error(std::string("error in rtnl_link_add: ") + nl_geterror(err));
         }
     }
 
-    GAFFALOG(INFO) << "Created Bridge " << name;
+    WMLOG(INFO) << "Created Bridge " << name;
 }
 
 void nl::Socket::add_iface_bridge(const std::string &bridgeName, const std::string &ifaceName) {
@@ -87,9 +86,6 @@ void nl::Socket::add_iface_bridge(const std::string &bridgeName, const std::stri
     int err;
 
     if ((err = rtnl_link_get_kernel(socket, 0, ifaceName.c_str(), &link.link)) < 0) {
-        if (err == -NLE_NODEV) {
-            throw VlanMissingException("vlan interface does not exist");
-        }
         throw std::runtime_error("Could not get interface: " + ifaceName + " " + nl_geterror(err));
     }
     if ((err = rtnl_link_get_kernel(socket, 0, bridgeName.c_str(), &bridge.link)) < 0) {
@@ -101,7 +97,7 @@ void nl::Socket::add_iface_bridge(const std::string &bridgeName, const std::stri
                                  nl_geterror(err));
     }
 
-    GAFFALOG(INFO) << "Connected " << ifaceName << " to " << bridgeName;
+    WMLOG(INFO) << "Connected " << ifaceName << " to " << bridgeName;
 }
 
 void nl::Socket::delete_interface(const std::string &name) {
@@ -113,7 +109,7 @@ void nl::Socket::delete_interface(const std::string &name) {
     if ((err = rtnl_link_delete(socket, link.link)) < 0) {
         throw std::runtime_error(std::string("Could not delete link: ") + nl_geterror(err));
     }
-    GAFFALOG(INFO) << "Deleted " << name;
+    WMLOG(INFO) << "Deleted " << name;
 }
 
 std::unordered_set<uint32_t> nl::Socket::interface_list() {
@@ -137,64 +133,4 @@ std::unordered_set<uint32_t> nl::Socket::interface_list() {
         }
     } while ((object = nl_cache_get_next(object)) != nullptr);
     return set_of_vnis;
-}
-
-static int interface_event_handler(struct nl_msg *msg, void *arg) {
-    struct nlmsghdr *nh = nlmsg_hdr(msg);
-    if (nh->nlmsg_type != RTM_NEWLINK) {
-        return NL_OK;
-    }
-    auto *ifinfo = static_cast<struct ifinfomsg *>(NLMSG_DATA(nh));
-    char ifname[IF_NAMESIZE];
-    ifname[0] = '\0';
-
-    if (if_indextoname(ifinfo->ifi_index, &ifname[0]) == nullptr) {
-        // TODO: is throwing an exception ok here?
-        GAFFALOG(DEBUG) << "received netlink event for interface with index " << ifinfo->ifi_index
-                        << ", but could not get interface name: " << std::strerror(errno);
-        return NL_OK;
-    }
-    auto *sock = static_cast<nl::Socket *>(arg);
-    sock->events.push_back(nl::Event{std::string(ifname)});
-    return NL_OK;
-}
-
-void nl::Socket::subscribe() {
-    int err = nl_socket_add_memberships(socket, RTNLGRP_LINK, 0);
-    if (err < 0) {
-        throw std::runtime_error(std::string("error joining netlink multicast group: ") + nl_geterror(err));
-    }
-
-    err = nl_socket_modify_cb(socket, NL_CB_VALID, NL_CB_CUSTOM, interface_event_handler, this);
-    if (err < 0) {
-        throw std::runtime_error(std::string("could not set interface callback: ") + nl_geterror(err));
-    }
-
-    nl_socket_disable_seq_check(socket);
-}
-
-std::vector<nl::Event> nl::Socket::wait_for_events() {
-    if (events.empty()) {
-        int err = nl_recvmsgs_default(socket);
-        if (err < 0) {
-            if (err == -NLE_AGAIN) {
-                throw TimeoutException("timeout in wait_for_events");
-            } else {
-                throw std::runtime_error(std::string("could not receive netlink events: ") + nl_geterror(err));
-            }
-        }
-    }
-    std::vector events_copy = events;
-    events.clear();
-    return events_copy;
-}
-
-void nl::Socket::set_receive_timeout(const std::chrono::duration<int> &timeout) {
-    auto timeout_usec = std::chrono::duration_cast<std::chrono::microseconds>(timeout);
-    struct timeval tv {};
-    tv.tv_sec = timeout_usec.count() / 1000000;
-    tv.tv_usec = timeout_usec.count() % 1000000;
-    if (setsockopt(nl_socket_get_fd(socket), SOL_SOCKET, SO_RCVTIMEO, (const char *)&tv, sizeof(tv)) == -1) {
-        throw std::runtime_error(std::string("could not set netlink socket receive timeout: ") + std::strerror(errno));
-    }
 }
