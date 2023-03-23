@@ -1,8 +1,9 @@
 #include "Configuration.h"
 
 #include <stdexcept>
-#include "filesystem"
+
 #include "../vendor/logging/loginit.h"
+#include "filesystem"
 
 const std::string HAPD_GLOBAL_SOCK_NAME = "global";
 
@@ -29,13 +30,13 @@ static void set_string_vector_if_valid(const ConfigParser& parser, std::vector<s
 }
 
 void Configuration::set_all_available_sockets_if_empty() {
-    if(socknames.empty()) {
-        for (const auto & entry : std::filesystem::directory_iterator(hapd_sockdir)) {
-            if(entry.is_socket() && entry.path().filename() != HAPD_GLOBAL_SOCK_NAME) {
+    if (socknames.empty()) {
+        for (const auto& entry : std::filesystem::directory_iterator(hapd_sockdir)) {
+            if (entry.is_socket() && entry.path().filename() != HAPD_GLOBAL_SOCK_NAME) {
                 socknames.emplace_back(entry.path().filename());
             }
         }
-        if(socknames.empty()) {
+        if (socknames.empty()) {
             throw std::runtime_error("No sockets were configured and no sockets could be found.");
         }
         WMLOG(DEBUG) << "No sockets were configured. Using all " << socknames.size() << " sockets available.";
