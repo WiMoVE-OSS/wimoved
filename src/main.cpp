@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
         config_path = args[1];
     }
     WMLOG(INFO) << "wimoved is starting";
-    ConfigParser bla(config_path);
+    ConfigParser parser(config_path);
     setup_logger();
 
     if (std::signal(SIGINT, handle_signal) == SIG_ERR || std::signal(SIGTERM, handle_signal) == SIG_ERR) {
