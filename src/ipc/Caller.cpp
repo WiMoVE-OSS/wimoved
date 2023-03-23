@@ -11,11 +11,9 @@
 
 const std::string VLAN_ID_PREFIX = "vlan_id=";
 
-ipc::Caller::Caller() {}
-
 uint32_t ipc::Caller::vlan_for_station(const Station &station) {
     Socket &socket = get_socket(station.sockname);
-    std::istringstream stream(socket.send_and_receive({"STA", station.mac}));
+    std::istringstream stream(socket.send_and_receive({"STA", station.mac.string()}));
     std::string line;
     while (std::getline(stream, line)) {
         if (line.rfind(VLAN_ID_PREFIX) == 0) {
@@ -35,7 +33,7 @@ std::vector<Station> ipc::Caller::connected_stations() {
             if (ipc_result != "FAIL\n" && ipc_result.length() >= MAC_ADDRESS_LENGTH) {
                 stations.emplace_back(sockname, ipc_result.substr(0, MAC_ADDRESS_LENGTH));
             }
-            ipc_result = socket.send_and_receive({"STA-NEXT", stations[stations.size() - 1].mac});
+            ipc_result = socket.send_and_receive({"STA-NEXT", stations[stations.size() - 1].mac.string()});
         }
     }
     return stations;
@@ -43,12 +41,12 @@ std::vector<Station> ipc::Caller::connected_stations() {
 
 void ipc::Caller::deauth_station(const Station &station) {
     Socket &socket = get_socket(station.sockname);
-    std::string result = socket.send_and_receive({"DEAUTHENTICATE", station.mac});
+    std::string result = socket.send_and_receive({"DEAUTHENTICATE", station.mac.string()});
     if (result != Socket::HOSTAPD_OK) {
         WMLOG(WARNING) << "Did not receive OK on DEAUTH request: " << result;
     }
 }
-ipc::Socket &ipc::Caller::get_socket(std::string name) {
+ipc::Socket &ipc::Caller::get_socket(const std::string &name) {
     if (sockets.find(name) == sockets.end()) {
         sockets.emplace(name, Socket{std::chrono::seconds(1), name});
     }

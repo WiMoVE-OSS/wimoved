@@ -17,9 +17,9 @@
 
 const std::string VXLAN_IFACE_PREFIX = "vxlan";
 const std::string BRIDGE_IFACE_PREFIX = "bridge";
+const int VXLAN_PORT = 4789;
 
-nl::Socket::Socket() {
-    socket = nl_socket_alloc();
+nl::Socket::Socket() : socket(nl_socket_alloc()) {
     if (socket == nullptr) {
         throw std::runtime_error(std::string("error in nl_socket_alloc: ") + std::strerror(errno));
     }
@@ -44,7 +44,7 @@ void nl::Socket::create_vxlan_iface(uint32_t vni) {
         throw std::runtime_error(std::string("error in rtnl_link_vxlan_set_id: ") + std::strerror(errno));
     }
 
-    int err = rtnl_link_vxlan_set_port(vxlan.link, 4789);
+    int err = rtnl_link_vxlan_set_port(vxlan.link, VXLAN_PORT);
     if (err < 0) {
         throw std::runtime_error(std::string("error in rtnl_link_vxlan_set_port_range: ") + nl_geterror(err));
     }
@@ -67,8 +67,7 @@ void nl::Socket::create_bridge(const std::string &name) {
     rtnl_link_set_name(bridge.link, name.c_str());
     rtnl_link_set_flags(bridge.link, IFF_UP);
 
-    int err;
-    err = rtnl_link_add(socket, bridge.link, NLM_F_CREATE | NLM_F_EXCL);
+    int err = rtnl_link_add(socket, bridge.link, NLM_F_CREATE | NLM_F_EXCL);
     if (err < 0) {
         if (err == -NLE_EXIST) {
             WMLOG(WARNING) << "rtnl_link_add: bridge interface with name " << name << " already exists";
@@ -83,50 +82,48 @@ void nl::Socket::create_bridge(const std::string &name) {
 void nl::Socket::add_iface_bridge(const std::string &bridgeName, const std::string &ifaceName) {
     Bridge bridge;
     Link link;
-    int err;
-
-    if ((err = rtnl_link_get_kernel(socket, 0, ifaceName.c_str(), &link.link)) < 0) {
+    int err = rtnl_link_get_kernel(socket, 0, ifaceName.c_str(), &link.link);
+    if (err < 0) {
         throw std::runtime_error("Could not get interface: " + ifaceName + " " + nl_geterror(err));
     }
-    if ((err = rtnl_link_get_kernel(socket, 0, bridgeName.c_str(), &bridge.link)) < 0) {
+    err = rtnl_link_get_kernel(socket, 0, bridgeName.c_str(), &bridge.link);
+    if (err < 0) {
         throw std::runtime_error("Could not get interface: " + bridgeName + " " + nl_geterror(err));
     }
-
-    if ((err = rtnl_link_enslave(socket, bridge.link, link.link)) < 0) {
+    err = rtnl_link_enslave(socket, bridge.link, link.link);
+    if (err < 0) {
         throw std::runtime_error("Could not enslave interface: " + ifaceName + " to Bridge " + bridgeName + " " +
                                  nl_geterror(err));
     }
-
     WMLOG(INFO) << "Connected " << ifaceName << " to " << bridgeName;
 }
 
 void nl::Socket::delete_interface(const std::string &name) {
     Link link;
-    int err;
 
     rtnl_link_set_name(link.link, name.c_str());
 
-    if ((err = rtnl_link_delete(socket, link.link)) < 0) {
+    int err = rtnl_link_delete(socket, link.link);
+    if (err < 0) {
         throw std::runtime_error(std::string("Could not delete link: ") + nl_geterror(err));
     }
     WMLOG(INFO) << "Deleted " << name;
 }
 
 std::unordered_set<uint32_t> nl::Socket::interface_list() {
-    struct nl_cache *cache;
-    int err;
-    if ((err = rtnl_link_alloc_cache(socket, AF_INET, &cache)) < 0) {
+    struct nl_cache *cache = nullptr;
+    int err = rtnl_link_alloc_cache(socket, AF_INET, &cache);
+    if (err < 0) {
         throw std::runtime_error(std::string("Could not allocate cache: ") + nl_geterror(err));
     }
-    struct nl_object *object;
-    object = nl_cache_get_first(cache);
+    struct nl_object *object = nl_cache_get_first(cache);
     std::unordered_set<uint32_t> set_of_vnis(0);
     do {
-        struct rtnl_link *link;
-        link = (rtnl_link *)object;
-        if (rtnl_link_is_vxlan(link)) {
-            uint32_t id;
-            if ((err = rtnl_link_vxlan_get_id(link, &id)) < 0) {
+        auto *link = reinterpret_cast<struct rtnl_link *>(object);
+        if (rtnl_link_is_vxlan(link) != 0) {
+            uint32_t id = 0;
+            err = rtnl_link_vxlan_get_id(link, &id);
+            if (err < 0) {
                 throw std::runtime_error(std::string("Could not get vni ") + nl_geterror(err));
             }
             set_of_vnis.emplace(id);

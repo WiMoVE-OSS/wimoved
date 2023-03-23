@@ -12,11 +12,11 @@ namespace ipc {
 class Event {
    public:
     explicit Event(Station station);
-
     virtual ~Event() = default;
 
     virtual void handle(EventHandler *handler) = 0;
 
+    // NOLINTNEXTLINE(cppcoreguidelines-non-private-member-variables-in-classes)
     Station station;
     uint64_t finished_processing();
 

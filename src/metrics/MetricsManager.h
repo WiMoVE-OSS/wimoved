@@ -9,6 +9,7 @@
 class MetricsManager {
    public:
     MetricsManager();
+    ~MetricsManager() = default;
     MetricsManager(MetricsManager const&) = delete;
     void operator=(MetricsManager const&) = delete;
 

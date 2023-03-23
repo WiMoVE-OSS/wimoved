@@ -13,6 +13,10 @@ namespace nl {
 class Socket {
    public:
     Socket();
+    Socket(const Socket& other) = delete;
+    Socket operator=(const Socket& other) = delete;
+    Socket(Socket&& other) = delete;
+    Socket operator=(Socket&& other) = delete;
     ~Socket();
 
     void create_vxlan_iface(uint32_t vni);

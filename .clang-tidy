@@ -1,6 +1,12 @@
 ---
 HeaderFilterRegex: 'src/.*\.h'
 WarningsAsErrors: '*'
+UseColor: true
+CheckOptions:
+  - key: cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor
+    value: '1'
+  - key: cppcoreguidelines-special-member-functions.AllowMissingMoveFunctionsWhenCopyIsDeleted
+    value: '1'
 Checks: >
   bugprone-*,
   cert-*,
@@ -16,3 +22,7 @@ Checks: >
   -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
   -readability-identifier-length,
   -cppcoreguidelines-pro-type-vararg,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -cppcoreguidelines-pro-type-reinterpret-cast,
+  -cppcoreguidelines-pro-bounds-constant-array-index,
+  -modernize-use-nodiscard,

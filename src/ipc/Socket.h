@@ -6,7 +6,9 @@
 
 #include <array>
 #include <chrono>
+#include <mutex>
 #include <optional>
+#include <random>
 #include <string>
 #include <vector>
 
@@ -16,20 +18,16 @@ const size_t MAC_ADDRESS_LENGTH = 2 * 6 + 5;
 class Socket {
    public:
     explicit Socket(const std::chrono::duration<int> &timeout, const std::string &sockname);
+    ~Socket();
+    Socket(const Socket &other) = delete;
+    void operator=(const Socket &other) = delete;
+    Socket(Socket &&other) noexcept;
 
     std::string send_and_receive(const std::vector<std::string> &args);
-
     void send_command(const std::vector<std::string> &args);
-
     std::string receive();
 
     inline static const std::string HOSTAPD_OK = "OK\n";
-
-    ~Socket();
-
-    Socket(Socket const &) = delete;
-    void operator=(Socket const &) = delete;
-    Socket(Socket &&);
 
    private:
     int sock_fd;
