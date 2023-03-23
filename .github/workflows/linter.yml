@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Start formatting
-        run: find src -iname *.h -o -iname *.cpp | xargs clang-format -i
+        run: find src -iname *.h -o -iname *.cpp | xargs clang-format --dry-run --Werror
 
   linting:
     runs-on: ubuntu-latest
