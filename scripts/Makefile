@@ -19,7 +19,7 @@ include $(INCLUDE_DIR)/cmake.mk
 
 CMAKE_OPTIONS += \
         -DSTAGING_DIR=$(STAGING_DIR) \
-
+        -DWIMOVED_ENABLE_TESTS=OFF
 
 CMAKE_INSTALL:=1
 

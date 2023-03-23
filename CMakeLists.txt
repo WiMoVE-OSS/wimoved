@@ -32,18 +32,21 @@ add_custom_target(lint COMMAND run-clang-tidy -j8 -quiet ${SRC_FILES} ${TEST_FIL
 add_custom_target(precommit DEPENDS lint format)
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
 
-enable_testing()
-include(FetchContent)
-FetchContent_Declare(
-        googletest
-        URL https://github.com/google/googletest/archive/refs/tags/v1.13.0.zip
-)
-FetchContent_MakeAvailable(googletest)
 
-include(GoogleTest)
-list(FILTER SRC_FILES EXCLUDE REGEX .*main\\.cpp$)
+option(WIMOVED_ENABLE_TESTS "Enable tests" ON)
+if (${WIMOVED_ENABLE_TESTS})
+    include(FetchContent)
+    FetchContent_Declare(
+            googletest
+            URL https://github.com/google/googletest/archive/refs/tags/v1.13.0.zip
+    )
+    FetchContent_MakeAvailable(googletest)
 
-add_executable(wimoved_tests ${SRC_FILES} ${VENDOR_FILES} ${TEST_FILES})
-target_link_libraries(wimoved_tests gtest_main ${LIBRARIES})
-target_include_directories(wimoved_tests PUBLIC src test include vendor /usr/include/libnl3)
-gtest_discover_tests(wimoved_tests)
+    include(GoogleTest)
+    list(FILTER SRC_FILES EXCLUDE REGEX .*main\\.cpp$)
+
+    add_executable(wimoved_tests EXCLUDE_FROM_ALL ${SRC_FILES} ${VENDOR_FILES} ${TEST_FILES})
+    target_link_libraries(wimoved_tests gtest_main ${LIBRARIES})
+    target_include_directories(wimoved_tests PUBLIC src test include vendor /usr/include/libnl3)
+    gtest_discover_tests(wimoved_tests)
+endif()
