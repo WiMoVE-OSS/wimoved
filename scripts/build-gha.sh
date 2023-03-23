@@ -6,6 +6,7 @@ chmod -R ogu+rw out
 cp scripts/Makefile package/
 cp CMakeLists.txt package/src/
 cp -r src package/src/
+cp -r vendor package/src/
 
 docker run --rm \
   -v "$(pwd)"/scripts/stage2.sh:/home/build/openwrt/stage2.sh \
