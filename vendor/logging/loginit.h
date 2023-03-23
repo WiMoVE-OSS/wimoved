@@ -1,7 +1,3 @@
-//
-// Created by aarons on 07.03.23.
-//
-
 #ifndef WIMOVED_LOGINIT_H
 #define WIMOVED_LOGINIT_H
 

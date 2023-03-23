@@ -1,7 +1,3 @@
-//
-// Created by aarons on 08.03.23.
-//
-
 #ifndef WIMOVED_CONFIGURATION_H
 #define WIMOVED_CONFIGURATION_H
 
