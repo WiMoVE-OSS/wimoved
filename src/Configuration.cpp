@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "../vendor/logging/loginit.h"
+#include "logging/loginit.h"
 #include "filesystem"
 
 const std::string HAPD_GLOBAL_SOCK_NAME = "global";
