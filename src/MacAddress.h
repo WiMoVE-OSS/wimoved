@@ -9,7 +9,7 @@ const int MAC_NUM_BYTES = 6;
 
 class MacAddress {
    public:
-    MacAddress(std::string serialized);
+    explicit MacAddress(std::string serialized);
     std::string string() const;
     uint64_t number() const;
 

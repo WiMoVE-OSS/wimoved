@@ -34,7 +34,7 @@ void EventLoop::handle_connect(ipc::ConnectEvent* event) {
                 << " at interface " << event->station.sockname;
     try {
         renderer.setup_station(event->station);
-        processing_time_histogram.Observe(double(event->finished_processing()));
+        processing_time_histogram.Observe(static_cast<double>(event->finished_processing()));
     } catch (std::runtime_error& err) {
         WMLOG(ERROR) << "station could not be bridged to vxlan interface: " << err.what()
                      << " - Will now send deauth packet";

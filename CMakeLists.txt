@@ -12,11 +12,13 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_compile_definitions(ELPP_THREAD_SAFE)
 add_compile_definitions(ELPP_FEATURE_CRASH_LOG)
 
+include_directories(vendor)
+
 if(DEFINED STAGING_DIR)
-    include_directories(${STAGING_DIR}/usr/include/libnl3)
+    include_directories(${INCLUDE_DIRECTORIES} ${STAGING_DIR}/usr/include/libnl3)
     add_compile_definitions(ELPP_SYSLOG)
 else()
-    include_directories(/usr/include/libnl3)
+    include_directories(${INCLUDE_DIRECTORIES} /usr/include/libnl3)
 endif()
 
 file(GLOB_RECURSE SRC_FILES src/*.h src/*.cpp src/**/*.h src/**/*.cpp)
@@ -25,8 +27,6 @@ list(APPEND ALL_FILES ${SRC_FILES} ${VENDOR_FILES})
 
 add_executable(wimoved ${ALL_FILES} src/MacAddress.cpp src/MacAddress.h)
 target_link_libraries(wimoved nl-3 nl-route-3 prometheus-cpp::pull prometheus-cpp::core)
-
-include_directories(vendor)
 
 add_custom_target(format COMMAND clang-format -i ${SRC_FILES})
 add_custom_target(format-check COMMAND clang-format --dry-run --Werror ${SRC_FILES})

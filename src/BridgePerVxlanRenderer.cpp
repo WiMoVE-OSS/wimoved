@@ -34,7 +34,7 @@ void BridgePerVxlanRenderer::cleanup(const std::function<std::vector<Station>()>
         connected_station_vnis.emplace(station.vni());
         sta_counter++;
     }
-    vni_gauge.Set(double(connected_station_vnis.size()));
+    vni_gauge.Set(static_cast<double>(connected_station_vnis.size()));
     station_gauge.Set(sta_counter);
     auto existing_interfaces = socket.interface_list();
     for (const auto& vni : connected_station_vnis) {
