@@ -17,7 +17,11 @@ _deps
 !.github
 *.cbp
 wimoved
+wimoved_tests
 out/
 package/
 *.log
 *.conf
+lib/
+*.cmake
+test/

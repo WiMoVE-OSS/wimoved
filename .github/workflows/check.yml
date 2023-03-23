@@ -18,3 +18,7 @@ jobs:
         run: make format-check
       - name: Start linting
         run: make lint
+      - name: Build
+        run: make -j$(nproc)
+      - name: Test
+        run: ./wimoved_tests

@@ -1,7 +1,6 @@
 #include "ConfigParser.h"
 
 #include <algorithm>
-#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -25,17 +24,20 @@ static inline void trim(std::string &s) {
     ltrim(s);
 }
 
-ConfigParser::ConfigParser(const std::string &config_path) {
+ConfigParser ConfigParser::from_file(const std::string &config_path) {
     std::string line;
     std::ifstream config_file(config_path);
     if (!config_file.is_open()) {
         WMLOG(ERROR) << "Unable to read config file " << config_path << ". Using default config";
-        return;
+        return {};
     }
+    return ConfigParser(config_file);
+}
 
-    // Read Config
+ConfigParser::ConfigParser(std::istream& config_file) {
+    std::string line;
     std::string delimiter = "=";
-    while (getline(config_file, line)) {
+    while (std::getline(config_file, line, '\n')) {
         auto split = line.find(delimiter);
         trim(line);
         std::string token = line.substr(0, split);
@@ -47,7 +49,6 @@ ConfigParser::ConfigParser(const std::string &config_path) {
         trim(value);
         config_options[token] = value;
     }
-    Configuration::get_instance().populate(*this);
 }
 
 std::string ConfigParser::get_config_string(const std::string &option) const {
@@ -79,4 +80,8 @@ std::vector<std::string> ConfigParser::get_config_string_vector(const std::strin
         strings.push_back(substring);
     }
     return strings;
+}
+
+void ConfigParser::populate_configuration(Configuration &config) {
+    config.populate(*this);
 }
