@@ -37,16 +37,16 @@ static std::mt19937 twister(random_device());
 static std::mutex twister_mutex;
 // NOLINTEND(cppcoreguidelines-avoid-non-const-global-variables)
 
-static const std::string random_alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-static const int random_name_len = 8;
+static const std::string RANDOM_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+static const int RANDOM_NAME_LENGTH = 8;
 
 static std::string random_name() {
     std::lock_guard g(twister_mutex);
 
     std::string s;
-    s.reserve(random_name_len);
-    for (int i = 0; i < random_name_len; i++) {
-        s += random_alphabet[twister() % random_alphabet.size()];
+    s.reserve(RANDOM_NAME_LENGTH);
+    for (int i = 0; i < RANDOM_NAME_LENGTH; i++) {
+        s += RANDOM_ALPHABET[twister() % RANDOM_ALPHABET.size()];
     }
     return s;
 }

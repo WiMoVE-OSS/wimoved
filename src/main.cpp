@@ -44,18 +44,18 @@ void setup_logger() {
         WMLOG(ERROR) << "errno: " << errno << ": " << std::strerror(errno) << std::endl;
         std::abort();
     });
-    el::Configurations defaultConf;
-    defaultConf.setToDefault();
-    defaultConf.setGlobally(el::ConfigurationType::Format, "[%level] %datetime %fbase:%line - %msg");
+    el::Configurations default_configuration;
+    default_configuration.setToDefault();
+    default_configuration.setGlobally(el::ConfigurationType::Format, "[%level] %datetime %fbase:%line - %msg");
 
 #ifdef ELPP_SYSLOG
     el::SysLogInitializer elSyslogInit("wimoved", LOG_PID | LOG_CONS | LOG_PERROR, LOG_USER);
-    el::Loggers::reconfigureLogger("syslog", defaultConf);
+    el::Loggers::reconfigureLogger("syslog", default_configuration);
 #else
-    defaultConf.setGlobally(el::ConfigurationType::Filename, Configuration::get_instance().log_path);
+    default_configuration.setGlobally(el::ConfigurationType::Filename, Configuration::get_instance().log_path);
 #endif
 
-    el::Loggers::reconfigureLogger("default", defaultConf);
+    el::Loggers::reconfigureLogger("default", default_configuration);
 }
 
 int main(int argc, char* argv[]) {

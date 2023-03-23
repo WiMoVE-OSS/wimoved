@@ -20,7 +20,7 @@ class Socket {
     ~Socket();
 
     void create_vxlan_iface(uint32_t vni);
-    void add_iface_bridge(const std::string& bridgeName, const std::string& ifaceName);
+    void add_iface_bridge(const std::string& bridge_name, const std::string& interface_name);
     void create_bridge_for_vni(uint32_t vni);
     void create_bridge(const std::string& name);
     void delete_interface(const std::string& name);

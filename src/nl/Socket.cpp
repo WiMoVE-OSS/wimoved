@@ -79,23 +79,23 @@ void nl::Socket::create_bridge(const std::string &name) {
     WMLOG(INFO) << "Created Bridge " << name;
 }
 
-void nl::Socket::add_iface_bridge(const std::string &bridgeName, const std::string &ifaceName) {
+void nl::Socket::add_iface_bridge(const std::string &bridge_name, const std::string &interface_name) {
     Bridge bridge;
     Link link;
-    int err = rtnl_link_get_kernel(socket, 0, ifaceName.c_str(), &link.link);
+    int err = rtnl_link_get_kernel(socket, 0, interface_name.c_str(), &link.link);
     if (err < 0) {
-        throw std::runtime_error("Could not get interface: " + ifaceName + " " + nl_geterror(err));
+        throw std::runtime_error("Could not get interface: " + interface_name + " " + nl_geterror(err));
     }
-    err = rtnl_link_get_kernel(socket, 0, bridgeName.c_str(), &bridge.link);
+    err = rtnl_link_get_kernel(socket, 0, bridge_name.c_str(), &bridge.link);
     if (err < 0) {
-        throw std::runtime_error("Could not get interface: " + bridgeName + " " + nl_geterror(err));
+        throw std::runtime_error("Could not get interface: " + bridge_name + " " + nl_geterror(err));
     }
     err = rtnl_link_enslave(socket, bridge.link, link.link);
     if (err < 0) {
-        throw std::runtime_error("Could not enslave interface: " + ifaceName + " to Bridge " + bridgeName + " " +
+        throw std::runtime_error("Could not enslave interface: " + interface_name + " to Bridge " + bridge_name + " " +
                                  nl_geterror(err));
     }
-    WMLOG(INFO) << "Connected " << ifaceName << " to " << bridgeName;
+    WMLOG(INFO) << "Connected " << interface_name << " to " << bridge_name;
 }
 
 void nl::Socket::delete_interface(const std::string &name) {

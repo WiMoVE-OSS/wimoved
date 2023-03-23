@@ -7,6 +7,56 @@ CheckOptions:
     value: '1'
   - key: cppcoreguidelines-special-member-functions.AllowMissingMoveFunctionsWhenCopyIsDeleted
     value: '1'
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  - key: readability-identifier-naming.ConstexprVariableCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.EnumCase
+    value: CamelCase
+  - key: readability-identifier-naming.EnumConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.FunctionCase
+    value: lower_case
+  - key: readability-identifier-naming.GlobalFunctionCase
+    value: lower_case
+  - key: readability-identifier-naming.GlobalConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.InlineNamespaceCase
+    value: lower_case
+  - key: readability-identifier-naming.LocalConstantCase
+    value: lower_case
+  - key: readability-identifier-naming.LocalVariableCase
+    value: lower_case
+  - key: readability-identifier-naming.MemberCase
+    value: lower_case
+  - key: readability-identifier-naming.ClassMemberCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.PublicMemberCase
+    value: lower_case
+  - key: readability-identifier-naming.MethodCase
+    value: lower_case
+  - key: readability-identifier-naming.NamespaceCase
+    value: lower_case
+  - key: readability-identifier-naming.ParameterCase
+    value: lower_case
+  - key: readability-identifier-naming.ConstantParameterCase
+    value: lower_case
+  - key: readability-identifier-naming.ParameterPackCase
+    value: lower_case
+  - key: readability-identifier-naming.StaticConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.StaticVariableCase
+    value: lower_case
+  - key: readability-identifier-naming.StructCase
+    value: CamelCase
+  - key: readability-identifier-naming.TypedefCase
+    value: CamelCase
+  - key: readability-identifier-naming.UnionCase
+    value: CamelCase
+  - key: readability-identifier-naming.UsingCase
+    value: lower_case
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
 Checks: >
   *,
   -abseil-*,
@@ -16,6 +66,7 @@ Checks: >
   -darwin-*,
   -fuchsia-*,
   -linuxkernel-*,
+  -hicpp-*,
   -llvm-*,
   -llvmlibc-*,
   -mpi-*,
@@ -29,13 +80,13 @@ Checks: >
   -cppcoreguidelines-pro-bounds-constant-array-index,
   -cppcoreguidelines-pro-type-reinterpret-cast,
   -cppcoreguidelines-pro-type-vararg,
-  -hicpp-special-member-functions,
-  -hicpp-vararg,
-  -hicpp-no-array-decay,
-  -hicpp-signed-bitwise,
   -google-readability-todo,
+  -google-upgrade-googletest-case,
   -misc-non-private-member-variables-in-classes,
   -misc-const-correctness,
   -modernize-use-nodiscard,
   -modernize-use-trailing-return-type,
   -readability-identifier-length,
+  hicpp-exception-baseclass,
+  hicpp-multiway-paths-covered,
+  hicpp-no-assembler,
