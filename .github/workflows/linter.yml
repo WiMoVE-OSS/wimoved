@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Start formatting
-        run: find src -iname *.h -o -iname *.cpp | xargs clang-format --dry-run --Werror
+        run: make format-check
 
   linting:
     runs-on: ubuntu-latest
@@ -23,4 +23,4 @@ jobs:
       - name: Start CMake
         run: cmake CMakeLists.txt
       - name: Start linting
-        run: clang-tidy --config-file=.clang-tidy src/**/*.h src/**/*.cpp -p compile_commands.json
+        run: make lint
