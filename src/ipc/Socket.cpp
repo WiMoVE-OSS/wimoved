@@ -43,8 +43,9 @@ static std::string random_name() {
     return s;
 }
 
-ipc::Socket::Socket(const std::chrono::duration<int>& timeout) : local{AF_UNIX, "\0"}, dest() {
-    std::string socket_path = Configuration::get_instance().hapd_sock;
+ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string& sockname)
+    : local{AF_UNIX, "\0"}, dest() {
+    std::string dest_path = Configuration::get_instance().hapd_sockdir + "/" + sockname;
     std::string local_path = "/var/run/wimoved." + random_name();
     if (unlink(local_path.c_str()) == 0) {
         WMLOG(DEBUG) << "Successfully unlinked socket" << local_path;
@@ -65,7 +66,7 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout) : local{AF_UNIX, 
     local.sun_path[sizeof(local.sun_path) - 1] = '\0';
     if (bind(sock_fd, (struct sockaddr*)&local, sizeof(local)) == -1) {
         close(sock_fd);
-        throw std::runtime_error("could not bind to socket " + socket_path + ": " + std::strerror(errno));
+        throw std::runtime_error("could not bind to socket " + dest_path + ": " + std::strerror(errno));
     }
 
     std::array<char, 200> buf{};
@@ -83,15 +84,18 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout) : local{AF_UNIX, 
     }
 
     dest.sun_family = AF_UNIX;
-    strncpy(dest.sun_path, socket_path.c_str(), sizeof(dest.sun_path));
+    strncpy(dest.sun_path, dest_path.c_str(), sizeof(dest.sun_path));
     dest.sun_path[sizeof(dest.sun_path) - 1] = '\0';
     if (connect(sock_fd, (struct sockaddr*)&dest, sizeof(dest)) == -1) {
         close(sock_fd);
-        throw std::runtime_error(std::string("could not connect to socket: ") + std::strerror(errno));
+        throw std::runtime_error("could not connect to socket at " + dest_path + " : " + std::strerror(errno));
     }
 }
 
 ipc::Socket::~Socket() {
+    if (sock_fd == -1) {
+        return;
+    }
     if (close(sock_fd) == -1) {
         WMLOG(ERROR) << "Could not close socket: " << std::strerror(errno) << "\n";
     }
@@ -129,3 +133,4 @@ std::string ipc::Socket::receive() const {
         }
     }
 }
+ipc::Socket::Socket(ipc::Socket&& old) : sock_fd(old.sock_fd), local(old.local), dest(old.dest) { old.sock_fd = -1; }

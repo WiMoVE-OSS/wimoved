@@ -20,6 +20,8 @@ class Subscriber {
     prometheus::Counter &hostapd_disconnect_counter;
     prometheus::Counter &hostapd_connect_counter;
     prometheus::Counter &hostapd_unknown_counter;
+    std::pair<std::string, std::string> split_at_first_space(const std::string &line);
+    std::string get_ifname(const std::string &eventprefix);
 };
 }  // namespace ipc
 
