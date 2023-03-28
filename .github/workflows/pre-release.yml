@@ -1,0 +1,43 @@
+
+name: Build Binaries
+
+on:
+  push:
+    branches:
+      - "5-create-tagged-binaries-on-release"
+    tags-ignore:
+      - "*"
+
+jobs:
+  build-arm:
+    permissions:
+      packages: write
+      contents: read
+    uses: ./.github/workflows/build-openwrt.yml
+    with:
+      architecture: mvebu-cortexa9-22.03.3
+    secrets:
+      ghtoken: ${{ secrets.GITHUB_TOKEN }}
+
+  build-ramips:
+    permissions:
+      packages: write
+      contents: read
+    uses: ./.github/workflows/build-openwrt.yml
+    with:
+      architecture: ramips-mt7621-22.03.3
+    secrets:
+      ghtoken: ${{ secrets.GITHUB_TOKEN }}
+
+  pre-release:
+    steps:
+      - uses: actions/download-artifact@v3
+      - name: Display structure of downloaded files
+        run: ls -R
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: "*/*.ipk"
