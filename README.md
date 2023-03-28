@@ -34,7 +34,7 @@ If you need support for other OpenWRT architectures, feel free to open an issue.
 
 The development setup is an easy way to test wimoved.
 Please be aware that after following this guide, you do **not** have a full WiMoVE installation.
-You can connect to the Wi-Fi but won't be connected to other devices or the Internet.
+You can connect to the Wi-Fi but won't be connected to other devices or the Internet. If you want a complete WiMoVE setup, follow the [setup guide](https://wimove-oss.github.io/docs/) instead.
 Currently, we only support Linux as a development platform.
 
 ### Setup hostapd
