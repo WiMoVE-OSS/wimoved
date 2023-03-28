@@ -1,6 +1,6 @@
 # WiMoVE - Wireless Mobility through VXLAN EVPN
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/getcursor/cursor/blob/main/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/WiMoVE-OSS/wimoved/blob/main/LICENSE)
 ![CI Status](https://github.com/WiMoVE-OSS/wimoved/actions/workflows/build.yml/badge.svg?branch=main)
 ![Linter Status](https://github.com/WiMoVE-OSS/wimoved/actions/workflows/linter.yml/badge.svg?branch=main)
 
@@ -14,18 +14,76 @@ WiMoVE is built with standard network protocols, on top of open&#8209;source tec
 
 This solution allows for using commodity access points running OpenWRT for large&#8209;scale Wi&#8209;Fi deployments, even from different vendors.
 
-This repository contains the open&#8209;source daemon wimoved of the WiMoVE system. If you want to learn more about the architecture of the system, take a look at our [documentation](https://wimove-oss.github.io/docs/architecture/).
+This repository contains the open&#8209;source daemon wimoved of the WiMoVE system. The daemon is responsible to handle events of hostapd and creating the VXLAN interfaces. The WiMoVE system consists of multiple other systems apart from the daemon. If you want to learn more about the architecture of the system or want to deploy your own setup, take a look at our [documentation](https://wimove-oss.github.io/docs/).
 
-## Setup
+##  Supported architectures
 
-Our documentation for the setup is still pretty early stage with some rough edges. If something doesn't work the way you expect or you get stuck please let us know, so we can improve our guides and help you with your issue. A hosted version of the setup guide is available [here](https://wimove-oss.github.io/docs/setup).
+Currently we support OpenWRT with the following architectures: `ramips-mt7621`, `mvebu-cortexa9`. We test our software on the following Access Points: `ZyXEL NWA50AX` and `Linksys WRT1900ACS`. If you need support for another OpenWRT architecture feel free to open an issue.
 
-##  State of this software
+## Development setup
 
-:warning: This software is still work in progress and subject to change. :warning:
+The development setup is an easy way to test out the WiMoVE daemon. Please be aware that after following this guide you do **not** have a working instance of the whole WiMoVE system. You can connect to the Wi-Fi but won't have any connectivity to other devices or the internet. Currently we only support Linux as development platform.
 
-Currently we support OpenWRT with the following architectures: `ramips-mt7621`, `mvebu-cortexa9`. We test our software on the following Access Points: `ZyXEL NWA50AX` and `Linksys WRT1900ACS`. If you need support for another OpenWRT architecture feel free to open an issue. We'll consider adding another build pipeline. If you encounter an issue or have a feature request please open a ticket here on github. 
+### Setup hostapd
 
-## Acknowledgements
+First, we will set up [hostapd](https://w1.fi/).
 
-The article series of Vincent Bernat is a great starting point to learn about BGP EVPN with VXLAN. It helped us get started so please check it out [here](https://vincent.bernat.ch/en/blog/2017-vxlan-bgp-evpn).
+- Install `hostapd` using your distribution's package manager. Alternatively, you can build it from source, see [here](https://w1.fi/). By default, hostapd comes with VLAN support. If you encounter issues, make sure that it was compiled with `CONFIG_NO_VLAN=n`.
+- Put the following in your `/etc/hostapd.conf`, replacing the placeholder values:
+
+```text
+    interface=<interface>
+    ssid=<ssid>
+    ieee80211d=1
+    country_code=<Your country code>
+    hw_mode=g
+    ieee80211n=1
+    channel=6
+    beacon_int=1000
+    dtim_period=2
+    max_num_sta=255
+    rts_threshold=-1
+    fragm_threshold=-1
+    macaddr_acl=0
+    auth_algs=1
+    ignore_broadcast_ssid=0
+    wmm_enabled=0
+    eapol_key_index_workaround=0
+    eap_server=0
+    wpa=2
+    wpa_key_mgmt=WPA-PSK
+    rsn_pairwise=CCMP
+    wpa_passphrase=<Secret key>
+    per_sta_vif=1
+    vlan_file=/etc/hostapd/hostapd.vlan
+```
+
+- Create a file `/etc/hostapd/hostapd.vlan` with the following content: 
+
+```text
+*   vlan#
+```
+- Hostapd has to be started with the option `-g /var/run/hostapd/global`. For the service to work accordingly you might have to edit the service file for hostapd. Run `systemctl status hostapd` to locate this file.
+- Start `hostapd`, either with `systemctl start hostapd` or on the command line. You might need to stop `NetworkManager` before starting `hostapd` since the programs interfere with each other.
+
+### Build WiMoVE
+
+- Install [`libnl`](https://github.com/thom311/libnl). On a recent Linux system, the corresponding package is probably already installed.
+- Install [`prometheus-cpp`](https://github.com/jupp0r/prometheus-cpp).
+    - On Ubuntu, install the package `prometheus-cpp-dev`.
+    - On Arch Linux, the package is available in the AUR as `prometheus-cpp-git`.
+- Clone the repository by running `git clone https://github.com/WiMoVE-OSS/wimoved`.
+- Build the project by running `cmake .` followed by `make -j$(nproc)`.
+- Create a configuration file `wimoved.conf`
+
+```text
+hapd_sock=/var/run/hostapd/<interface>
+```
+
+- Start `wimoved` by running `./wimoved wimoved.conf`.
+
+### Coding guidelines
+
+Format the source files by running `make format`. Lint the source files by running `make lint`. Run both checks by doing `make precommit`. The coding guidelines are enforced via the CI pipeline.
+
+As linting takes a long time, we recommend integrating clang-tidy into your editor.
