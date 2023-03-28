@@ -14,3 +14,8 @@ As linting takes a long time, we recommend integrating `clang-tidy` into your ed
 ## Testing
 
 Build the tests by running `make test`.
+
+## Sanitization
+
+Build with sanitizers enabled by running `cmake . -DWIMOVED_SANITIZE=ON`.
+For full stacktrace support, set the environment variable `LSAN_OPTIONS=fast_unwind_on_malloc=0:malloc_context_size=30`.
