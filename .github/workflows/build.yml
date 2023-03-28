@@ -1,9 +1,6 @@
 
 name: Build Binaries
 
-on:
-  push:
-
 jobs:
   build-arm:
     permissions:

@@ -40,7 +40,10 @@ jobs:
       - name: Move all files into current working directory
         run: "mv */*.ipk ."
       - name: Rename Files to contain commit hash
-        run: "rename 's/\\.([^.]+)$/-${{ github.sha }}.$1/'"
+        run: |
+          for file in *.ipk; do
+            mv "$file" "${file%.ipk}_test.ipk"
+          done
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
