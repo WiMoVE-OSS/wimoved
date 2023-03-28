@@ -26,10 +26,11 @@ else()
 endif()
 target_link_libraries(wimoved ${LIBRARIES})
 
+add_custom_target(test DEPENDS wimoved_tests COMMAND ./wimoved_tests)
 add_custom_target(format COMMAND clang-format -i ${SRC_FILES} ${TEST_FILES})
 add_custom_target(format-check COMMAND clang-format --dry-run --Werror ${SRC_FILES} ${TEST_FILES})
 add_custom_target(lint COMMAND run-clang-tidy -j8 -quiet ${SRC_FILES} ${TEST_FILES})
-add_custom_target(precommit DEPENDS lint format)
+add_custom_target(precommit DEPENDS format test lint)
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
 
 
