@@ -14,7 +14,7 @@ WiMoVE is built with standard network protocols, on top of open&#8209;source tec
 
 This solution allows for using commodity access points running OpenWRT for large&#8209;scale Wi&#8209;Fi deployments, even from different vendors.
 
-This repository contains the open&#8209;source daemon wimoved of the WiMoVE system. If you want to learn more about the architecture of the system, take a look at our [docs](https://wimove-oss.github.io/docs/)
+This repository contains the open&#8209;source daemon wimoved of the WiMoVE system. If you want to learn more about the architecture of the system, take a look at our [documentation](https://wimove-oss.github.io/docs/architecture/).
 
 ## Setup
 
