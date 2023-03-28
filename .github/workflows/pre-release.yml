@@ -4,7 +4,7 @@ name: Build Releases
 on:
   push:
     branches:
-      - "5-create-tagged-binaries-on-release"
+      - "*"
     tags-ignore:
       - "*"
 
