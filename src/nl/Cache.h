@@ -3,7 +3,7 @@
 
 class Cache {
    public:
-    explicit Cache(struct nl_cache *cache);
+    explicit Cache(struct nl_cache* cache);
     ~Cache();
     Cache(const Cache& other) = delete;
     Cache operator=(const Cache& other) = delete;
