@@ -18,7 +18,7 @@ This repository contains the open&#8209;source daemon wimoved of the WiMoVE syst
 
 ## Setup
 
-Our documentation for the setup is still pretty early stage with some rough edges. If something doesn't work the way you expect or you get stuck please let us know, so we can improve our guides and help you with your issue. A hosted version of the setup guide is available [here](https://wimove-oss.github.io/docs/setup)
+Our documentation for the setup is still pretty early stage with some rough edges. If something doesn't work the way you expect or you get stuck please let us know, so we can improve our guides and help you with your issue. A hosted version of the setup guide is available [here](https://wimove-oss.github.io/docs/setup).
 
 ##  State of this software
 
