@@ -19,6 +19,6 @@ jobs:
       - name: Start linting
         run: make lint
       - name: Build
-        run: make -j$(nproc)
+        run: make -j$(nproc) wimoved_tests
       - name: Test
         run: ./wimoved_tests
