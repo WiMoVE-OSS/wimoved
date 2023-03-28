@@ -24,7 +24,7 @@ file(GLOB_RECURSE SRC_FILES src/*.h src/*.cpp src/**/*.h src/**/*.cpp)
 file(GLOB_RECURSE TEST_FILES test/*.h test/*.cpp test/**/*.h test/**/*.cpp)
 file(GLOB_RECURSE VENDOR_FILES vendor/*.h vendor/*.cpp vendor/**/*.h vendor/**/*.cpp)
 
-add_executable(wimoved ${SRC_FILES} ${VENDOR_FILES} src/nl/LinkCache.cpp src/nl/LinkCache.h)
+add_executable(wimoved ${SRC_FILES} ${VENDOR_FILES})
 if(DEFINED STAGING_DIR)
     target_include_directories(wimoved PUBLIC vendor ${STAGING_DIR}/usr/include/libnl3)
     add_compile_definitions(ELPP_SYSLOG)
