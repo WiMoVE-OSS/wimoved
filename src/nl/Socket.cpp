@@ -5,13 +5,12 @@
 #include <netlink/netlink.h>
 #include <netlink/route/link/vxlan.h>
 
-#include <array>
 #include <cstring>
-#include <iostream>
 #include <stdexcept>
 
 #include "Bridge.h"
 #include "Link.h"
+#include "LinkCache.h"
 #include "Vxlan.h"
 #include "logging/loginit.h"
 
@@ -111,18 +110,14 @@ void nl::Socket::delete_interface(const std::string &name) {
 }
 
 std::unordered_set<uint32_t> nl::Socket::interface_list() {
-    struct nl_cache *cache = nullptr;
-    int err = rtnl_link_alloc_cache(socket, AF_INET, &cache);
-    if (err < 0) {
-        throw std::runtime_error(std::string("Could not allocate cache: ") + nl_geterror(err));
-    }
-    struct nl_object *object = nl_cache_get_first(cache);
+    LinkCache cache(socket);
+    struct nl_object *object = nl_cache_get_first(cache.cache);
     std::unordered_set<uint32_t> set_of_vnis(0);
     do {
         auto *link = reinterpret_cast<struct rtnl_link *>(object);
         if (rtnl_link_is_vxlan(link) != 0) {
             uint32_t id = 0;
-            err = rtnl_link_vxlan_get_id(link, &id);
+            int err = rtnl_link_vxlan_get_id(link, &id);
             if (err < 0) {
                 throw std::runtime_error(std::string("Could not get vni ") + nl_geterror(err));
             }

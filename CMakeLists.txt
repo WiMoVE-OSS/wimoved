@@ -6,18 +6,25 @@ find_package(prometheus-cpp CONFIG REQUIRED)
 
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
+add_compile_options(-Wall -Wextra -pedantic)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(LIBRARIES nl-3 nl-route-3 prometheus-cpp::pull prometheus-cpp::core)
 
 add_compile_definitions(ELPP_THREAD_SAFE)
 add_compile_definitions(ELPP_FEATURE_CRASH_LOG)
 
+option(WIMOVED_SANITIZE "Enable Sanitizers" ON)
+if (${WIMOVED_SANITIZE})
+    add_compile_options(-Og -g -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined -fsanitize=leak)
+    add_link_options(-lasan -lubsan)
+endif()
+
+
 file(GLOB_RECURSE SRC_FILES src/*.h src/*.cpp src/**/*.h src/**/*.cpp)
 file(GLOB_RECURSE TEST_FILES test/*.h test/*.cpp test/**/*.h test/**/*.cpp)
 file(GLOB_RECURSE VENDOR_FILES vendor/*.h vendor/*.cpp vendor/**/*.h vendor/**/*.cpp)
 
-add_executable(wimoved ${SRC_FILES} ${VENDOR_FILES})
+add_executable(wimoved ${SRC_FILES} ${VENDOR_FILES} src/nl/LinkCache.cpp src/nl/LinkCache.h)
 if(DEFINED STAGING_DIR)
     target_include_directories(wimoved PUBLIC vendor ${STAGING_DIR}/usr/include/libnl3)
     add_compile_definitions(ELPP_SYSLOG)
