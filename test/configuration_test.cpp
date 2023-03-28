@@ -70,7 +70,7 @@ TEST(ConfigurationTest, ValueSpacingIgnored) {
 }
 
 TEST(ConfigurationTest, MissingEqualsTest) {
-    EXPECT_THROW({ Configuration& config = ConfigurationTest::from_string("hapd_group"); }, std::runtime_error);
+    EXPECT_THROW({ ConfigurationTest::from_string("hapd_group"); }, std::runtime_error);
 }
 
 TEST(ConfigurationTest, CommentTest) {

@@ -39,7 +39,7 @@ ConfigParser::ConfigParser(std::istream &istream) {
     std::string delimiter = "=";
     while (std::getline(istream, line, '\n')) {
         auto split = line.find(delimiter);
-        if (line.starts_with("#") || line.size() == 0) {
+        if (line.starts_with("#") || line.empty()) {
             continue;
         }
         if (split == std::string::npos) {
