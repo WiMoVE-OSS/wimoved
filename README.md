@@ -74,13 +74,7 @@ First, we will set up [hostapd](https://w1.fi/).
     - On Arch Linux, the package is available in the AUR as `prometheus-cpp-git`.
 - Clone the repository by running `git clone https://github.com/WiMoVE-OSS/wimoved`.
 - Build the project by running `cmake .` followed by `make -j$(nproc)`.
-- Create a configuration file `wimoved.conf`
-
-```text
-hapd_sock=/var/run/hostapd/<interface>
-```
-
-- Start `wimoved` by running `./wimoved wimoved.conf`.
+- Start `wimoved` by running `./wimoved`.
 
 ### Coding guidelines
 
