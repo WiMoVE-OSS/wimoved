@@ -1,6 +1,11 @@
 
 name: Build Binaries
 
+on:
+  push:
+    branches-ignore:
+      - "main"
+
 jobs:
   build-arm:
     permissions:

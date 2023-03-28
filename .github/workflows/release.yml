@@ -3,10 +3,8 @@ name: Build Releases
 
 on:
   push:
-    branches:
-      - "main"
-    tags-ignore:
-      - "*"
+    tags:
+      - "v*"
 
 jobs:
   build-arm:
@@ -47,7 +45,6 @@ jobs:
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: true
+          prerelease: false
           title: "Development Build"
           files: "*.ipk"
