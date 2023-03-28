@@ -16,9 +16,7 @@ jobs:
         run: cmake CMakeLists.txt
       - name: Start formatting
         run: make format-check
+      - name: Test
+        run: make test
       - name: Start linting
         run: make lint
-      - name: Build
-        run: make -j$(nproc) wimoved_tests
-      - name: Test
-        run: ./wimoved_tests
