@@ -28,4 +28,4 @@ Currently we support OpenWRT with the following architectures: `ramips-mt7621`, 
 
 ## Acknowledgements
 
-The article series of Vincent Bernat is a great starting point to learn about BGP EVPN with VXLAN. It helped us getting started so please check it out [Link](https://vincent.bernat.ch/en/blog/2017-vxlan-bgp-evpn)
+The article series of Vincent Bernat is a great starting point to learn about BGP EVPN with VXLAN. It helped us get started so please check it out [here](https://vincent.bernat.ch/en/blog/2017-vxlan-bgp-evpn).
