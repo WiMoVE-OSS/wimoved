@@ -2,7 +2,7 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/getcursor/cursor/blob/main/LICENSE)
 ![CI Status](https://github.com/WiMoVE-OSS/wimoved/actions/workflows/build.yml/badge.svg?branch=main)
-![Linter Status](https://github.com/WiMoVE-OSS/wimoved/actions/workflows/linter.yml/badge.svg?branch=dev)
+![Linter Status](https://github.com/WiMoVE-OSS/wimoved/actions/workflows/linter.yml/badge.svg?branch=main)
 
 WiMoVE is a scalable Wi-Fi System that partitions all stations in separate overlay L2 domains, to limit the amount of wireless L2 broadcast traffic. In large Wi-Fi systems broadcast traffic can take up large amounts of airtime. A great talk, that explains the problem in more detail is available [here](https://www.youtube.com/watch?v=v8y-r9JBhmw). The overlay L2 domains "follow" the stations, being resized on demand, thus preserving handover.
 
