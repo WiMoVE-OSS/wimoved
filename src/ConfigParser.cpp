@@ -11,12 +11,12 @@
 
 // trim from start (in place)
 static inline void ltrim(std::string &s) {
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) { return !std::isspace(ch); }));
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) { return std::isspace(ch) == 0; }));
 }
 
 // trim from end (in place)
 static inline void rtrim(std::string &s) {
-    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(), s.end());
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) { return std::isspace(ch) == 0; }).base(), s.end());
 }
 
 // trim from both ends (in place)
@@ -29,7 +29,7 @@ ConfigParser::ConfigParser(const std::string &config_path) {
     std::string line;
     std::ifstream config_file(config_path);
     if (!config_file.is_open()) {
-        GAFFALOG(ERROR) << "Unable to read config file " << config_path << ". Using default config";
+        WMLOG(ERROR) << "Unable to read config file " << config_path << ". Using default config";
         return;
     }
 
@@ -54,9 +54,8 @@ std::string ConfigParser::get_config_string(const std::string &option) const {
     auto got = config_options.find(option);
     if (got == config_options.end()) {
         throw std::out_of_range(std::string("Could not get option: ") + option);
-    } else {
-        return got->second;
     }
+    return got->second;
 }
 
 uint32_t ConfigParser::get_config_uint32(const std::string &option) const {
@@ -66,4 +65,18 @@ uint32_t ConfigParser::get_config_uint32(const std::string &option) const {
         throw std::range_error("Number is too large for uint32_t. Config option " + option + " with value " + value);
     }
     return result;
+}
+
+std::vector<std::string> ConfigParser::get_config_string_vector(const std::string &option) const {
+    std::string value = get_config_string(option);
+    std::vector<std::string> strings;
+
+    std::stringstream stream(value);
+    while (stream.good()) {
+        std::string substring;
+        getline(stream, substring, ',');
+        trim(substring);
+        strings.push_back(substring);
+    }
+    return strings;
 }

@@ -1,32 +1,33 @@
-//
-// Created by aarons on 08.03.23.
-//
-
-#ifndef GAFFA_CONFIGURATION_H
-#define GAFFA_CONFIGURATION_H
+#ifndef WIMOVED_CONFIGURATION_H
+#define WIMOVED_CONFIGURATION_H
 
 #include <cstdint>
 #include <string>
+#include <vector>
 
 #include "ConfigParser.h"
+
 class Configuration {
    public:
     static Configuration& get_instance() {
         static Configuration instance;
         return instance;
     }
+    ~Configuration() = default;
     Configuration(Configuration const&) = delete;
-    void populate(const ConfigParser& parser);
     void operator=(Configuration const&) = delete;
-    uint32_t max_vni = 20;
-    std::string hapd_sock = "/var/run/hostapd/wlan0";
-    std::string log_path = "gaffa.log";
-    uint32_t cleanup_interval = 30;
+    void populate(const ConfigParser& parser);
 
+    // NOLINTBEGIN(readability-magic-numbers)
+    uint32_t max_vni = 20;
+    std::string hapd_sockdir = "/var/run/hostapd/";
+    std::string hapd_group = "root";
+    std::string log_path = "wimoved.log";
+    std::vector<std::string> socknames = {"wlan0"};
+    uint32_t cleanup_interval = 10;
+    // NOLINTEND(readability-magic-numbers)
    private:
-    Configuration() {}
-    void set_string_if_valid(const ConfigParser& parser, std::string& config_target, const std::string& key);
-    void set_uint32_if_valid(const ConfigParser& parser, uint32_t& config_target, const std::string& key);
+    Configuration() = default;
 };
 
-#endif  // GAFFA_CONFIGURATION_H
+#endif  // WIMOVED_CONFIGURATION_H

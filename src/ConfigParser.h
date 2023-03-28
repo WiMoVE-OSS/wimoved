@@ -1,18 +1,20 @@
-#ifndef GAFFA_CONFIGPARSER_H
-#define GAFFA_CONFIGPARSER_H
+#ifndef WIMOVED_CONFIGPARSER_H
+#define WIMOVED_CONFIGPARSER_H
 
 #include <cstdint>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 class ConfigParser {
    public:
     explicit ConfigParser(const std::string& config_path);
     std::string get_config_string(const std::string& option) const;
     uint32_t get_config_uint32(const std::string& option) const;
+    std::vector<std::string> get_config_string_vector(const std::string& option) const;
 
    private:
     std::unordered_map<std::string, std::string> config_options;
 };
 
-#endif  // GAFFA_CONFIGPARSER_H
+#endif  // WIMOVED_CONFIGPARSER_H

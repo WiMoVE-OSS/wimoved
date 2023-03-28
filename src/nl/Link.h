@@ -1,5 +1,5 @@
-#ifndef GAFFA_LINK_H
-#define GAFFA_LINK_H
+#ifndef WIMOVED_LINK_H
+#define WIMOVED_LINK_H
 
 #include <netlink/route/link.h>
 
@@ -8,12 +8,15 @@ namespace nl {
 class Link {
    public:
     Link();
-    Link(const Link &other) = delete;
     ~Link();
+    Link(const Link& other) = delete;
+    Link operator=(const Link& other) = delete;
+    Link(Link&& other) = delete;
+    Link operator=(Link&& other) = delete;
 
-    rtnl_link *link;
+    rtnl_link* link;
 };
 
 }  // namespace nl
 
-#endif  // GAFFA_LINK_H
+#endif  // WIMOVED_LINK_H

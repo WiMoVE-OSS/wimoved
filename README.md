@@ -5,6 +5,7 @@ WiMoVE is a scalable Wi-Fi System that partitions all stations in separate overl
 
 ## System architecture
 
+
 In this section we explain the different components of our system on a high level with an exmaple. In this scenario we have four access points and four connected stations. Those four stations are partitioned in three overlay networks. Every station is connected to a different access point.
 
 ![image](https://user-images.githubusercontent.com/39831045/225569469-2fa88c14-5986-4b31-88a9-e9cfd6b296c7.png)
@@ -36,3 +37,10 @@ Our documentation is still pretty early stage with some rough edges. If somethin
 ## Acknowledgements
 
 The article series of Vincent Bernat is a great starting point to learn about BGP EVPN with VXLAN. It helped us getting started so please check it out [Link](https://vincent.bernat.ch/en/blog/2017-vxlan-bgp-evpn)
+
+## Development tips
+Format the source files by running `make format`.
+Lint the source files by running `make lint`.
+Run both checks by doing `make precommit`.
+
+As linting takes a long time, we recommend integrating `clang-tidy` into your editor.

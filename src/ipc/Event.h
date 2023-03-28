@@ -1,5 +1,5 @@
-#ifndef GAFFA_IPC_EVENT_H
-#define GAFFA_IPC_EVENT_H
+#ifndef WIMOVED_IPC_EVENT_H
+#define WIMOVED_IPC_EVENT_H
 
 #include <string>
 
@@ -12,11 +12,11 @@ namespace ipc {
 class Event {
    public:
     explicit Event(Station station);
-
     virtual ~Event() = default;
 
     virtual void handle(EventHandler *handler) = 0;
 
+    // NOLINTNEXTLINE(cppcoreguidelines-non-private-member-variables-in-classes)
     Station station;
     uint64_t finished_processing();
 
@@ -27,4 +27,4 @@ class Event {
 
 #include "../EventHandler.h"
 
-#endif  // GAFFA_IPC_EVENT_H
+#endif  // WIMOVED_IPC_EVENT_H

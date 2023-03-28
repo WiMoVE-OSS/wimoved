@@ -1,5 +1,5 @@
-#ifndef GAFFA_VXLAN_H
-#define GAFFA_VXLAN_H
+#ifndef WIMOVED_VXLAN_H
+#define WIMOVED_VXLAN_H
 
 #include <netlink/route/link/vxlan.h>
 
@@ -7,11 +7,14 @@ namespace nl {
 class Vxlan {
    public:
     Vxlan();
-    Vxlan(const Vxlan &other) = delete;
     ~Vxlan();
+    Vxlan(const Vxlan& other) = delete;
+    Vxlan operator=(const Vxlan& other) = delete;
+    Vxlan(Vxlan&& other) = delete;
+    Vxlan operator=(Vxlan&& other) = delete;
 
-    rtnl_link *link;
+    rtnl_link* link;
 };
 }  // namespace nl
 
-#endif  // GAFFA_VXLAN_H
+#endif  // WIMOVED_VXLAN_H

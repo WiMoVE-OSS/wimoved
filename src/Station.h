@@ -1,17 +1,23 @@
-#ifndef GAFFA_STATION_H
-#define GAFFA_STATION_H
+#ifndef WIMOVED_STATION_H
+#define WIMOVED_STATION_H
 
 #include <optional>
 #include <string>
 
-class Station {
+#include "MacAddress.h"
+#include "logging/easylogging++.h"
+
+class Station : public el::Loggable {
    public:
-    Station(std::string mac);
+    Station(std::string sockname, MacAddress mac);
     uint32_t vni() const;
     std::optional<uint32_t> vlan_id;
-    std::string mac;
+    MacAddress mac;
+    std::string sockname;
 
     std::string vlan_interface_name() const;
+
+    void log(el::base::type::ostream_t& os) const override;
 };
 
-#endif  // GAFFA_STATION_H
+#endif  // WIMOVED_STATION_H
