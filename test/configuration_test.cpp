@@ -68,3 +68,12 @@ TEST(ConfigurationTest, ValueSpacingIgnored) {
     Configuration& config = ConfigurationTest::from_string("hapd_group= network ");
     ASSERT_EQ(config.hapd_group, "network");
 }
+
+TEST(ConfigurationTest, MissingEqualsTest) {
+    EXPECT_THROW({ ConfigurationTest::from_string("hapd_group"); }, std::runtime_error);
+}
+
+TEST(ConfigurationTest, CommentTest) {
+    Configuration& config = ConfigurationTest::from_string("hapd_group=network\n# TestComment");
+    ASSERT_EQ(config.hapd_group, "network");
+}

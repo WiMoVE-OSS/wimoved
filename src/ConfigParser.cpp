@@ -38,8 +38,14 @@ ConfigParser::ConfigParser(std::istream &istream) {
     std::string line;
     std::string delimiter = "=";
     while (std::getline(istream, line, '\n')) {
-        auto split = line.find(delimiter);
         trim(line);
+        if (line.starts_with("#") || line.empty()) {
+            continue;
+        }
+        auto split = line.find(delimiter);
+        if (split == std::string::npos) {
+            throw std::runtime_error("Configuration line is invalid: " + line);
+        }
         std::string token = line.substr(0, split);
         trim(token);
         // Make token lowercase
