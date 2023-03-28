@@ -24,4 +24,3 @@ package/
 *.conf
 lib/
 *.cmake
-test/

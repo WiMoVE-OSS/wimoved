@@ -16,7 +16,8 @@ class Configuration {
     ~Configuration() = default;
     Configuration(Configuration const&) = delete;
     void operator=(Configuration const&) = delete;
-    void populate(const ConfigParser& parser);
+    void apply_config_file(const ConfigParser& parser);
+    void apply_environment();
 
     static const uint32_t DEFAULT_MAX_VNI;
     static const std::string DEFAULT_HAPD_SOCKDIR;
@@ -34,6 +35,7 @@ class Configuration {
 
    private:
     Configuration() = default;
+    void set_all_available_sockets_if_empty();
 };
 
 #include "ConfigParser.h"

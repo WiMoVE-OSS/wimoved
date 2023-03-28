@@ -82,4 +82,7 @@ std::vector<std::string> ConfigParser::get_config_string_vector(const std::strin
     return strings;
 }
 
-void ConfigParser::populate_configuration(Configuration &config) const { config.populate(*this); }
+void ConfigParser::populate_configuration(Configuration &config) const {
+    config.apply_config_file(*this);
+    config.apply_environment();
+}
