@@ -39,6 +39,12 @@ ConfigParser::ConfigParser(std::istream &istream) {
     std::string delimiter = "=";
     while (std::getline(istream, line, '\n')) {
         auto split = line.find(delimiter);
+        if (line.starts_with("#") || line.size() == 0) {
+            continue;
+        }
+        if (split == std::string::npos) {
+            throw std::runtime_error("Configuration line is invalid: " + line);
+        }
         trim(line);
         std::string token = line.substr(0, split);
         trim(token);
