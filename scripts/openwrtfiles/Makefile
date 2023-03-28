@@ -39,8 +39,10 @@ define Package/wimoved/config
 endef
 
 define Package/wimoved/install
-	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_DIR) $(1)/usr/bin $(1)/etc/init.d $(1)/etc/wimoved
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/wimoved $(1)/usr/bin
+	$(INSTALL_BIN) ./wimoved $(1)/etc/init.d
+	$(INSTALL_CONF) ./config $(1)/etc/wimoved
 endef
 
 $(eval $(call BuildPackage,wimoved))
