@@ -42,7 +42,7 @@ jobs:
       - name: Rename Files to contain commit hash
         run: |
           for file in *.ipk; do
-            mv "$file" "${file%.ipk}_test.ipk"
+            mv "$file" "${file%.ipk}_${{ github.sha }}.ipk"
           done
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
