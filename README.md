@@ -97,4 +97,4 @@ Build the tests by running `make test`.
 Run both checks and the tests by doing `make precommit`.
 The coding guidelines are enforced via the CI pipeline.
 
-As linting takes a long time, we recommend integrating clang-tidy into your editor.
+As linting takes a long time, we recommend integrating `clang-tidy` into your editor.
