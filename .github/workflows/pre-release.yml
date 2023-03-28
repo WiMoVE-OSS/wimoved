@@ -37,12 +37,14 @@ jobs:
       pull-requests: read
     steps:
       - uses: actions/download-artifact@v3
-      - name: Display structure of downloaded files
-        run: ls -R
+      - name: Move all files into current working directory
+        run: "mv */*.ipk ."
+      - name: Rename Files to contain commit hash
+        run: "rename 's/\.([^.]+)$/-${{ github.sha }}.$1/"
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
           prerelease: true
           title: "Development Build"
-          files: "*/*.ipk"
+          files: "*.ipk"
