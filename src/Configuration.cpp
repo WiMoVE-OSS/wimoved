@@ -5,6 +5,13 @@
 #include "filesystem"
 #include "logging/loginit.h"
 
+const uint32_t Configuration::DEFAULT_MAX_VNI = 20;
+const std::string Configuration::DEFAULT_HAPD_SOCKDIR = "/var/run/hostapd/";
+const std::string Configuration::DEFAULT_HAPD_GROUP = "root";
+const std::string Configuration::DEFAULT_LOG_PATH = "wimoved.log";
+const std::vector<std::string> Configuration::DEFAULT_SOCKNAMES = {};
+const uint32_t Configuration::DEFAULT_CLEANUP_INTERVAL = 10;
+
 const std::string HAPD_GLOBAL_SOCK_NAME = "global";
 
 static void set_string_if_valid(const ConfigParser& parser, std::string& config_target, const std::string& key) {
@@ -43,12 +50,13 @@ void Configuration::set_all_available_sockets_if_empty() {
     }
 }
 
-void Configuration::populate(const ConfigParser& parser) {
+void Configuration::apply_config_file(const ConfigParser& parser) {
     set_string_if_valid(parser, this->hapd_sockdir, "hapd_sockdir");
     set_string_if_valid(parser, this->hapd_group, "hapd_group");
     set_string_if_valid(parser, this->log_path, "log_path");
     set_uint32_if_valid(parser, this->cleanup_interval, "cleanup_interval");
     set_uint32_if_valid(parser, this->max_vni, "max_vni");
     set_string_vector_if_valid(parser, this->socknames, "sockets");
-    set_all_available_sockets_if_empty();
 }
+
+void Configuration::apply_environment() { set_all_available_sockets_if_empty(); }

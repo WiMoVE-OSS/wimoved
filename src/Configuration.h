@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "ConfigParser.h"
+class ConfigParser;
 
 class Configuration {
    public:
@@ -16,19 +16,28 @@ class Configuration {
     ~Configuration() = default;
     Configuration(Configuration const&) = delete;
     void operator=(Configuration const&) = delete;
-    void populate(const ConfigParser& parser);
+    void apply_config_file(const ConfigParser& parser);
+    void apply_environment();
 
-    // NOLINTBEGIN(readability-magic-numbers)
-    uint32_t max_vni = 20;
-    std::string hapd_sockdir = "/var/run/hostapd/";
-    std::string hapd_group = "root";
-    std::string log_path = "wimoved.log";
-    std::vector<std::string> socknames = {};
-    uint32_t cleanup_interval = 10;
-    // NOLINTEND(readability-magic-numbers)
+    static const uint32_t DEFAULT_MAX_VNI;
+    static const std::string DEFAULT_HAPD_SOCKDIR;
+    static const std::string DEFAULT_HAPD_GROUP;
+    static const std::string DEFAULT_LOG_PATH;
+    static const std::vector<std::string> DEFAULT_SOCKNAMES;
+    static const uint32_t DEFAULT_CLEANUP_INTERVAL;
+
+    uint32_t max_vni = DEFAULT_MAX_VNI;
+    std::string hapd_sockdir = DEFAULT_HAPD_SOCKDIR;
+    std::string hapd_group = DEFAULT_HAPD_GROUP;
+    std::string log_path = DEFAULT_LOG_PATH;
+    std::vector<std::string> socknames = DEFAULT_SOCKNAMES;
+    uint32_t cleanup_interval = DEFAULT_CLEANUP_INTERVAL;
+
    private:
     Configuration() = default;
     void set_all_available_sockets_if_empty();
 };
+
+#include "ConfigParser.h"
 
 #endif  // WIMOVED_CONFIGURATION_H

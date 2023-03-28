@@ -11,9 +11,6 @@
 #include "ipc/Subscriber.h"
 #include "logging/loginit.h"
 
-// NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
-INITIALIZE_EASYLOGGINGPP
-
 // NOLINTBEGIN(cppcoreguidelines-avoid-non-const-global-variables)
 std::vector<std::promise<void>> promises(3);
 bool promises_resolved = false;
@@ -65,7 +62,7 @@ int main(int argc, char* argv[]) {
         config_path = args[1];
     }
     WMLOG(INFO) << "wimoved is starting";
-    ConfigParser parser(config_path);
+    ConfigParser::from_file(config_path).populate_configuration(Configuration::get_instance());
     setup_logger();
 
     if (std::signal(SIGINT, handle_signal) == SIG_ERR || std::signal(SIGTERM, handle_signal) == SIG_ERR) {
