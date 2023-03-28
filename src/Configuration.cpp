@@ -2,6 +2,18 @@
 
 #include <stdexcept>
 
+#include "filesystem"
+#include "logging/loginit.h"
+
+const uint32_t Configuration::DEFAULT_MAX_VNI = 20;
+const std::string Configuration::DEFAULT_HAPD_SOCKDIR = "/var/run/hostapd/";
+const std::string Configuration::DEFAULT_HAPD_GROUP = "root";
+const std::string Configuration::DEFAULT_LOG_PATH = "wimoved.log";
+const std::vector<std::string> Configuration::DEFAULT_SOCKNAMES = {};
+const uint32_t Configuration::DEFAULT_CLEANUP_INTERVAL = 10;
+
+const std::string HAPD_GLOBAL_SOCK_NAME = "global";
+
 static void set_string_if_valid(const ConfigParser& parser, std::string& config_target, const std::string& key) {
     try {
         config_target = parser.get_config_string(key);
@@ -24,7 +36,21 @@ static void set_string_vector_if_valid(const ConfigParser& parser, std::vector<s
     }
 }
 
-void Configuration::populate(const ConfigParser& parser) {
+void Configuration::set_all_available_sockets_if_empty() {
+    if (socknames.empty()) {
+        for (const auto& entry : std::filesystem::directory_iterator(hapd_sockdir)) {
+            if (entry.is_socket() && entry.path().filename() != HAPD_GLOBAL_SOCK_NAME) {
+                socknames.emplace_back(entry.path().filename());
+            }
+        }
+        if (socknames.empty()) {
+            throw std::runtime_error("No sockets were configured and no sockets could be found.");
+        }
+        WMLOG(DEBUG) << "No sockets were configured. Using all " << socknames.size() << " sockets available.";
+    }
+}
+
+void Configuration::apply_config_file(const ConfigParser& parser) {
     set_string_if_valid(parser, this->hapd_sockdir, "hapd_sockdir");
     set_string_if_valid(parser, this->hapd_group, "hapd_group");
     set_string_if_valid(parser, this->log_path, "log_path");
@@ -32,3 +58,5 @@ void Configuration::populate(const ConfigParser& parser) {
     set_uint32_if_valid(parser, this->max_vni, "max_vni");
     set_string_vector_if_valid(parser, this->socknames, "sockets");
 }
+
+void Configuration::apply_environment() { set_all_available_sockets_if_empty(); }
