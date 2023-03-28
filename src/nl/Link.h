@@ -7,7 +7,7 @@ namespace nl {
 
 class Link {
    public:
-    Link();
+    explicit Link(rtnl_link *link);
     ~Link();
     Link(const Link& other) = delete;
     Link operator=(const Link& other) = delete;
