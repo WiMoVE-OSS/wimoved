@@ -13,7 +13,7 @@ set(LIBRARIES nl-3 nl-route-3 prometheus-cpp::pull prometheus-cpp::core)
 add_compile_definitions(ELPP_THREAD_SAFE)
 add_compile_definitions(ELPP_FEATURE_CRASH_LOG)
 
-option(WIMOVED_SANITIZE "Enable Sanitizers" ON)
+option(WIMOVED_SANITIZE "Enable Sanitizers" OFF)
 if (${WIMOVED_SANITIZE})
     add_compile_options(-Og -g -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined -fsanitize=leak)
     add_link_options(-lasan -lubsan)
