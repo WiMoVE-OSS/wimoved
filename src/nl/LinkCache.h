@@ -3,12 +3,12 @@
 
 class LinkCache {
    public:
-    LinkCache(struct nl_sock* socket);
+    explicit LinkCache(struct nl_sock* socket);
     ~LinkCache();
     LinkCache(const LinkCache& other) = delete;
     LinkCache operator=(const LinkCache& other) = delete;
 
-    struct nl_cache* cache;
+    struct nl_cache* cache = nullptr;
 };
 
 #endif  // WIMOVED_LINKCACHE_H
