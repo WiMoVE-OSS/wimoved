@@ -30,6 +30,8 @@ jobs:
       ghtoken: ${{ secrets.GITHUB_TOKEN }}
 
   pre-release:
+    needs: [build-ramips, build-arm]
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/download-artifact@v3
       - name: Display structure of downloaded files
