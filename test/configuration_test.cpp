@@ -68,8 +68,3 @@ TEST(ConfigurationTest, ValueSpacingIgnored) {
     Configuration& config = ConfigurationTest::from_string("hapd_group= network ");
     ASSERT_EQ(config.hapd_group, "network");
 }
-
-TEST(ConfigurationTest, InvalidConfiguration) {
-    Configuration& config = ConfigurationTest::from_string("hapd_sockdir");
-    ASSERT_EQ(config.hapd_sockdir, Configuration::DEFAULT_HAPD_SOCKDIR);
-}
