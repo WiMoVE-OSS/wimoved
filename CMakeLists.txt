@@ -19,7 +19,6 @@ if (${WIMOVED_SANITIZE})
     add_link_options(-lasan -lubsan)
 endif()
 
-
 file(GLOB_RECURSE SRC_FILES src/*.h src/*.cpp src/**/*.h src/**/*.cpp)
 file(GLOB_RECURSE TEST_FILES test/*.h test/*.cpp test/**/*.h test/**/*.cpp)
 file(GLOB_RECURSE VENDOR_FILES vendor/*.h vendor/*.cpp vendor/**/*.h vendor/**/*.cpp)
