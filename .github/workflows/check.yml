@@ -21,7 +21,7 @@ jobs:
       - name: Start CMake
         run: cmake CMakeLists.txt -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=0
       - name: Start linting
-        run: make lint
+        run: make unity-lint
   testing:
     runs-on: ubuntu-latest
     container: ghcr.io/wimove-oss/wimove-testimage:latest
