@@ -98,3 +98,8 @@ Run both checks and the tests by doing `make precommit`.
 The coding guidelines are enforced via the CI pipeline.
 
 As linting takes a long time, we recommend integrating `clang-tidy` into your editor.
+
+## Sanitization
+
+Build with sanitizers enabled by running `cmake . -DWIMOVED_SANITIZE=ON`.
+For full stacktrace support, set the environment variable `LSAN_OPTIONS=fast_unwind_on_malloc=0:malloc_context_size=30`.
