@@ -33,7 +33,11 @@ nl::Socket::~Socket() {
 }
 
 void nl::Socket::create_vxlan_iface(uint32_t vni) {
-    Link vxlan(rtnl_link_vxlan_alloc());
+    rtnl_link *vxlan_unmanaged = rtnl_link_vxlan_alloc();
+    if (vxlan_unmanaged == nullptr) {
+        throw std::runtime_error(std::string("error in rtnl_link_vxlan_alloc: ") + std::strerror(errno));
+    }
+    Link vxlan(vxlan_unmanaged);
 
     rtnl_link_set_name(vxlan.link, (VXLAN_IFACE_PREFIX + std::to_string(vni)).c_str());
     rtnl_link_set_flags(vxlan.link, IFF_UP);
@@ -61,7 +65,11 @@ void nl::Socket::create_vxlan_iface(uint32_t vni) {
 void nl::Socket::create_bridge_for_vni(uint32_t vni) { create_bridge(BRIDGE_IFACE_PREFIX + std::to_string(vni)); }
 
 void nl::Socket::create_bridge(const std::string &name) {
-    Link bridge(rtnl_link_bridge_alloc());
+    rtnl_link *bridge_unmanaged = rtnl_link_bridge_alloc();
+    if (bridge_unmanaged == nullptr) {
+        throw std::runtime_error(std::string("error in rtnl_link_bridge_alloc: ") + std::strerror(errno));
+    }
+    Link bridge(bridge_unmanaged);
     rtnl_link_set_name(bridge.link, name.c_str());
     rtnl_link_set_flags(bridge.link, IFF_UP);
 
@@ -102,7 +110,11 @@ void nl::Socket::add_iface_bridge(const std::string &bridge_name, const std::str
 }
 
 void nl::Socket::delete_interface(const std::string &name) {
-    Link link(rtnl_link_alloc());
+    rtnl_link *link_unmanaged = rtnl_link_alloc();
+    if (link_unmanaged == nullptr) {
+        throw std::runtime_error(std::string("error in rtnl_link_alloc: ") + std::strerror(errno));
+    }
+    Link link(link_unmanaged);
 
     rtnl_link_set_name(link.link, name.c_str());
 
