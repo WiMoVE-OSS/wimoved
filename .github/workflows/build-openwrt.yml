@@ -56,5 +56,5 @@ jobs:
         run: export IMAGE="ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}" && chmod +x ./scripts/build-gha.sh && ./scripts/build-gha.sh
       - uses: actions/upload-artifact@v3
         with:
-          name: wimove-${{ inputs.architecture }}.ipk
+          name: wimove-${{ inputs.architecture }}
           path: out/*.ipk
