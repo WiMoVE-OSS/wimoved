@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Start CMake
-        run: cmake CMakeLists.txt
+        run: cmake CMakeLists.txt -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=0
       - name: Start linting
         run: make lint
   testing:
