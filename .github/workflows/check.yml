@@ -1,22 +1,33 @@
-name: Run clang linter
+name: Run checks
 
 on:
   push:
 
 jobs:
-  linting-formatting:
+  formatting:
     runs-on: ubuntu-latest
+    container: ghcr.io/wimove-oss/wimove-testimage:latest
     steps:
       - uses: actions/checkout@v3
-      - name: Clone and build prometheus-cpp
-        run: git clone https://github.com/jupp0r/prometheus-cpp.git && cd prometheus-cpp && git submodule init && git submodule update && mkdir _build && cd _build && cmake .. -DBUILD_SHARED_LIBS=ON -DENABLE_PUSH=OFF -DENABLE_COMPRESSION=OFF && cmake --build . --parallel 4 && ctest -V && sudo cmake --install .
-      - name: Install libnl
-        run: sudo apt-get update && sudo apt-get install libnl-3-dev libnl-route-3-dev
       - name: Start CMake
         run: cmake CMakeLists.txt
       - name: Start formatting
         run: make format-check
-      - name: Test
-        run: make test
+  linting:
+    runs-on: ubuntu-latest
+    container: ghcr.io/wimove-oss/wimove-testimage:latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Start CMake
+        run: cmake CMakeLists.txt
       - name: Start linting
         run: make lint
+  testing:
+    runs-on: ubuntu-latest
+    container: ghcr.io/wimove-oss/wimove-testimage:latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Start CMake
+        run: cmake CMakeLists.txt
+      - name: Test
+        run: make test
