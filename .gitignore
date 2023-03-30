@@ -22,7 +22,7 @@ wimoved_tests
 *.cmake
 *.ninja
 
-!OpenWrtBuild/packageDirectory/**
+!openwrt/package/**
 !.clang-format
 !.gitignore
 !.github

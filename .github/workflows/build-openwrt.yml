@@ -32,7 +32,7 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         push: true
-        context: ./dockerimages/openwrt-build-env
+        context: ./docker/openwrt-build-env
         tags: ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}
         cache-from: type=gha,scope=$GITHUB_REF_NAME-${{ inputs.architecture }}
         cache-to: type=gha,mode=max,scope=$GITHUB_REF_NAME-${{ inputs.architecture }}
@@ -53,7 +53,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.ghtoken }}
       - name: Build OpenWrt
-        run: export IMAGE="ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}" && chmod +x ./OpenWrtBuild/buildForOpenWrt.sh && ./OpenWrtBuild/buildForOpenWrt.sh
+        run: export IMAGE="ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}" && chmod +x ./openwrt/build-openwrt.sh && ./openwrt/build-openwrt.sh
       - uses: actions/upload-artifact@v3
         with:
           name: wimove-${{ inputs.architecture }}

@@ -3,7 +3,7 @@ FROM openwrtorg/sdk:$TAG
 
 RUN mkdir -p /home/build/openwrt/package/prometheus/src/
 COPY MakefilePrometheus /home/build/openwrt/package/prometheus/Makefile
-COPY build_wimoved.sh /home/build/
+COPY build-wimoved.sh /home/build/
 
 RUN ./scripts/feeds update && \
     make defconfig && \
