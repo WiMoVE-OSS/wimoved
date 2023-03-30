@@ -20,6 +20,7 @@ wimoved_tests
 *.log
 *.conf
 *.cmake
+*.ninja
 
 !scripts/openwrtfiles/*
 !.clang-format
