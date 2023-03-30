@@ -11,4 +11,4 @@ cp -r vendor package/src/
 docker run --rm \
   -v "$(pwd)"/package:/home/build/openwrt/package/network/services/wimoved \
   -v "$(pwd)"/out:/home/build/openwrt/out \
-  "$(IMAGE)"
+  $IMAGE
