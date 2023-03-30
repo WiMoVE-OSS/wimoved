@@ -53,7 +53,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.ghtoken }}
       - name: Build OpenWrt
-        run: export IMAGE="ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}" && chmod +x ./scripts/build-gha.sh && ./scripts/build-gha.sh
+        run: export IMAGE="ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}" && chmod +x ./OpenWrtBuild/buildForOpenWrt.sh && ./OpenWrtBuild/buildForOpenWrt.sh
       - uses: actions/upload-artifact@v3
         with:
           name: wimove-${{ inputs.architecture }}
