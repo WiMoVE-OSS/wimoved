@@ -1,8 +1,7 @@
 name: Build CI-Image
 on:
   schedule:
-    - cron:  '13 9 * * *'
-  push:
+    - cron:  '0 5 * * *'
 
 jobs:
   build-ci-image:
