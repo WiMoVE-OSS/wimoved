@@ -1,7 +1,4 @@
 #!/bin/bash
-set -xe
-chmod -R ogu+rw out
-
 docker run --rm \
   -v "$(pwd)"scripts/openwrtfiles:/home/build/openwrt/package/network/services/wimoved \
   -v "$(pwd)"CMakeLists.txt:/home/build/openwrt/package/network/services/wimoved/src \
