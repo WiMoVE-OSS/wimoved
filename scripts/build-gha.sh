@@ -1,6 +1,6 @@
 #!/bin/bash
 mkdir -p out || true
-chmod ogu+rw out
+chmod -R ogu+rw out
 docker run --rm \
   -v "$(pwd)"/scripts/openwrtfiles:/home/build/openwrt/package/network/services/wimoved \
   -v "$(pwd)"/CMakeLists.txt:/home/build/openwrt/package/network/services/wimoved/src/CMakeLists.txt \
