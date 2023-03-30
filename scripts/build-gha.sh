@@ -7,5 +7,5 @@ docker run --rm \
   -v "$(pwd)"/vendor:/home/build/openwrt/package/network/services/wimoved/src/vendor \
   -v "$(pwd)"/src:/home/build/openwrt/package/network/services/wimoved/src/src \
   -v "$(pwd)"/out:/home/build/openwrt/out \
-  buildenv
+  $IMAGE
 
