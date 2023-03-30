@@ -1,0 +1,25 @@
+on:
+  schedule:
+    - cron:  '0 5 * * *'
+
+jobs:
+  build-ci-image:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.ghtoken }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          context: ./wimoved-ci-env
+          tags: ghcr.io/wimove-oss/wimove/wimoved-ci-env

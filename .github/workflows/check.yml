@@ -6,7 +6,7 @@ on:
 jobs:
   formatting:
     runs-on: ubuntu-latest
-    container: ghcr.io/wimove-oss/wimove-testimage:latest
+    container: ghcr.io/wimove-oss/wimove/wimoved-ci-env:latest
     steps:
       - uses: actions/checkout@v3
       - name: Start CMake
@@ -15,7 +15,7 @@ jobs:
         run: make format-check
   linting:
     runs-on: ubuntu-latest
-    container: ghcr.io/wimove-oss/wimove-testimage:latest
+    container: ghcr.io/wimove-oss/wimove/wimoved-ci-env:latest
     steps:
       - uses: actions/checkout@v3
       - name: Start CMake
@@ -24,7 +24,7 @@ jobs:
         run: make lint
   testing:
     runs-on: ubuntu-latest
-    container: ghcr.io/wimove-oss/wimove-testimage:latest
+    container: ghcr.io/wimove-oss/wimove/wimoved-ci-env:latest
     steps:
       - uses: actions/checkout@v3
       - name: Start CMake
