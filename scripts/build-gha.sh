@@ -4,9 +4,9 @@ rm -r out package || true
 mkdir -p out package/src/src
 chmod -R ogu+rw out
 cp scripts/openwrtfiles/* package/
-cp CMakeLists.txt package/src/
-cp -r src package/src/
-cp -r vendor package/src/
+cp CMakeLists.txt package/
+cp -r src package/
+cp -r vendor package/
 
 docker run --rm \
   -v "$(pwd)"/package:/home/build/openwrt/package/network/services/wimoved \
