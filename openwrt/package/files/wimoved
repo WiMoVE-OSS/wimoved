@@ -1,0 +1,16 @@
+#!/bin/sh /etc/rc.common
+# Inspired by the procd example script of the OpenWrt wiki
+
+USE_PROCD=1
+START=99
+STOP=15
+start_service() {
+         procd_open_instance [instance_name]
+         procd_set_param command /usr/bin/wimoved
+         procd_set_param respawn ${respawn_threshold:-3600} ${respawn_timeout:-15} ${respawn_retry:-10}
+         procd_set_param stdout 0
+         procd_set_param stderr 0
+         procd_set_param user root
+         procd_set_param term_timeout 60
+         procd_close_instance
+}

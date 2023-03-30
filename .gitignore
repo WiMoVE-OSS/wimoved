@@ -1,5 +1,4 @@
 out/
-package/
 lib/
 CMakeLists.txt.user
 CMakeCache.txt
