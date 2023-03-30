@@ -2,7 +2,7 @@ name: Build CI-Image
 on:
   schedule:
     - cron:  '13 9 * * *'
-  workflow_dispatch:
+  push:
 
 jobs:
   build-ci-image:
