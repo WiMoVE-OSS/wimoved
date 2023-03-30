@@ -13,10 +13,6 @@ PKG_MAINTAINER:=BPHK2022
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
-#TARGET_CFLAGS += \
-#        -I$(STAGING_DIR)/usr/include/libnl3 \
-#        -I$(STAGING_DIR)/usr/include \
-
 CMAKE_OPTIONS += \
         -DSTAGING_DIR=$(STAGING_DIR) \
         -DWIMOVED_ENABLE_TESTS=OFF

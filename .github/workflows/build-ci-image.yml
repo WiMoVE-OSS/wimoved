@@ -23,5 +23,5 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          context: ./wimoved-ci-env
+          context: ./dockerimages/wimoved-ci-env
           tags: ghcr.io/wimove-oss/wimove/wimoved-ci-env

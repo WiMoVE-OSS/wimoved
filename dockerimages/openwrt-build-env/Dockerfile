@@ -11,7 +11,10 @@ RUN mkdir -p /home/build/openwrt/package/prometheus/src/ && \
     tar -xzf prometheus-cpp-with-submodules.tar.gz -C /home/build/openwrt/package/prometheus/src/ --strip-components=1
 
 COPY MakefilePrometheus /home/build/openwrt/package/prometheus/Makefile
+COPY build_wimoved.sh /home/build/
 
 RUN make -j$(nproc) package/prometheus/compile
+
+CMD bash /home/build/build_wimoved.sh
 
 
