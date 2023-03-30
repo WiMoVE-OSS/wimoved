@@ -99,7 +99,21 @@ The coding guidelines are enforced via the CI pipeline.
 
 As linting takes a long time, we recommend integrating `clang-tidy` into your editor.
 
-## Sanitization
+### Sanitization
 
 Build with sanitizers enabled by running `cmake . -DWIMOVED_SANITIZE=ON`.
 For full stacktrace support, set the environment variable `LSAN_OPTIONS=fast_unwind_on_malloc=0:malloc_context_size=30`.
+
+## Monitoring and Logging
+
+### Monitoring
+
+wimoved exposes metrics via prometheus on port `9500`. 
+Via the endpoint, information on how many stations are associated, how many events have been handled and how long the event handling took is exposed.
+The endpoint is activated by default.
+We plan on making the endpoint optional via a config option.
+
+### Logging
+
+wimoved provides logs via syslog.
+A syslog aggregator like syslog-ng can be used to aggregate those logs on a different host.
