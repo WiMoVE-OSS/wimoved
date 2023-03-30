@@ -1,5 +1,5 @@
 ---
-HeaderFilterRegex: 'src/.*\.h'
+HeaderFilterRegex: '(src|test)/.*\.(h|cpp)'
 WarningsAsErrors: '*'
 UseColor: true
 CheckOptions:
@@ -87,6 +87,7 @@ Checks: >
   -modernize-use-nodiscard,
   -modernize-use-trailing-return-type,
   -readability-identifier-length,
+  -bugprone-suspicious-include,
   hicpp-exception-baseclass,
   hicpp-multiway-paths-covered,
   hicpp-no-assembler,
