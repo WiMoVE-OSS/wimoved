@@ -55,6 +55,7 @@ void setup_logger() {
     el::Loggers::reconfigureLogger("default", default_configuration);
 }
 
+//NOLINTNEXTLINE
 int main(int argc, char* argv[]) {
     std::string config_path = "/etc/wimoved/config";
     auto args = std::span(argv, argc);
