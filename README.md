@@ -13,9 +13,9 @@ WiMoVE is built with standard network protocols, on top of open&#8209;source tec
 
 - The overlay networks use [BGP EVPN](https://www.rfc-editor.org/rfc/rfc8365.html) with [VXLAN](https://www.rfc-editor.org/rfc/rfc7348) encapsulation.
 - All BGP speakers run [FRRouting](https://frrouting.org/) to exchange EVPN routes.
-- The access points run [OpenWRT](https://openwrt.org/) with our custom, open&#8209;source daemon called [wimoved](https://github.com/wimove-oss/wimoved).
+- The access points run [OpenWrt](https://openwrt.org/) with our custom, open&#8209;source daemon called [wimoved](https://github.com/wimove-oss/wimoved).
 
-This solution allows for using commodity access points running OpenWRT for large&#8209;scale Wi&#8209;Fi deployments, even from different vendors.
+This solution allows for using commodity access points running OpenWrt for large&#8209;scale Wi&#8209;Fi deployments, even from different vendors.
 
 ## This repository
 
@@ -26,9 +26,9 @@ If you want to learn more about the architecture or create a full setup, take a 
 
 ## Supported architectures
 
-Currently, we support OpenWRT with the architectures `ramips-mt7621` and `mvebu-cortexa9`.
+Currently, we support OpenWrt with the architectures `ramips-mt7621` and `mvebu-cortexa9`.
 We test our software on the Access Point models `ZyXEL NWA50AX` and `Linksys WRT1900ACS`.
-If you need support for other OpenWRT architectures, feel free to open an issue.
+If you need support for other OpenWrt architectures, feel free to open an issue.
 
 ## Development setup
 

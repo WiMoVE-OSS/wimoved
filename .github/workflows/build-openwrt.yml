@@ -1,4 +1,4 @@
-name: Build OpenWRT Image
+name: Build OpenWrt Image
 
 on:
   workflow_call:
@@ -52,7 +52,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.ghtoken }}
-      - name: Build OpenWRT
+      - name: Build OpenWrt
         run: export IMAGE="ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}" && chmod +x ./scripts/build-gha.sh && ./scripts/build-gha.sh
       - uses: actions/upload-artifact@v3
         with:
