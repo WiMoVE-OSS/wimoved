@@ -14,6 +14,6 @@ RUN ./scripts/feeds update && \
     make -j$(nproc) package/prometheus/compile && \
     rm -rf feeds
 
-CMD bash /home/build/build_wimoved.sh
+CMD bash /home/build/build-wimoved.sh
 
 
