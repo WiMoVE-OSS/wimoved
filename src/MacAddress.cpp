@@ -12,14 +12,15 @@ MacAddress::MacAddress(std::string serialized) : data(), serialized(serialized) 
     }
     serialized.erase(std::remove(serialized.begin(), serialized.end(), ':'), serialized.end());
     for (size_t i = 0; i < MAC_NUM_BYTES; i++) {
-        data[i] = std::strtoul(serialized.substr(2 * i, 2 * i + 2).c_str(), nullptr, MAC_OCTET_BASE);
+        data[i] = std::strtoul(serialized.substr(2 * i, 2).c_str(), nullptr, MAC_OCTET_BASE);
     }
 }
 std::string MacAddress::string() const { return serialized; }
 uint64_t MacAddress::number() const {
     uint64_t res = 0;
     for (size_t i = 0; i < MAC_NUM_BYTES; i++) {
-        res = res | data[i] << (BITS_PER_BYTE * i);
+        res <<= BITS_PER_BYTE;
+        res = res | data[i];
     }
     return res;
 }
