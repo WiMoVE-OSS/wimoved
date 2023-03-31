@@ -57,6 +57,8 @@ CheckOptions:
     value: lower_case
   - key: readability-identifier-naming.VariableCase
     value: lower_case
+  - key: readability-function-cognitive-complexity.IgnoreMacros
+    value: 'true'
 Checks: >
   *,
   -abseil-*,
@@ -87,7 +89,6 @@ Checks: >
   -modernize-use-nodiscard,
   -modernize-use-trailing-return-type,
   -readability-identifier-length,
-  -readability-function-cognitive-complexity,
   -bugprone-suspicious-include,
   hicpp-exception-baseclass,
   hicpp-multiway-paths-covered,
