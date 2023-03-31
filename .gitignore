@@ -1,5 +1,4 @@
 out/
-package/
 lib/
 CMakeLists.txt.user
 CMakeCache.txt
@@ -20,8 +19,9 @@ wimoved_tests
 *.log
 *.conf
 *.cmake
+*.ninja
 
-!scripts/openwrtfiles/*
+!openwrt/package/**
 !.clang-format
 !.gitignore
 !.github

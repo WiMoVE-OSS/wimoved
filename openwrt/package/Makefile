@@ -13,10 +13,6 @@ PKG_MAINTAINER:=BPHK2022
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
-#TARGET_CFLAGS += \
-#        -I$(STAGING_DIR)/usr/include/libnl3 \
-#        -I$(STAGING_DIR)/usr/include \
-
 CMAKE_OPTIONS += \
         -DSTAGING_DIR=$(STAGING_DIR) \
         -DWIMOVED_ENABLE_TESTS=OFF
@@ -41,8 +37,8 @@ endef
 define Package/wimoved/install
 	$(INSTALL_DIR) $(1)/usr/bin $(1)/etc/init.d $(1)/etc/wimoved
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/wimoved $(1)/usr/bin
-	$(INSTALL_BIN) ./wimoved $(1)/etc/init.d
-	$(INSTALL_CONF) ./config $(1)/etc/wimoved
+	$(INSTALL_BIN) ./files/wimoved $(1)/etc/init.d
+	$(INSTALL_CONF) ./files/config $(1)/etc/wimoved
 endef
 
 $(eval $(call BuildPackage,wimoved))
