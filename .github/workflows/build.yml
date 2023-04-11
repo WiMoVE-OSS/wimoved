@@ -21,9 +21,9 @@ jobs:
       - name: 'Get Previous tag'
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
-        #with:
-        #  #fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
-        #  prefix: "v"
+        with:
+          #fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
+          prefix: "v"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       - name: 'Get next minor version'
