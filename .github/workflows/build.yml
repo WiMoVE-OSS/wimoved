@@ -28,8 +28,8 @@ jobs:
         id: semvers
         uses: "WyriHaximus/github-action-next-semvers@v1"
         with:
-          version: ${{ steps.semvers.outputs.v_patch }}
-      - run: echo "${{ steps.semvers.outputs.v_patch }}"
+          version: ${{ steps.previoustag.outputs.tag }}
+      - run: echo "${{ steps.previoustag.outputs.tag }}"
       - id: step1
         run: echo "version=${{ steps.semvers.outputs.v_patch }}" >> "$GITHUB_OUTPUT"
   build-arm:
