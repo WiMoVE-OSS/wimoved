@@ -15,7 +15,7 @@ const uint32_t Configuration::DEFAULT_CLEANUP_INTERVAL = 10;
 
 const std::string HAPD_GLOBAL_SOCK_NAME = "global";
 
-Configuration Configuration::INSTANCE;
+Configuration Configuration::INSTANCE; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 
 static void set_string_if_valid(const ConfigParser& parser, std::string& config_target, const std::string& key) {
     try {
