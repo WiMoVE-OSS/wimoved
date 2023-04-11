@@ -12,6 +12,11 @@ jobs:
       contents: read
     uses: ./.github/workflows/get-version.yml
 
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ needs.get-new-version.outputs }}
+
   build-arm:
     permissions:
       packages: write

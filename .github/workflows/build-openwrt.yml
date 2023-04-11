@@ -6,6 +6,9 @@ on:
       architecture:
         required: true
         type: string
+      version:
+        type: string
+        required: true
     secrets:
       ghtoken:
         required: true
