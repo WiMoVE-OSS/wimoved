@@ -42,7 +42,7 @@ class Configuration {
     void set_all_available_sockets_if_empty();
     Configuration& operator=(Configuration&&) = default;
 
-    static Configuration INSTANCE; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+    static Configuration INSTANCE;  // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 };
 
 #include "ConfigParser.h"
