@@ -31,9 +31,8 @@ jobs:
         uses: "WyriHaximus/github-action-next-semvers@v1"
         with:
           version: ${{ steps.previoustag.outputs.tag }}
-      - run: echo "${{ steps.previoustag.outputs.tag }}"
       - id: step1
-        run: echo "version=${{ steps.semvers.outputs.v_patch }}" >> "$GITHUB_OUTPUT"
+        run: echo "version=${{ steps.semvers.outputs.v_patch }}+beta$(date '+%Y-%m-%d_%H.%M')" >> "$GITHUB_OUTPUT"
   build-arm:
     permissions:
       packages: write
