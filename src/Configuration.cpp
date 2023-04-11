@@ -5,6 +5,7 @@
 #include "filesystem"
 #include "logging/loginit.h"
 
+const uint32_t Configuration::DEFAULT_MIN_VNI = 1;
 const uint32_t Configuration::DEFAULT_MAX_VNI = 20;
 const std::string Configuration::DEFAULT_HAPD_SOCKDIR = "/var/run/hostapd/";
 const std::string Configuration::DEFAULT_HAPD_GROUP = "root";
@@ -13,6 +14,8 @@ const std::vector<std::string> Configuration::DEFAULT_SOCKNAMES = {};
 const uint32_t Configuration::DEFAULT_CLEANUP_INTERVAL = 10;
 
 const std::string HAPD_GLOBAL_SOCK_NAME = "global";
+
+Configuration Configuration::INSTANCE;  // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 
 static void set_string_if_valid(const ConfigParser& parser, std::string& config_target, const std::string& key) {
     try {
@@ -55,8 +58,16 @@ void Configuration::apply_config_file(const ConfigParser& parser) {
     set_string_if_valid(parser, this->hapd_group, "hapd_group");
     set_string_if_valid(parser, this->log_path, "log_path");
     set_uint32_if_valid(parser, this->cleanup_interval, "cleanup_interval");
+    set_uint32_if_valid(parser, this->min_vni, "min_vni");
     set_uint32_if_valid(parser, this->max_vni, "max_vni");
     set_string_vector_if_valid(parser, this->socknames, "sockets");
 }
 
 void Configuration::apply_environment() { set_all_available_sockets_if_empty(); }
+
+void Configuration::check_validity() const {
+    if (min_vni > max_vni) {
+        throw std::runtime_error("min_vni must be less than or equal to max_vni " + std::to_string(min_vni) + " > " +
+                                 std::to_string(max_vni));
+    }
+}

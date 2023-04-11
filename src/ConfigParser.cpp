@@ -91,4 +91,5 @@ std::vector<std::string> ConfigParser::get_config_string_vector(const std::strin
 void ConfigParser::populate_configuration(Configuration &config) const {
     config.apply_config_file(*this);
     config.apply_environment();
+    config.check_validity();
 }
