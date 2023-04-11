@@ -9,16 +9,16 @@ on:
 jobs:
   get-version:
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.step1.outputs.version }}
     permissions:
       contents: read
+    outputs:
+      version: ${{ steps.step1.outputs.version }}
     steps:
-      - id: semver
+      - id: get
         uses: ./.github/workflows/get-version.yml
-      - run: echo "${{ steps.semver.outputs.version}}"
       - id: step1
-        run: echo "version=${{ steps.semver.outputs.version}}" >> "$GITHUB_OUTPUT"
+        run: echo "version=${{ steps.get.outputs.version }}" >> "$GITHUB_OUTPUT"
+
   build-arm:
     permissions:
       packages: write
