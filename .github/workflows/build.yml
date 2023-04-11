@@ -8,6 +8,7 @@ on:
 
 jobs:
   get-version:
+    runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.step1.outputs.version }}
     permissions:
