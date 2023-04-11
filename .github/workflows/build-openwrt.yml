@@ -56,8 +56,8 @@ jobs:
           password: ${{ secrets.ghtoken }}
       - name: Build OpenWrt
         env:
-          - IMAGE="ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}"
-          - VERSION="${{ inputs.version }}"
+          IMAGE: "ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}"
+          VERSION: "${{ inputs.version }}"
         run: chmod +x ./openwrt/build-openwrt.sh && ./openwrt/build-openwrt.sh
       - uses: actions/upload-artifact@v3
         with:
