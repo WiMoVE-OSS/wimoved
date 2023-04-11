@@ -8,9 +8,16 @@ on:
 
 jobs:
   get-version:
+    outputs:
+      version: ${{ steps.step1.outputs.version }}
     permissions:
       contents: read
-    uses: ./.github/workflows/get-version.yml
+    steps:
+      - id: semver
+        uses: ./.github/workflows/get-version.yml
+      - run: echo "${{ steps.semver.outputs.version}}"
+      - id: step1
+        run: echo "version=${{ steps.semver.outputs.version}}" >> "$GITHUB_OUTPUT"
   build-arm:
     permissions:
       packages: write
