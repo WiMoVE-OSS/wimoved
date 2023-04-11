@@ -8,6 +8,7 @@ on:
 
 jobs:
   get-version:
+    runs-on: ubuntu-latest
     permissions:
       packages: write
       contents: read
