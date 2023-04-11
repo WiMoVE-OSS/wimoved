@@ -5,9 +5,12 @@
 class ConfigurationTest : public testing::Test {
    public:
     static Configuration& from_string(const std::string& string) {
-        std::stringstream stream(string);
+        Configuration::reset();
         Configuration& config = Configuration::get_instance();
+
+        std::stringstream stream(string);
         config.apply_config_file(ConfigParser(stream));
+        config.check_validity();
         return config;
     }
 };
@@ -22,9 +25,18 @@ TEST(ConfigurationTest, EmptyConfiguration) {
     ASSERT_EQ(config.cleanup_interval, Configuration::DEFAULT_CLEANUP_INTERVAL);
 }
 
+TEST(ConfigurationTest, MinVNI) {
+    Configuration& config = ConfigurationTest::from_string("min_vni=3");
+    ASSERT_EQ(config.min_vni, 3);
+}
+
 TEST(ConfigurationTest, MaxVNI) {
     Configuration& config = ConfigurationTest::from_string("max_vni=5");
     ASSERT_EQ(config.max_vni, 5);
+}
+
+TEST(ConfigurationTest, MinVNIGreaterThanMaxVNI) {
+    EXPECT_THROW(ConfigurationTest::from_string("min_vni=6\nmax_vni=5"), std::runtime_error);
 }
 
 TEST(ConfigurationTest, HapdGroup) {
