@@ -8,6 +8,8 @@ on:
 
 jobs:
   get-version:
+    permissions:
+      contents: read
     uses: ./.github/workflows/get-version.yml
   build-arm:
     permissions:
