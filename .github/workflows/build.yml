@@ -17,7 +17,7 @@ jobs:
     needs:
       [get-new-version]
     steps:
-      - run: echo ${{ needs.get-new-version.outputs }}
+      - run: echo ${{ needs.get-new-version.outputs.version }}
 
   build-arm:
     permissions:
