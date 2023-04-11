@@ -21,14 +21,14 @@ on:
         value: ${{ jobs.example_job.outputs.output2 }}
       version:
         description: "The second output string"
-        value: ${{ jobs.get-version.outputs.output1 }}
+        value: ${{ jobs.get-version.outputs.version }}
 jobs:
   get-version:
     runs-on: ubuntu-latest
     permissions:
       contents: read
     outputs:
-      output1: ${{ steps.step1.outputs.version }}
+      version: ${{ steps.step1.outputs.version }}
     steps:
       #- uses: actions/checkout@v3
       #  with:
