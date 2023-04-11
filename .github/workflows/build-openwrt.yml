@@ -7,7 +7,7 @@ on:
         required: true
         type: string
       version:
-        type: string
+        type: mapping
     secrets:
       ghtoken:
         required: true
