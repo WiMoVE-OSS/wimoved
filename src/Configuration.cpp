@@ -63,9 +63,7 @@ void Configuration::apply_config_file(const ConfigParser& parser) {
     set_string_vector_if_valid(parser, this->socknames, "sockets");
 }
 
-void Configuration::apply_environment() {
-    set_all_available_sockets_if_empty();
-}
+void Configuration::apply_environment() { set_all_available_sockets_if_empty(); }
 
 void Configuration::check_validity() const {
     if (min_vni > max_vni) {

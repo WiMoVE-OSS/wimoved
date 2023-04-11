@@ -9,12 +9,8 @@ class ConfigParser;
 
 class Configuration {
    public:
-    static Configuration& get_instance() {
-        return INSTANCE;
-    }
-    static void reset() {
-        INSTANCE = Configuration{};
-    }
+    static Configuration& get_instance() { return INSTANCE; }
+    static void reset() { INSTANCE = Configuration{}; }
     ~Configuration() = default;
     Configuration(Configuration const&) = delete;
     void apply_config_file(const ConfigParser& parser);
