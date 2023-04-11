@@ -1,26 +1,11 @@
-#name: Get next semversion
-#
-#on:
-#  workflow_call:
-#    outputs:
-#      version:
-#        description: "The next version string"
-#        value: ${{ jobs.get-version.version }}
-#
-name: Reusable workflow
+name: Get next semversion
 
 on:
   workflow_call:
     # Map the workflow outputs to job outputs
     outputs:
-      firstword:
-        description: "The first output string"
-        value: ${{ jobs.example_job.outputs.output1 }}
-      secondword:
-        description: "The second output string"
-        value: ${{ jobs.example_job.outputs.output2 }}
       version:
-        description: "The second output string"
+        description: "The output version"
         value: ${{ jobs.get-version.outputs.version }}
 jobs:
   get-version:
@@ -30,34 +15,20 @@ jobs:
     outputs:
       version: ${{ steps.step1.outputs.version }}
     steps:
-      #- uses: actions/checkout@v3
-      #  with:
-      #    fetch-depth: 0
-      #- name: 'Get Previous tag'
-      #  id: previoustag
-      #  uses: "WyriHaximus/github-action-get-previous-tag@v1"
-      #  with:
-      #    prefix: "v"
-      #  env:
-      #    GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      #- name: 'Get next minor version'
-      #  id: semvers
-      #  uses: "WyriHaximus/github-action-next-semvers@v1"
-      #  with:
-      #    version: ${{ steps.previoustag.outputs.tag }}
-      #- id: step1
-      #  run: echo "version=${{ steps.semvers.outputs.v_patch }}+beta$(date '+%Y-%m-%d_%H.%M')" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          prefix: "v"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: 'Get next minor version'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
       - id: step1
-        run: echo "version=test1" >> "$GITHUB_OUTPUT"
-  example_job:
-    name: Generate output
-    runs-on: ubuntu-latest
-    # Map the job outputs to step outputs
-    outputs:
-      output1: ${{ steps.step1.outputs.firstword }}
-      output2: ${{ steps.step2.outputs.secondword }}
-    steps:
-      - id: step1
-        run: echo "firstword=hello" >> $GITHUB_OUTPUT
-      - id: step2
-        run: echo "secondword=world" >> $GITHUB_OUTPUT
+        run: echo "version=${{ steps.semvers.outputs.v_patch }}+beta$(date '+%Y-%m-%d_%H.%M')" >> "$GITHUB_OUTPUT"

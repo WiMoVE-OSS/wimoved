@@ -7,15 +7,6 @@ on:
       - "main"
 
 jobs:
-  job1:
-    uses: ./.github/workflows/get-version.yml
-
-  job2:
-    runs-on: ubuntu-latest
-    needs: job1
-    steps:
-      - run: echo ${{ needs.job1.outputs.firstword }} ${{ needs.job1.outputs.secondword }}
-      - run: echo ${{ needs.job1.outputs.version }} ${{ needs.job1.outputs.secondword }}
 
   get-new-version:
     permissions:
@@ -28,7 +19,6 @@ jobs:
       [get-new-version]
     steps:
       - run: echo ${{ needs.get-new-version.outputs.version }}
-      - run: echo ${{ needs.get-version.outputs.version }}
 
   build-arm:
     permissions:
