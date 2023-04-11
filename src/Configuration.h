@@ -11,8 +11,12 @@ class Configuration {
    public:
     static Configuration& get_instance() { return INSTANCE; }
     static void reset() { INSTANCE = Configuration{}; }
+
     ~Configuration() = default;
     Configuration(Configuration const&) = delete;
+    Configuration(Configuration&&) = delete;
+    Configuration& operator=(Configuration const&) = delete;
+
     void apply_config_file(const ConfigParser& parser);
     void apply_environment();
     void check_validity() const;
@@ -36,8 +40,9 @@ class Configuration {
    private:
     Configuration() = default;
     void set_all_available_sockets_if_empty();
-    Configuration& operator=(Configuration const&) = default;
-    static Configuration INSTANCE;
+    Configuration& operator=(Configuration&&) = default;
+
+    static Configuration INSTANCE; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 };
 
 #include "ConfigParser.h"
