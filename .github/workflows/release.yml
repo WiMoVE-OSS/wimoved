@@ -11,23 +11,32 @@ jobs:
     permissions:
       packages: write
       contents: read
-    uses: ./.github/workflows/build-openwrt.yml
-    with:
-      architecture: mvebu-cortexa9-22.03.3
-    secrets:
-      ghtoken: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - uses: ./.github/workflows/build-openwrt.yml
+        with:
+          architecture: mvebu-cortexa9-22.03.3
+          version: ${{ env.RELEASE_VERSION }}
+        secrets:
+          ghtoken: ${{ secrets.GITHUB_TOKEN }}
 
   build-ramips:
     permissions:
       packages: write
       contents: read
-    uses: ./.github/workflows/build-openwrt.yml
-    with:
-      architecture: ramips-mt7621-22.03.3
-    secrets:
-      ghtoken: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - uses: ./.github/workflows/build-openwrt.yml
+        with:
+          architecture: ramips-mt7621-22.03.3
+          version: ${{ env.RELEASE_VERSION }}
+        secrets:
+          ghtoken: ${{ secrets.GITHUB_TOKEN }}
 
-  pre-release:
+  release:
     needs: [build-ramips, build-arm]
     runs-on: "ubuntu-latest"
     permissions:
@@ -37,11 +46,6 @@ jobs:
       - uses: actions/download-artifact@v3
       - name: Move all files into current working directory
         run: "mv */*.ipk ."
-      - name: Rename Files to contain commit hash
-        run: |
-          for file in *.ipk; do
-            mv "$file" "${file%.ipk}_${{ github.sha }}.ipk"
-          done
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
