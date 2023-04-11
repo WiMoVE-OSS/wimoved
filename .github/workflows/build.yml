@@ -29,7 +29,7 @@ jobs:
     uses: ./.github/workflows/build-openwrt.yml
     with:
       architecture: mvebu-cortexa9-22.03.3
-      version: ${{needs.get-new-version.outputs }}
+      version: ${{ needs.get-new-version.outputs.version }}
     secrets:
       ghtoken: ${{ secrets.GITHUB_TOKEN }}
   build-ramips:
@@ -41,6 +41,6 @@ jobs:
     uses: ./.github/workflows/build-openwrt.yml
     with:
       architecture: ramips-mt7621-22.03.3
-      version: ${{needs.get-new-version.outputs }}
+      version: ${{ needs.get-new-version.outputs.version }}
     secrets:
       ghtoken: ${{ secrets.GITHUB_TOKEN }}
