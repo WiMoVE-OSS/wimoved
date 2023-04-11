@@ -19,7 +19,8 @@ jobs:
       packages: write
       contents: read
     steps:
-    - run: echo ${{ needs }}
+    - run: echo ${{ needs.get-version.outputs }}
+    - run: echo ${{ inputs.version }}
     - uses: actions/checkout@v3
     - name: Extract metadata
       run: echo "BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
@@ -46,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-env
     steps:
-      - run: echo ${{ version }}
+      - run: echo ${{ inputs.version }}
       - uses: actions/checkout@v3
       - name: Extract metadata
         run: echo "BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
