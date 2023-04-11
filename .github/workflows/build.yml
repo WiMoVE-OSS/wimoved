@@ -7,22 +7,47 @@ on:
       - "main"
 
 jobs:
+  get-version:
+    permissions:
+      packages: write
+      contents: read
+    outputs:
+      version: ${{ steps.step1.outputs.version }}
+    steps:
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
+      - name: 'Get next minor version'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.semvers.outputs.v_patch }}
+      - run: echo "${{ steps.semvers.outputs.v_patch }}"
+      - id: step1
+        run: echo "version=${{ steps.semvers.outputs.v_patch }}" >> "$GITHUB_OUTPUT"
   build-arm:
     permissions:
       packages: write
       contents: read
+    needs:
+      [get-version]
     uses: ./.github/workflows/build-openwrt.yml
     with:
       architecture: mvebu-cortexa9-22.03.3
+      version: ${{needs.get-version.outputs.version }}
     secrets:
       ghtoken: ${{ secrets.GITHUB_TOKEN }}
-
   build-ramips:
     permissions:
       packages: write
       contents: read
+    needs:
+      [get-version]
     uses: ./.github/workflows/build-openwrt.yml
     with:
       architecture: ramips-mt7621-22.03.3
+      version: ${{needs.get-version.outputs.version }}
     secrets:
       ghtoken: ${{ secrets.GITHUB_TOKEN }}

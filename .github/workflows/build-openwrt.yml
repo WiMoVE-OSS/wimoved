@@ -6,6 +6,8 @@ on:
       architecture:
         required: true
         type: string
+      version:
+        type: string
     secrets:
       ghtoken:
         required: true
@@ -53,7 +55,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.ghtoken }}
       - name: Build OpenWrt
-        run: export IMAGE="ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}" && chmod +x ./openwrt/build-openwrt.sh && ./openwrt/build-openwrt.sh
+        env:
+          - IMAGE="ghcr.io/wimove-oss/wimove/wimove-buildenv/${{ inputs.architecture }}:${{ env.BRANCH }}"
+          - VERSION="${{ inputs.version }}"
+        run: chmod +x ./openwrt/build-openwrt.sh && ./openwrt/build-openwrt.sh
       - uses: actions/upload-artifact@v3
         with:
           name: wimove-${{ inputs.architecture }}

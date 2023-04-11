@@ -5,6 +5,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=wimoved
 PKG_RELEASE:=1
+PKG_VERSION?=1
 
 PKG_FLAGS:=nonshared
 PKG_LICENSE:=MIT
