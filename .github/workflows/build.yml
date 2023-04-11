@@ -8,17 +8,9 @@ on:
 
 jobs:
   get-version:
-    runs-on: ubuntu-latest
     permissions:
       contents: read
-    outputs:
-      version: ${{ steps.step1.outputs.version }}
-    steps:
-      - uses: actions/checkout@v3
-      - id: get
-        uses: ./.github/workflows/get-version.yml
-      - id: step1
-        run: echo "version=${{ steps.get.outputs.version }}" >> "$GITHUB_OUTPUT"
+    uses: ./.github/workflows/get-version.yml
 
   build-arm:
     permissions:

@@ -2,6 +2,10 @@ name: Get next semversion
 
 on:
   workflow_call:
+    outputs:
+      version:
+        description: "The next version string"
+        value: ${{ jobs.get-version.version }}
 
 jobs:
   get-version:
