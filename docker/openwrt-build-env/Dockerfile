@@ -15,5 +15,3 @@ RUN ./scripts/feeds update && \
     rm -rf feeds
 
 CMD bash /home/build/build-wimoved.sh
-
-
