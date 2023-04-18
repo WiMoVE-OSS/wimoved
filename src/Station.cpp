@@ -4,16 +4,14 @@
 
 #include "Configuration.h"
 #include "MacAddress.h"
+#include "ipc/Caller.h"
 
 Station::Station(std::string sockname, MacAddress mac)
     : vlan_id(std::nullopt), mac(std::move(mac)), sockname(std::move(sockname)) {}
 
 uint32_t Station::vni() const {
-    if (Configuration::get_instance().min_vni == Configuration::get_instance().max_vni) {
-        return Configuration::get_instance().min_vni;
-    }
-    return mac.number() % (Configuration::get_instance().max_vni - Configuration::get_instance().min_vni) +
-           Configuration::get_instance().min_vni;
+    // Use username as VNI
+    return std::stol(user);
 }
 
 std::string Station::vlan_interface_name() const { return "vlan" + std::to_string(vlan_id.value_or(0)); }

@@ -10,6 +10,7 @@
 #include "logging/loginit.h"
 
 const std::string VLAN_ID_PREFIX = "vlan_id=";
+const std::string USERNAME_PREFIX = "dot1xAuthSessionUserName=";
 
 uint32_t ipc::Caller::vlan_for_station(const Station &station) {
     Socket &socket = get_socket(station.sockname);
@@ -18,6 +19,18 @@ uint32_t ipc::Caller::vlan_for_station(const Station &station) {
     while (std::getline(stream, line)) {
         if (line.rfind(VLAN_ID_PREFIX) == 0) {
             return std::stol(line.substr(VLAN_ID_PREFIX.size(), line.size()));
+        }
+    }
+    throw std::runtime_error("no vlan_id attribute found for station");
+}
+
+std::string ipc::Caller::user_for_station(const Station &station) {
+    Socket &socket = get_socket(station.sockname);
+    std::istringstream stream(socket.send_and_receive({"STA", station.mac.string()}));
+    std::string line;
+    while (std::getline(stream, line)) {
+        if (line.rfind(USERNAME_PREFIX) == 0) {
+            return line.substr(USERNAME_PREFIX.size(), line.size());
         }
     }
     throw std::runtime_error("no vlan_id attribute found for station");

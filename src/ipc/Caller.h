@@ -10,6 +10,7 @@ namespace ipc {
 class Caller {
    public:
     uint32_t vlan_for_station(const Station& station);
+    std::string user_for_station(const Station& station);
 
     std::vector<Station> connected_stations();
     void deauth_station(const Station& station);

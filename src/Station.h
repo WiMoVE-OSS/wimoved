@@ -14,6 +14,7 @@ class Station : public el::Loggable {
     std::optional<uint32_t> vlan_id;
     MacAddress mac;
     std::string sockname;
+    std::string user;
 
     std::string vlan_interface_name() const;
 

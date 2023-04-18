@@ -28,6 +28,7 @@ void EventLoop::loop_ipc_queue(const std::future<void>& future) {
 
 void EventLoop::handle_connect(ipc::ConnectEvent* event) {
     event->station.vlan_id = caller.vlan_for_station(event->station);
+    event->station.user = caller.user_for_station(event->station);
     WMLOG(DEBUG) << "handle_connect called " << event->station << " with vlan_id "
                  << event->station.vlan_id.value_or(0);
     WMLOG(INFO) << "Station " << event->station << " connected to AP for VXLAN " << event->station.vni()
