@@ -10,7 +10,7 @@ Station::Station(std::string sockname, MacAddress mac)
     : vlan_id(std::nullopt), mac(std::move(mac)), sockname(std::move(sockname)) {}
 
 uint32_t Station::vni() const {
-    // Use username as VNI, throws error if it cannot be parsed.
+    // Use username as VNI
     return std::stol(user);
 }
 
