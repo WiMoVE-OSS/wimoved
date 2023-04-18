@@ -24,4 +24,4 @@ jobs:
         with:
           push: true
           context: ./docker/wimoved-ci-env
-          tags: ghcr.io/wimove-oss/wimove/wimoved-ci-env
+          tags: ghcr.io/dasGoogle/wimoved-enterprise/wimoved-ci-env
