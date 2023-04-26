@@ -28,7 +28,7 @@ ConfigParser ConfigParser::from_file(const std::string &config_path) {
     std::string line;
     std::ifstream config_file(config_path);
     if (!config_file.is_open()) {
-        WMLOG(ERROR) << "Unable to read config file " << config_path << ". Using default config";
+        WMLOG(ERROR) << "Unable to read config file " << config_path << ". Using default config instead.";
         return {};
     }
     return ConfigParser(config_file);
