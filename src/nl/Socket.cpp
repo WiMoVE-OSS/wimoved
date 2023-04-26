@@ -19,11 +19,11 @@ const int VXLAN_PORT = 4789;
 
 nl::Socket::Socket() : socket(nl_socket_alloc()) {
     if (socket == nullptr) {
-        throw std::runtime_error(std::string("error in nl_socket_alloc: ") + std::strerror(errno));
+        throw std::runtime_error(std::string("Error in nl_socket_alloc: ") + std::strerror(errno));
     }
     int err = nl_connect(socket, NETLINK_ROUTE);
     if (err < 0) {
-        throw std::runtime_error(std::string("error in nl_connect: ") + nl_geterror(err));
+        throw std::runtime_error(std::string("Error in nl_connect: ") + nl_geterror(err));
     }
 }
 
@@ -35,7 +35,7 @@ nl::Socket::~Socket() {
 void nl::Socket::create_vxlan_iface(uint32_t vni) {
     rtnl_link *vxlan_unmanaged = rtnl_link_vxlan_alloc();
     if (vxlan_unmanaged == nullptr) {
-        throw std::runtime_error(std::string("error in rtnl_link_vxlan_alloc: ") + std::strerror(errno));
+        throw std::runtime_error(std::string("Error in rtnl_link_vxlan_alloc: ") + std::strerror(errno));
     }
     Link vxlan(vxlan_unmanaged);
 
@@ -43,23 +43,23 @@ void nl::Socket::create_vxlan_iface(uint32_t vni) {
     rtnl_link_set_flags(vxlan.link, IFF_UP);
 
     if (rtnl_link_vxlan_set_id(vxlan.link, vni) < 0) {
-        throw std::runtime_error(std::string("error in rtnl_link_vxlan_set_id: ") + std::strerror(errno));
+        throw std::runtime_error(std::string("Error in rtnl_link_vxlan_set_id: ") + std::strerror(errno));
     }
 
     int err = rtnl_link_vxlan_set_port(vxlan.link, VXLAN_PORT);
     if (err < 0) {
-        throw std::runtime_error(std::string("error in rtnl_link_vxlan_set_port_range: ") + nl_geterror(err));
+        throw std::runtime_error(std::string("Error in rtnl_link_vxlan_set_port_range: ") + nl_geterror(err));
     }
     // TODO: properly handle VXLAN iface exists
     err = rtnl_link_add(socket, vxlan.link, NLM_F_CREATE | NLM_F_EXCL);
     if (err < 0) {
         if (err == -NLE_EXIST) {
-            WMLOG(WARNING) << "rtnl_link_add: vxlan interface with vni " << vni << " already exists";
+            WMLOG(WARNING) << "Rtnl_link_add: vxlan interface with vni " << vni << " already exists!";
         } else {
-            throw std::runtime_error(std::string("error in rtnl_link_add: ") + nl_geterror(err));
+            throw std::runtime_error(std::string("Error in rtnl_link_add: ") + nl_geterror(err));
         }
     }
-    WMLOG(INFO) << "Created VXLAN " << vni;
+    WMLOG(INFO) << "Created VXLAN" << vni;
 }
 
 void nl::Socket::create_bridge_for_vni(uint32_t vni) { create_bridge(BRIDGE_IFACE_PREFIX + std::to_string(vni)); }
@@ -67,7 +67,7 @@ void nl::Socket::create_bridge_for_vni(uint32_t vni) { create_bridge(BRIDGE_IFAC
 void nl::Socket::create_bridge(const std::string &name) {
     rtnl_link *bridge_unmanaged = rtnl_link_bridge_alloc();
     if (bridge_unmanaged == nullptr) {
-        throw std::runtime_error(std::string("error in rtnl_link_bridge_alloc: ") + std::strerror(errno));
+        throw std::runtime_error(std::string("Error in rtnl_link_bridge_alloc: ") + std::strerror(errno));
     }
     Link bridge(bridge_unmanaged);
     rtnl_link_set_name(bridge.link, name.c_str());
@@ -76,13 +76,13 @@ void nl::Socket::create_bridge(const std::string &name) {
     int err = rtnl_link_add(socket, bridge.link, NLM_F_CREATE | NLM_F_EXCL);
     if (err < 0) {
         if (err == -NLE_EXIST) {
-            WMLOG(WARNING) << "rtnl_link_add: bridge interface with name " << name << " already exists";
+            WMLOG(WARNING) << "Rtnl_link_add: bridge interface with name " << name << " already exists!";
         } else {
-            throw std::runtime_error(std::string("error in rtnl_link_add: ") + nl_geterror(err));
+            throw std::runtime_error(std::string("Error in rtnl_link_add: ") + nl_geterror(err));
         }
     }
 
-    WMLOG(INFO) << "Created Bridge " << name;
+    WMLOG(INFO) << "Created bridge" << name;
 }
 
 void nl::Socket::add_iface_bridge(const std::string &bridge_name, const std::string &interface_name) {
@@ -103,16 +103,16 @@ void nl::Socket::add_iface_bridge(const std::string &bridge_name, const std::str
 
     err = rtnl_link_enslave(socket, bridge_link.link, interface_link.link);
     if (err < 0) {
-        throw std::runtime_error("Could not enslave interface: " + interface_name + " to Bridge " + bridge_name + " " +
+        throw std::runtime_error("Could not enslave interface: " + interface_name + " to bridge: " + bridge_name + " " +
                                  nl_geterror(err));
     }
-    WMLOG(INFO) << "Connected " << interface_name << " to " << bridge_name;
+    WMLOG(INFO) << "Connected interface:" << interface_name << " to bridge: " << bridge_name;
 }
 
 void nl::Socket::delete_interface(const std::string &name) {
     rtnl_link *link_unmanaged = rtnl_link_alloc();
     if (link_unmanaged == nullptr) {
-        throw std::runtime_error(std::string("error in rtnl_link_alloc: ") + std::strerror(errno));
+        throw std::runtime_error(std::string("Error in rtnl_link_alloc: ") + std::strerror(errno));
     }
     Link link(link_unmanaged);
 
@@ -122,7 +122,7 @@ void nl::Socket::delete_interface(const std::string &name) {
     if (err < 0) {
         throw std::runtime_error(std::string("Could not delete link: ") + nl_geterror(err));
     }
-    WMLOG(INFO) << "Deleted " << name;
+    WMLOG(INFO) << "Deleted interface" << name;
 }
 
 std::unordered_set<uint32_t> nl::Socket::interface_list() {
@@ -141,7 +141,7 @@ std::unordered_set<uint32_t> nl::Socket::interface_list() {
             uint32_t id = 0;
             err = rtnl_link_vxlan_get_id(link, &id);
             if (err < 0) {
-                throw std::runtime_error(std::string("Could not get vni ") + nl_geterror(err));
+                throw std::runtime_error(std::string("Could not get vni: ") + nl_geterror(err));
             }
             set_of_vnis.emplace(id);
         }
