@@ -23,7 +23,7 @@ static std::pair<std::string, std::string> split_at_first_space(const std::strin
 
 static std::string get_ifname(const std::string& eventprefix) {
     if (eventprefix.rfind(HOSTAPD_IFPREFIX) != 0) {
-        throw std::runtime_error("interface name could not be parsed from event prefix: " + eventprefix);
+        throw std::runtime_error("Interface name could not be parsed from event prefix: " + eventprefix);
     }
     return eventprefix.substr(HOSTAPD_IFPREFIX.size());
 }
@@ -38,9 +38,9 @@ ipc::Subscriber::Subscriber(SynchronizedQueue<Event>& queue, const std::chrono::
 void ipc::Subscriber::loop(const std::future<void>& future) {
     std::string result = socket.send_and_receive({"ATTACH"});
     if (result != Socket::HOSTAPD_OK) {
-        throw std::runtime_error(std::string("could not attach to hostapd: ") + result);
+        throw std::runtime_error(std::string("Could not attach to hostapd: ") + result);
     }
-    WMLOG(INFO) << "attached to hostapd";
+    WMLOG(INFO) << "Attached to hostapd";
     while (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
         std::string line;
         try {
@@ -49,7 +49,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             try {
                 line = socket.send_and_receive({"PING"});
             } catch (const TimeoutException& e) {
-                WMLOG(FATAL) << "timeout in Subscriber::loop_ipc_queue(), hostapd timed out while responding to ping";
+                WMLOG(FATAL) << "Timeout in Subscriber::loop_ipc_queue(), hostapd timed out while responding to ping";
                 break;
             }
         }
@@ -64,7 +64,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
 
         std::vector<std::string> interface_names = Configuration::get_instance().socknames;
         if (std::find(interface_names.begin(), interface_names.end(), sockname) == interface_names.end()) {
-            WMLOG(DEBUG) << "Received event on interface that is not configured " << sockname << ": " << event;
+            WMLOG(DEBUG) << "Received event on interface " << sockname << " that is not configured: " << event;
             continue;
         }
 
@@ -90,7 +90,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             }
         } else {
             hostapd_unknown_counter.Increment();
-            WMLOG(DEBUG) << "Received unknown event " << event;
+            WMLOG(DEBUG) << "Received unknown event: " << event;
         }
     }
 }

@@ -11,18 +11,18 @@ BridgePerVxlanRenderer::BridgePerVxlanRenderer()
 
 void BridgePerVxlanRenderer::setup_station(const Station& station) {
     std::lock_guard g(renderer_mutex);
-    WMLOG(DEBUG) << "Calling: setup_station(" << station << ")";
+    WMLOG(DEBUG) << "Calling setup_station(" << station << ")";
 
     uint32_t vni = station.vni();
     socket.create_vxlan_iface(vni);
     socket.create_bridge_for_vni(vni);
-    socket.add_iface_bridge("bridge" + std::to_string(vni), "vxlan" + std::to_string(vni));
 
     if (not station.vlan_id.has_value()) {
-        throw std::runtime_error("The station " + station.mac.string() + " has no vlan_id");
+        throw std::runtime_error("Station with MAC " + station.mac.string() + " has no vlan_id");
     }
 
     socket.add_iface_bridge("bridge" + std::to_string(station.vni()), station.vlan_interface_name());
+    WMLOG(DEBUG) << "Finished bridge setup";
 }
 
 void BridgePerVxlanRenderer::cleanup(const std::function<std::vector<Station>()>& get_stations) {
@@ -41,16 +41,16 @@ void BridgePerVxlanRenderer::cleanup(const std::function<std::vector<Station>()>
         existing_interfaces.erase(vni);
     }
     for (const auto vni : existing_interfaces) {
-        WMLOG(DEBUG) << "Deleting VNI " << vni;
+        WMLOG(DEBUG) << "Deleting VNI: " << vni;
         try {
             socket.delete_interface("vxlan" + std::to_string(vni));
         } catch (const std::exception&) {
-            WMLOG(ERROR) << "Could not delete vxlan interface vni: " << vni;
+            WMLOG(ERROR) << "Could not delete vxlan interface VNI: " << vni;
         }
         try {
             socket.delete_interface("bridge" + std::to_string(vni));
         } catch (const std::exception&) {
-            WMLOG(ERROR) << "Could not delete bridge vni: " << vni;
+            WMLOG(ERROR) << "Could not delete bridge VNI: " << vni;
         }
     }
     WMLOG(DEBUG) << "Cleanup finished, " << sta_counter << " stations connected.";

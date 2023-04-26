@@ -38,7 +38,7 @@ void setup_logger() {
         } catch (...) {
             WMLOG(FATAL) << "Error while handling exception: " << typeid(std::current_exception()).name();
         }
-        WMLOG(ERROR) << "errno: " << errno << ": " << std::strerror(errno) << std::endl;
+        WMLOG(ERROR) << "Errno: " << errno << ": " << std::strerror(errno) << std::endl;
         std::abort();
     });
     el::Configurations default_configuration;
@@ -62,12 +62,12 @@ int main(int argc, char* argv[]) {
     if (args.size() >= 2) {
         config_path = args[1];
     }
-    WMLOG(INFO) << "wimoved is starting";
+    WMLOG(INFO) << "Starting wimoved.";
     ConfigParser::from_file(config_path).populate_configuration(Configuration::get_instance());
     setup_logger();
 
     if (std::signal(SIGINT, handle_signal) == SIG_ERR || std::signal(SIGTERM, handle_signal) == SIG_ERR) {
-        WMLOG(FATAL) << "could not set up signal handlers " << std::strerror(errno);
+        WMLOG(FATAL) << "Could not set up signal handlers " << std::strerror(errno);
     }
 
     SynchronizedQueue<ipc::Event> ipc_queue;
