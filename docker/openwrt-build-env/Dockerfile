@@ -1,5 +1,5 @@
 ARG TAG=mvebu-cortexa9-22.03.3
-FROM openwrtorg/sdk:$TAG
+FROM openwrt/sdk:$TAG
 
 RUN mkdir -p /home/build/openwrt/package/prometheus/src/
 COPY MakefilePrometheus /home/build/openwrt/package/prometheus/Makefile
