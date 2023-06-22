@@ -1,6 +1,8 @@
 ARG TAG=mvebu-cortexa9-22.03.3
 FROM openwrt/sdk:$TAG
 
+USER root
+
 RUN mkdir -p /home/build/openwrt/package/prometheus/src/
 COPY MakefilePrometheus /home/build/openwrt/package/prometheus/Makefile
 COPY build-wimoved.sh /home/build/
