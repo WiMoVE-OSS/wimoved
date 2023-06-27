@@ -25,7 +25,6 @@ define Package/wimoved
   CATEGORY:=Networking
   TITLE:=Scalable WiFi Daemon
   DEPENDS:=+libstdcpp +libnl +libatomic
-  EXTRA_DEPENDS:=frr, frr-bgpd, frr-zebra, frr-vtysh, frr-watchfrr
 endef
 
 define Package/wimoved/description
