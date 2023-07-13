@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
     setup_logger();
 
     if (std::signal(SIGINT, handle_signal) == SIG_ERR || std::signal(SIGTERM, handle_signal) == SIG_ERR) {
-        WMLOG(FATAL) << "Could not set up signal handlers " << std::strerror(errno);
+        WMLOG(FATAL) << "Could not set up signal handlers: " << std::strerror(errno);
     }
 
     SynchronizedQueue<ipc::Event> ipc_queue;

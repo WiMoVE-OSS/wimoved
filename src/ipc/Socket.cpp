@@ -56,7 +56,7 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string
     std::string dest_path = Configuration::get_instance().hapd_sockdir + "/" + sockname;
     std::string local_path = "/var/run/wimoved." + random_name();
     if (unlink(local_path.c_str()) == 0) {
-        WMLOG(DEBUG) << "Successfully unlinked socket:" << local_path;
+        WMLOG(DEBUG) << "Successfully unlinked socket at path:" << local_path;
     }
 
     sock_fd = socket(AF_UNIX, SOCK_DGRAM, 0);
@@ -82,7 +82,7 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string
     struct group* grp_result = nullptr;
     getgrnam_r(Configuration::get_instance().hapd_group.c_str(), &grp, buf.data(), buf.size(), &grp_result);
     if (grp_result == nullptr) {
-        throw std::runtime_error(std::string("Failed getgrnam: ") + std::strerror(errno));
+        throw std::runtime_error(std::string("Failed getgrnam_r(): ") + std::strerror(errno));
     }
     if (chown(local_path.c_str(), -1, grp_result->gr_gid) == -1) {
         throw std::runtime_error(std::string("Could not set socket group: ") + std::strerror(errno));

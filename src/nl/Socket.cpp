@@ -54,12 +54,12 @@ void nl::Socket::create_vxlan_iface(uint32_t vni) {
     err = rtnl_link_add(socket, vxlan.link, NLM_F_CREATE | NLM_F_EXCL);
     if (err < 0) {
         if (err == -NLE_EXIST) {
-            WMLOG(WARNING) << "Rtnl_link_add: vxlan interface with vni " << vni << " already exists!";
+            WMLOG(WARNING) << "Rtnl_link_add: VXLAN interface with VNI: " << vni << " already exists!";
         } else {
             throw std::runtime_error(std::string("Error in rtnl_link_add: ") + nl_geterror(err));
         }
     }
-    WMLOG(INFO) << "Created VXLAN" << vni;
+    WMLOG(INFO) << "Created VXLAN with VNI:" << vni;
 }
 
 void nl::Socket::create_bridge_for_vni(uint32_t vni) { create_bridge(BRIDGE_IFACE_PREFIX + std::to_string(vni)); }
@@ -76,13 +76,13 @@ void nl::Socket::create_bridge(const std::string &name) {
     int err = rtnl_link_add(socket, bridge.link, NLM_F_CREATE | NLM_F_EXCL);
     if (err < 0) {
         if (err == -NLE_EXIST) {
-            WMLOG(WARNING) << "Rtnl_link_add: bridge interface with name " << name << " already exists!";
+            WMLOG(WARNING) << "Rtnl_link_add: bridge interface with name= " << name << " already exists!";
         } else {
             throw std::runtime_error(std::string("Error in rtnl_link_add: ") + nl_geterror(err));
         }
     }
 
-    WMLOG(INFO) << "Created bridge" << name;
+    WMLOG(INFO) << "Created bridge:" << name;
 }
 
 void nl::Socket::add_iface_bridge(const std::string &bridge_name, const std::string &interface_name) {
@@ -97,7 +97,7 @@ void nl::Socket::add_iface_bridge(const std::string &bridge_name, const std::str
 
     err = rtnl_link_get_kernel(socket, 0, bridge_name.c_str(), &bridge_link_unmanaged);
     if (err < 0) {
-        throw std::runtime_error("Could not get interface: " + bridge_name + " " + nl_geterror(err));
+        throw std::runtime_error("Could not get bridge: " + bridge_name + " " + nl_geterror(err));
     }
     Link bridge_link(bridge_link_unmanaged);
 
@@ -122,7 +122,7 @@ void nl::Socket::delete_interface(const std::string &name) {
     if (err < 0) {
         throw std::runtime_error(std::string("Could not delete link: ") + nl_geterror(err));
     }
-    WMLOG(INFO) << "Deleted interface" << name;
+    WMLOG(INFO) << "Deleted interface." << name;
 }
 
 std::unordered_set<uint32_t> nl::Socket::interface_list() {
@@ -141,7 +141,7 @@ std::unordered_set<uint32_t> nl::Socket::interface_list() {
             uint32_t id = 0;
             err = rtnl_link_vxlan_get_id(link, &id);
             if (err < 0) {
-                throw std::runtime_error(std::string("Could not get vni: ") + nl_geterror(err));
+                throw std::runtime_error(std::string("Could not get VNI: ") + nl_geterror(err));
             }
             set_of_vnis.emplace(id);
         }

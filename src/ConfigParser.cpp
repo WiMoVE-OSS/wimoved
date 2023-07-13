@@ -28,7 +28,7 @@ ConfigParser ConfigParser::from_file(const std::string &config_path) {
     std::string line;
     std::ifstream config_file(config_path);
     if (!config_file.is_open()) {
-        WMLOG(ERROR) << "Unable to read config file " << config_path << ". Using default config instead.";
+        WMLOG(ERROR) << "Unable to read config file: " << config_path << ". Using default config instead.";
         return {};
     }
     return ConfigParser(config_file);
@@ -44,7 +44,7 @@ ConfigParser::ConfigParser(std::istream &istream) {
         }
         auto split = line.find(delimiter);
         if (split == std::string::npos) {
-            throw std::runtime_error("Configuration line is invalid: " + line);
+            throw std::runtime_error("Invalid configuration line: " + line);
         }
         std::string token = line.substr(0, split);
         trim(token);
@@ -69,7 +69,8 @@ uint32_t ConfigParser::get_config_uint32(const std::string &option) const {
     std::string value = this->get_config_string(option);
     uint64_t result = std::stoull(value);
     if (result > std::numeric_limits<uint32_t>::max()) {
-        throw std::range_error("Number is too large for uint32_t. Config option " + option + " with value " + value);
+        throw std::range_error("Could not configure option: " + option +
+                               " with value: " + value ". Number is too large for uint32_t.");
     }
     return result;
 }

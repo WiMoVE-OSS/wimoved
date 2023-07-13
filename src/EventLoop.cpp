@@ -28,20 +28,21 @@ void EventLoop::loop_ipc_queue(const std::future<void>& future) {
 
 void EventLoop::handle_connect(ipc::ConnectEvent* event) {
     event->station.vlan_id = caller.vlan_for_station(event->station);
-    WMLOG(DEBUG) << "Calling handle_connect() " << event->station
+    WMLOG(DEBUG) << "Calling handle_connect() for MAC:" << event->station
                  << " with vlan_id: " << event->station.vlan_id.value_or(0);
-    WMLOG(INFO) << "Connected station " << event->station << " to AP for VXLAN: " << event->station.vni()
+    WMLOG(INFO) << "Connected station: " << event->station.mac.string() << " for VNI: " << event->station.vni()
                 << " at interface: " << event->station.sockname;
     try {
         renderer.setup_station(event->station);
         processing_time_histogram.Observe(static_cast<double>(event->finished_processing()));
     } catch (std::runtime_error& err) {
-        WMLOG(ERROR) << "Station could not be bridged to VXLAN interface. " << err.what()
+        WMLOG(ERROR) << "Could not connect station: " << event->station.mac.string()
+                     << " with VNI: " << event->station.vni() << " to VXLAN interface. " << err.what()
                      << " - Will now send DEAUTH packet.";
         caller.deauth_station(event->station);
     }
 }
 
 void EventLoop::handle_disconnect(ipc::DisconnectEvent* event) {
-    WMLOG(INFO) << "Disconnected station " << event->station << " from AP";
+    WMLOG(INFO) << "Disconnected station: " << event->station.mac.string();
 }
