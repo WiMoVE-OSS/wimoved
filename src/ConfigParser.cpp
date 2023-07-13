@@ -70,7 +70,7 @@ uint32_t ConfigParser::get_config_uint32(const std::string &option) const {
     uint64_t result = std::stoull(value);
     if (result > std::numeric_limits<uint32_t>::max()) {
         throw std::range_error("Could not configure option: " + option +
-                               " with value: " + value ". Number is too large for uint32_t.");
+                               " with value: " + value + ". Number is too large for uint32_t.");
     }
     return result;
 }
