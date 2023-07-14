@@ -16,14 +16,14 @@ const std::string HOSTAPD_GLOBAL = "global";
 static std::pair<std::string, std::string> split_at_first_space(const std::string& line) {
     auto position = line.find(' ');
     if (position == std::string::npos) {
-        throw std::runtime_error("Could not parse event line: " + line);
+        throw std::runtime_error("Could not parse event line= " + line);
     }
     return {line.substr(0, position), line.substr(position + 1)};
 }
 
 static std::string get_ifname(const std::string& eventprefix) {
     if (eventprefix.rfind(HOSTAPD_IFPREFIX) != 0) {
-        throw std::runtime_error("Could not parse interface name from event prefix: " + eventprefix);
+        throw std::runtime_error("Could not parse interface name from eventprefix= " + eventprefix);
     }
     return eventprefix.substr(HOSTAPD_IFPREFIX.size());
 }
@@ -64,7 +64,8 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
 
         std::vector<std::string> interface_names = Configuration::get_instance().socknames;
         if (std::find(interface_names.begin(), interface_names.end(), sockname) == interface_names.end()) {
-            WMLOG(DEBUG) << "Received event on interface: " << sockname << " that is not configured: " << event;
+            WMLOG(DEBUG) << "Received event, that is not configured on interface sockname= " << sockname << " : "
+                         << event;
             continue;
         }
 

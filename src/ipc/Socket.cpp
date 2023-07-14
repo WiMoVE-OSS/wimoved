@@ -56,7 +56,7 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string
     std::string dest_path = Configuration::get_instance().hapd_sockdir + "/" + sockname;
     std::string local_path = "/var/run/wimoved." + random_name();
     if (unlink(local_path.c_str()) == 0) {
-        WMLOG(DEBUG) << "Successfully unlinked socket at path:" << local_path;
+        WMLOG(DEBUG) << "Successfully unlinked socket at local_path=" << local_path;
     }
 
     sock_fd = socket(AF_UNIX, SOCK_DGRAM, 0);
@@ -74,7 +74,7 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string
     local.sun_path[sizeof(local.sun_path) - 1] = '\0';
     if (bind(sock_fd, reinterpret_cast<struct sockaddr*>(&local), sizeof(local)) == -1) {
         close(sock_fd);
-        throw std::runtime_error("Could not bind to socket " + dest_path + ": " + std::strerror(errno));
+        throw std::runtime_error("Could not bind to socket at dest_path= " + dest_path + ": " + std::strerror(errno));
     }
 
     std::array<char, GETGRNAM_BUFFER_SIZE> buf{};
@@ -96,7 +96,8 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string
     dest.sun_path[sizeof(dest.sun_path) - 1] = '\0';
     if (connect(sock_fd, reinterpret_cast<struct sockaddr*>(&dest), sizeof(dest)) == -1) {
         close(sock_fd);
-        throw std::runtime_error("Could not connect to socket at " + dest_path + " : " + std::strerror(errno));
+        throw std::runtime_error("Could not connect to socket at dest_path=" + dest_path + " : " +
+                                 std::strerror(errno));
     }
 }
 
@@ -118,7 +119,7 @@ void ipc::Socket::send_command(const std::vector<std::string>& args) {
 
     ssize_t err = send(sock_fd, command.c_str(), command.size(), 0);
     if (err < 0) {
-        throw std::runtime_error(std::string("Could not send_command() to socket: ") + std::strerror(errno));
+        throw std::runtime_error(std::string("Could not send to socket: ") + std::strerror(errno));
     }
 }
 

@@ -47,9 +47,9 @@ void Configuration::set_all_available_sockets_if_empty() {
             }
         }
         if (socknames.empty()) {
-            throw std::runtime_error("Could not find and configure sockets.");
+            throw std::runtime_error("Could not configure sockets.");
         }
-        WMLOG(DEBUG) << "Could not configure sockets. Using all " << socknames.size() << " sockets available.";
+        WMLOG(DEBUG) << "There were no sockets specified. Using all " << socknames.size() << " sockets available.";
     }
 }
 
