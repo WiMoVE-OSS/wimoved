@@ -5,8 +5,7 @@ RUN ./scripts/feeds update -a && \
     make defconfig
 
 COPY --chown=buildbot:buildbot MakefilePrometheus /builder/wimove_feed/libs/prometheuscpp/Makefile
-RUN chown -R buildbot:buildbot /builder/wimove_feed && \
-    echo "src-link wimove_feed /builder/wimove_feed" >> /builder/feeds.conf.default && \
+RUN echo "src-link wimove_feed /builder/wimove_feed" >> /builder/feeds.conf.default && \
     ./scripts/feeds update wimove_feed
 
 RUN ./scripts/feeds install prometheuscpp && \

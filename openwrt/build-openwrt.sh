@@ -7,5 +7,5 @@ docker run --rm --ulimit nofile=1024:524288 \
   -v "$(pwd)"/CMakeLists.txt:/builder/wimove_feed/network/services/wimoved/src/CMakeLists.txt \
   -v "$(pwd)"/vendor:/builder/wimove_feed/network/services/wimoved/src/vendor \
   -v "$(pwd)"/src:/builder/wimove_feed/network/services/wimoved/src/src \
-  -v "$(pwd)"/out:/out \
+  -v "$(pwd)"/out:/builder/out \
   "$IMAGE"
