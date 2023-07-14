@@ -41,6 +41,7 @@ jobs:
         cache-to: type=gha,mode=max,scope=$GITHUB_REF_NAME-${{ inputs.architecture }}
         build-args: |
           TAG=${{ inputs.architecture }}
+        ulimit: nofile=1024:524288
   build:
     runs-on: ubuntu-latest
     needs: build-env

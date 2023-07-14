@@ -1,17 +1,18 @@
 ARG TAG=mvebu-cortexa9-22.03.3
-FROM openwrtorg/sdk:$TAG
+FROM openwrt/sdk:$TAG
 
-RUN mkdir -p /home/build/openwrt/package/prometheus/src/
-COPY MakefilePrometheus /home/build/openwrt/package/prometheus/Makefile
-COPY build-wimoved.sh /home/build/
+RUN ./scripts/feeds update -a && \
+    make defconfig
 
-RUN ./scripts/feeds update && \
-    make defconfig && \
-    ./scripts/feeds install libnl && \
-    make -j$(nproc) package/libnl/compile && \
-    wget https://github.com/jupp0r/prometheus-cpp/releases/download/v1.1.0/prometheus-cpp-with-submodules.tar.gz && \
-    tar -xzf prometheus-cpp-with-submodules.tar.gz -C /home/build/openwrt/package/prometheus/src/ --strip-components=1 && \
-    make -j$(nproc) package/prometheus/compile && \
-    rm -rf feeds
+COPY --chown=buildbot:buildbot MakefilePrometheus /builder/wimove_feed/libs/prometheuscpp/Makefile
+RUN echo "src-link wimove_feed /builder/wimove_feed" >> /builder/feeds.conf.default && \
+    ./scripts/feeds update wimove_feed
 
-CMD bash /home/build/build-wimoved.sh
+RUN ./scripts/feeds install prometheuscpp && \
+    make V=s package/feeds/wimove_feed/prometheuscpp/compile -j "$(nproc)"
+
+RUN ./scripts/feeds install libnl && \
+    make V=s package/libnl/compile -j "$(nproc)"
+
+COPY build-wimoved.sh /builder/
+CMD bash /builder/build-wimoved.sh
