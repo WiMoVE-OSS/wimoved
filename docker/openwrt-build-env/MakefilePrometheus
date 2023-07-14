@@ -4,7 +4,15 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=prometheus-client-cpp
+PKG_VERSION:=1.1.0
 PKG_RELEASE:=1
+
+#PKG_SOURCE:=prometheus-cpp-with-submodules.tar.gz
+#PKG_SOURCE_URL:=https://github.com/jupp0r/prometheus-cpp/releases/download/v$(PKG_VERSION)
+PKG_SOURCE_URL:=https://github.com/jupp0r/prometheus-cpp
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_VERSION:=v1.1.0
+PKG_MIRROR_HASH:=522b6a57f474c89098fcdf198bd63796c65ee2e07b85b1d118be8e8b47148188
 
 PKG_FLAGS:=nonshared
 PKG_LICENSE:=MIT
