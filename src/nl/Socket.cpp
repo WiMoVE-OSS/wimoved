@@ -50,7 +50,6 @@ void nl::Socket::create_vxlan_iface(uint32_t vni) {
     if (err < 0) {
         throw std::runtime_error(std::string("error in rtnl_link_vxlan_set_port_range: ") + nl_geterror(err));
     }
-    // TODO: properly handle VXLAN iface exists
     err = rtnl_link_add(socket, vxlan.link, NLM_F_CREATE | NLM_F_EXCL);
     if (err < 0) {
         if (err == -NLE_EXIST) {
