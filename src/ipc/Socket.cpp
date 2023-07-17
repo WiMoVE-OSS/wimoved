@@ -74,7 +74,8 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string
     local.sun_path[sizeof(local.sun_path) - 1] = '\0';
     if (bind(sock_fd, reinterpret_cast<struct sockaddr*>(&local), sizeof(local)) == -1) {
         close(sock_fd);
-        throw std::runtime_error("Could not bind to socket error=" + std::strerror(errno) + " dest_path=" + dest_path);
+        throw std::runtime_error(std::string("Could not bind to socket error=") + std::strerror(errno) +
+                                 std::string(" dest_path=") + dest_path);
     }
 
     std::array<char, GETGRNAM_BUFFER_SIZE> buf{};
@@ -96,8 +97,8 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string
     dest.sun_path[sizeof(dest.sun_path) - 1] = '\0';
     if (connect(sock_fd, reinterpret_cast<struct sockaddr*>(&dest), sizeof(dest)) == -1) {
         close(sock_fd);
-        throw std::runtime_error("Could not connect to socket error=" + std::strerror(errno) +
-                                 " dest_path=" + dest_path);
+        throw std::runtime_error(std::string("Could not connect to socket error=") + std::strerror(errno) +
+                                 std::string(" dest_path=") + dest_path);
     }
 }
 
