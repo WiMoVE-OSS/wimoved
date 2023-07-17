@@ -91,13 +91,15 @@ void nl::Socket::add_iface_bridge(const std::string &bridge_name, const std::str
 
     int err = rtnl_link_get_kernel(socket, 0, interface_name.c_str(), &interface_link_unmanaged);
     if (err < 0) {
-        throw std::runtime_error(std::string("Could not get interface error=") + nl_geterror(err) + std::string(" iface=") + interface_name);
+        throw std::runtime_error(std::string("Could not get interface error=") + nl_geterror(err) +
+                                 std::string(" iface=") + interface_name);
     }
     Link interface_link(interface_link_unmanaged);
 
     err = rtnl_link_get_kernel(socket, 0, bridge_name.c_str(), &bridge_link_unmanaged);
     if (err < 0) {
-        throw std::runtime_error(std::string("Could not get interface error=") + nl_geterror(err) + std::string(" bridge=") + bridge_name);
+        throw std::runtime_error(std::string("Could not get interface error=") + nl_geterror(err) +
+                                 std::string(" bridge=") + bridge_name);
     }
     Link bridge_link(bridge_link_unmanaged);
 
