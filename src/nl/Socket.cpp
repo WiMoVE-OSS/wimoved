@@ -46,6 +46,10 @@ void nl::Socket::create_vxlan_iface(uint32_t vni) {
         throw std::runtime_error(std::string("error in rtnl_link_vxlan_set_id: ") + std::strerror(errno));
     }
 
+    if (rtnl_link_vxlan_set_learning(vxlan.link, 0)) {
+        throw std::runtime_error(std::string("error in rtnl_link_vxlan_set_learning: ") + std::strerror(errno));
+    }
+
     int err = rtnl_link_vxlan_set_port(vxlan.link, VXLAN_PORT);
     if (err < 0) {
         throw std::runtime_error(std::string("error in rtnl_link_vxlan_set_port_range: ") + nl_geterror(err));
