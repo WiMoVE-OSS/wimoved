@@ -11,14 +11,14 @@ BridgePerVxlanRenderer::BridgePerVxlanRenderer()
 
 void BridgePerVxlanRenderer::setup_station(const Station& station) {
     std::lock_guard g(renderer_mutex);
-    WMLOG(DEBUG) << "Calling setup_station() with station=" << station;
+    WMLOG(DEBUG) << "Calling setup_station station=" << station;
 
     uint32_t vni = station.vni();
     socket.create_vxlan_iface(vni);
     socket.create_bridge_for_vni(vni);
 
     if (not station.vlan_id.has_value()) {
-        throw std::runtime_error("Station has no vlan_id mac= " + station.mac.string());
+        throw std::runtime_error("Station has no vlan_id station=" + station.mac.string());
     }
 
     socket.add_iface_bridge("bridge" + std::to_string(station.vni()), station.vlan_interface_name());
@@ -28,7 +28,7 @@ void BridgePerVxlanRenderer::setup_station(const Station& station) {
 void BridgePerVxlanRenderer::cleanup(const std::function<std::vector<Station>()>& get_stations) {
     std::lock_guard g(renderer_mutex);
     std::unordered_set<uint32_t> connected_station_vnis(0);
-    WMLOG(DEBUG) << "Starting cleanup()";
+    WMLOG(DEBUG) << "Started cleanup";
     int sta_counter = 0;
     for (auto& station : get_stations()) {
         connected_station_vnis.emplace(station.vni());
@@ -41,16 +41,16 @@ void BridgePerVxlanRenderer::cleanup(const std::function<std::vector<Station>()>
         existing_interfaces.erase(vni);
     }
     for (const auto vni : existing_interfaces) {
-        WMLOG(DEBUG) << "Deleting vni= " << vni;
+        WMLOG(DEBUG) << "Deleting vni=" << vni;
         try {
             socket.delete_interface("vxlan" + std::to_string(vni));
         } catch (const std::exception&) {
-            WMLOG(ERROR) << "Could not delete vxlan interface vni= " << vni;
+            WMLOG(ERROR) << "Could not delete vxlan interface vni=" << vni;
         }
         try {
             socket.delete_interface("bridge" + std::to_string(vni));
         } catch (const std::exception&) {
-            WMLOG(ERROR) << "Could not delete bridge vni= " << vni;
+            WMLOG(ERROR) << "Could not delete bridge vni=" << vni;
         }
     }
     WMLOG(DEBUG) << "Cleanup finished. " << sta_counter << " stations connected.";

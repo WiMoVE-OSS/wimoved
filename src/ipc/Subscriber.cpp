@@ -16,14 +16,14 @@ const std::string HOSTAPD_GLOBAL = "global";
 static std::pair<std::string, std::string> split_at_first_space(const std::string& line) {
     auto position = line.find(' ');
     if (position == std::string::npos) {
-        throw std::runtime_error("Could not parse event line= " + line);
+        throw std::runtime_error("Could not parse line=" + line);
     }
     return {line.substr(0, position), line.substr(position + 1)};
 }
 
 static std::string get_ifname(const std::string& eventprefix) {
     if (eventprefix.rfind(HOSTAPD_IFPREFIX) != 0) {
-        throw std::runtime_error("Could not parse interface name from eventprefix= " + eventprefix);
+        throw std::runtime_error("Could not parse eventprefix= " + eventprefix);
     }
     return eventprefix.substr(HOSTAPD_IFPREFIX.size());
 }
@@ -38,7 +38,7 @@ ipc::Subscriber::Subscriber(SynchronizedQueue<Event>& queue, const std::chrono::
 void ipc::Subscriber::loop(const std::future<void>& future) {
     std::string result = socket.send_and_receive({"ATTACH"});
     if (result != Socket::HOSTAPD_OK) {
-        throw std::runtime_error(std::string("Could not attach to hostapd: ") + result);
+        throw std::runtime_error(std::string("Could not attach to hostapd error=") + result);
     }
     WMLOG(INFO) << "Attached to hostapd.";
     while (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
@@ -49,7 +49,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             try {
                 line = socket.send_and_receive({"PING"});
             } catch (const TimeoutException& e) {
-                WMLOG(FATAL) << "Timeout in Subscriber::loop_ipc_queue(), hostapd timed out while responding to ping";
+                WMLOG(FATAL) << "Timeout Subscriber::loop_ipc_queue(), hostapd timed out while responding to ping error=" << e.what();
                 break;
             }
         }
@@ -64,8 +64,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
 
         std::vector<std::string> interface_names = Configuration::get_instance().socknames;
         if (std::find(interface_names.begin(), interface_names.end(), sockname) == interface_names.end()) {
-            WMLOG(DEBUG) << "Received event, that is not configured on interface sockname= " << sockname << " : "
-                         << event;
+            WMLOG(DEBUG) << "Not configured event=" << event << " iface=" << sockname;
             continue;
         }
 
@@ -77,7 +76,7 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
                 queue.enqueue(std::make_unique<ConnectEvent>(std::move(station)));
                 hostapd_connect_counter.Increment();
             } catch (const std::runtime_error& e) {
-                WMLOG(ERROR) << "Unable to create event: " << e.what();
+                WMLOG(ERROR) << "Unable to create event error=" << e.what();
             }
         } else if (event.rfind(HOSTAPD_DISCONNECT_STRING) == 0) {
             MacAddress station_mac(
@@ -87,11 +86,11 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
                 queue.enqueue(std::make_unique<DisconnectEvent>(std::move(station)));
                 hostapd_disconnect_counter.Increment();
             } catch (const std::runtime_error& e) {
-                WMLOG(ERROR) << "Unable to create event: " << e.what();
+                WMLOG(ERROR) << "Unable to create event error=" << e.what();
             }
         } else {
             hostapd_unknown_counter.Increment();
-            WMLOG(DEBUG) << "Received unknown event: " << event;
+            WMLOG(DEBUG) << "Received unknown event=" << event;
         }
     }
 }

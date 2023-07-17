@@ -56,12 +56,12 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string
     std::string dest_path = Configuration::get_instance().hapd_sockdir + "/" + sockname;
     std::string local_path = "/var/run/wimoved." + random_name();
     if (unlink(local_path.c_str()) == 0) {
-        WMLOG(DEBUG) << "Successfully unlinked socket at local_path=" << local_path;
+        WMLOG(DEBUG) << "Successfully unlinked socket local_path=" << local_path;
     }
 
     sock_fd = socket(AF_UNIX, SOCK_DGRAM, 0);
     if (sock_fd == -1) {
-        throw std::runtime_error(std::string("Could not create socket: ") + std::strerror(errno));
+        throw std::runtime_error(std::string("Could not create socket error=") + std::strerror(errno));
     }
     auto timeout_usec = std::chrono::duration_cast<std::chrono::microseconds>(timeout);
     struct timeval tv {};
@@ -74,7 +74,7 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string
     local.sun_path[sizeof(local.sun_path) - 1] = '\0';
     if (bind(sock_fd, reinterpret_cast<struct sockaddr*>(&local), sizeof(local)) == -1) {
         close(sock_fd);
-        throw std::runtime_error("Could not bind to socket at dest_path= " + dest_path + ": " + std::strerror(errno));
+        throw std::runtime_error("Could not bind to socket error=" + std::strerror(errno) + " dest_path=" + dest_path);
     }
 
     std::array<char, GETGRNAM_BUFFER_SIZE> buf{};
@@ -82,13 +82,13 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string
     struct group* grp_result = nullptr;
     getgrnam_r(Configuration::get_instance().hapd_group.c_str(), &grp, buf.data(), buf.size(), &grp_result);
     if (grp_result == nullptr) {
-        throw std::runtime_error(std::string("Failed getgrnam_r(): ") + std::strerror(errno));
+        throw std::runtime_error(std::string("Failed getgrnam_r() error=") + std::strerror(errno));
     }
     if (chown(local_path.c_str(), -1, grp_result->gr_gid) == -1) {
-        throw std::runtime_error(std::string("Could not set socket group: ") + std::strerror(errno));
+        throw std::runtime_error(std::string("Could not set socket group error=") + std::strerror(errno));
     }
     if (chmod(local_path.c_str(), LOCAL_SOCKET_PERMISSIONS) == -1) {
-        throw std::runtime_error(std::string("Could not set socket permissions: ") + std::strerror(errno));
+        throw std::runtime_error(std::string("Could not set socket permissions error=") + std::strerror(errno));
     }
 
     dest.sun_family = AF_UNIX;
@@ -96,8 +96,8 @@ ipc::Socket::Socket(const std::chrono::duration<int>& timeout, const std::string
     dest.sun_path[sizeof(dest.sun_path) - 1] = '\0';
     if (connect(sock_fd, reinterpret_cast<struct sockaddr*>(&dest), sizeof(dest)) == -1) {
         close(sock_fd);
-        throw std::runtime_error("Could not connect to socket at dest_path=" + dest_path + " : " +
-                                 std::strerror(errno));
+        throw std::runtime_error("Could not connect to socket error=" + std::strerror(errno) +
+                                 " dest_path=" + dest_path);
     }
 }
 
@@ -106,10 +106,10 @@ ipc::Socket::~Socket() {
         return;
     }
     if (close(sock_fd) == -1) {
-        WMLOG(ERROR) << "Could not close socket: " << std::strerror(errno) << "\n";
+        WMLOG(ERROR) << "Could not close socket error=" << std::strerror(errno) << "\n";
     }
     if (unlink(local.sun_path) != 0) {
-        WMLOG(ERROR) << "Could not unlink socket: " << std::strerror(errno) << "\n";
+        WMLOG(ERROR) << "Could not unlink socket error=" << std::strerror(errno) << "\n";
     }
 }
 
@@ -119,7 +119,7 @@ void ipc::Socket::send_command(const std::vector<std::string>& args) {
 
     ssize_t err = send(sock_fd, command.c_str(), command.size(), 0);
     if (err < 0) {
-        throw std::runtime_error(std::string("Could not send to socket: ") + std::strerror(errno));
+        throw std::runtime_error(std::string("Could not send to socket error=") + std::strerror(errno));
     }
 }
 
@@ -137,10 +137,10 @@ std::string ipc::Socket::receive() {
             return buf.substr(0, len);
         }
         if (errno == EAGAIN) {
-            throw TimeoutException("Timeout in recv() from hostapd.");
+            throw TimeoutException("Timeout from hostapd recv()");
         }
         if (errno != EINTR) {
-            throw std::runtime_error(std::string("Could not receive from socket: ") + std::strerror(errno));
+            throw std::runtime_error(std::string("Could not receive from socket error=") + std::strerror(errno));
         }
     }
 }

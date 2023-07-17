@@ -8,7 +8,7 @@ const int BITS_PER_BYTE = 8;
 
 MacAddress::MacAddress(std::string serialized) : data(), serialized(serialized) {
     if (!std::regex_match(serialized, MAC_REGEX)) {
-        throw std::runtime_error("Invalid MAC address=" + serialized);
+        throw std::runtime_error("Invalid station=" + serialized);
     }
     serialized.erase(std::remove(serialized.begin(), serialized.end(), ':'), serialized.end());
     for (size_t i = 0; i < MAC_NUM_BYTES; i++) {

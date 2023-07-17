@@ -28,21 +28,21 @@ void EventLoop::loop_ipc_queue(const std::future<void>& future) {
 
 void EventLoop::handle_connect(ipc::ConnectEvent* event) {
     event->station.vlan_id = caller.vlan_for_station(event->station);
-    WMLOG(DEBUG) << "Entering handle_connect() for mac:" << event->station
-                 << " with vlan_id: " << event->station.vlan_id.value_or(0);
-    WMLOG(INFO) << "Connected station= " << event->station.mac.string() << " for vni= " << event->station.vni()
-                << " at interface= " << event->station.sockname;
+    WMLOG(DEBUG) << "Entering handle_connect() station=" << event->station
+                 << " vlan_id=" << event->station.vlan_id.value_or(0);
+    WMLOG(INFO) << "Connected iface=" << event->station.sockname << " station=" << event->station.mac.string()
+                << " vni=" << event->station.vni();
     try {
         renderer.setup_station(event->station);
         processing_time_histogram.Observe(static_cast<double>(event->finished_processing()));
     } catch (std::runtime_error& err) {
-        WMLOG(ERROR) << "Could not connect station= " << event->station.mac.string()
-                     << " with vni= " << event->station.vni() << " to VXLAN interface: " << err.what()
-                     << " - Will now send DEAUTH packet.";
+        WMLOG(ERROR) << "Could not connect - Will now send DEAUTH packet. error=" << err.what()
+                     << " iface=" << event->station.sockname << " station=" << event->station.mac.string()
+                     << " vni=" << event->station.vni();
         caller.deauth_station(event->station);
     }
 }
 
 void EventLoop::handle_disconnect(ipc::DisconnectEvent* event) {
-    WMLOG(INFO) << "Station: " << event->station.mac.string() << " disconnected.";
+    WMLOG(INFO) << "Disconnected station=" << event->station.mac.string();
 }

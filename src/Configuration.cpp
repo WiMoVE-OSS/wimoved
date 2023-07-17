@@ -67,7 +67,7 @@ void Configuration::apply_environment() { set_all_available_sockets_if_empty(); 
 
 void Configuration::check_validity() const {
     if (min_vni > max_vni) {
-        throw std::runtime_error("min_vni must be less than or equal to max_vni " + std::to_string(min_vni) + " > " +
-                                 std::to_string(max_vni));
+        throw std::runtime_error("min_vni <= max_vni but min_vni=" + std::to_string(min_vni) +
+                                 " max_vni=" + std::to_string(max_vni));
     }
 }

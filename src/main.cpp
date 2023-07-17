@@ -36,9 +36,9 @@ void setup_logger() {
         } catch (const std::exception& ex) {
             WMLOG(FATAL) << typeid(ex).name() << ": " << ex.what();
         } catch (...) {
-            WMLOG(FATAL) << "Error while handling exception: " << typeid(std::current_exception()).name();
+            WMLOG(FATAL) << "Error while handling exception error=" << typeid(std::current_exception()).name();
         }
-        WMLOG(ERROR) << "Errno: " << errno << ": " << std::strerror(errno) << std::endl;
+        WMLOG(ERROR) << "errno=" << errno << " error=" << std::strerror(errno) << std::endl;
         std::abort();
     });
     el::Configurations default_configuration;
@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
     setup_logger();
 
     if (std::signal(SIGINT, handle_signal) == SIG_ERR || std::signal(SIGTERM, handle_signal) == SIG_ERR) {
-        WMLOG(FATAL) << "Could not set up signal handlers: " << std::strerror(errno);
+        WMLOG(FATAL) << "Could not set up signal handlers error=" << std::strerror(errno);
     }
 
     SynchronizedQueue<ipc::Event> ipc_queue;
