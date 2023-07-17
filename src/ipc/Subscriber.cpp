@@ -49,7 +49,9 @@ void ipc::Subscriber::loop(const std::future<void>& future) {
             try {
                 line = socket.send_and_receive({"PING"});
             } catch (const TimeoutException& e) {
-                WMLOG(FATAL) << "Timeout Subscriber::loop_ipc_queue(), hostapd timed out while responding to ping error=" << e.what();
+                WMLOG(FATAL)
+                    << "Timeout Subscriber::loop_ipc_queue(), hostapd timed out while responding to ping error="
+                    << e.what();
                 break;
             }
         }
