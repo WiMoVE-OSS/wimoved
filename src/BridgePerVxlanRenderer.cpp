@@ -45,7 +45,7 @@ void BridgePerVxlanRenderer::cleanup(const std::function<std::vector<Station>()>
         try {
             socket.delete_interface("vxlan" + std::to_string(vni));
         } catch (const std::exception&) {
-            WMLOG(ERROR) << "Could not delete vxlan interface vni=" << vni;
+            WMLOG(ERROR) << "Could not delete vxlan vni=" << vni;
         }
         try {
             socket.delete_interface("bridge" + std::to_string(vni));
@@ -53,5 +53,5 @@ void BridgePerVxlanRenderer::cleanup(const std::function<std::vector<Station>()>
             WMLOG(ERROR) << "Could not delete bridge vni=" << vni;
         }
     }
-    WMLOG(DEBUG) << "Cleanup finished. " << sta_counter << " stations connected.";
+    WMLOG(DEBUG) << "Cleanup finished. Connected stations: " << sta_counter;
 }

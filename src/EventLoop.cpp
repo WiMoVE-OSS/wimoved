@@ -28,7 +28,7 @@ void EventLoop::loop_ipc_queue(const std::future<void>& future) {
 
 void EventLoop::handle_connect(ipc::ConnectEvent* event) {
     event->station.vlan_id = caller.vlan_for_station(event->station);
-    WMLOG(DEBUG) << "Entering handle_connect() station=" << event->station
+    WMLOG(DEBUG) << "Entering handle_connect station=" << event->station
                  << " vlan_id=" << event->station.vlan_id.value_or(0);
     WMLOG(INFO) << "Connected iface=" << event->station.sockname << " station=" << event->station.mac.string()
                 << " vni=" << event->station.vni();
