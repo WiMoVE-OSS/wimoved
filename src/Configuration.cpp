@@ -47,9 +47,9 @@ void Configuration::set_all_available_sockets_if_empty() {
             }
         }
         if (socknames.empty()) {
-            throw std::runtime_error("No sockets were configured and no sockets could be found.");
+            throw std::runtime_error("Could not configure sockets.");
         }
-        WMLOG(DEBUG) << "No sockets were configured. Using all " << socknames.size() << " sockets available.";
+        WMLOG(DEBUG) << "There were no sockets specified. Using all available sockets: " << socknames.size();
     }
 }
 
@@ -67,7 +67,7 @@ void Configuration::apply_environment() { set_all_available_sockets_if_empty(); 
 
 void Configuration::check_validity() const {
     if (min_vni > max_vni) {
-        throw std::runtime_error("min_vni must be less than or equal to max_vni " + std::to_string(min_vni) + " > " +
-                                 std::to_string(max_vni));
+        throw std::runtime_error("min_vni <= max_vni but min_vni=" + std::to_string(min_vni) +
+                                 " max_vni=" + std::to_string(max_vni));
     }
 }

@@ -20,7 +20,7 @@ uint32_t ipc::Caller::vlan_for_station(const Station &station) {
             return std::stol(line.substr(VLAN_ID_PREFIX.size(), line.size()));
         }
     }
-    throw std::runtime_error("no vlan_id attribute found for station");
+    throw std::runtime_error("Could not find vlan_id station=" + station.mac.string());
 }
 
 std::vector<Station> ipc::Caller::connected_stations() {

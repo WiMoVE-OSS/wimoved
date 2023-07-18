@@ -28,20 +28,21 @@ void EventLoop::loop_ipc_queue(const std::future<void>& future) {
 
 void EventLoop::handle_connect(ipc::ConnectEvent* event) {
     event->station.vlan_id = caller.vlan_for_station(event->station);
-    WMLOG(DEBUG) << "handle_connect called " << event->station << " with vlan_id "
-                 << event->station.vlan_id.value_or(0);
-    WMLOG(INFO) << "Station " << event->station << " connected to AP for VXLAN " << event->station.vni()
-                << " at interface " << event->station.sockname;
+    WMLOG(DEBUG) << "Entering handle_connect station=" << event->station
+                 << " vlan_id=" << event->station.vlan_id.value_or(0);
+    WMLOG(INFO) << "Connected iface=" << event->station.sockname << " station=" << event->station.mac.string()
+                << " vni=" << event->station.vni();
     try {
         renderer.setup_station(event->station);
         processing_time_histogram.Observe(static_cast<double>(event->finished_processing()));
     } catch (std::runtime_error& err) {
-        WMLOG(ERROR) << "station could not be bridged to vxlan interface: " << err.what()
-                     << " - Will now send deauth packet";
+        WMLOG(ERROR) << "Could not connect - Will now send DEAUTH packet. error=" << err.what()
+                     << " iface=" << event->station.sockname << " station=" << event->station.mac.string()
+                     << " vni=" << event->station.vni();
         caller.deauth_station(event->station);
     }
 }
 
 void EventLoop::handle_disconnect(ipc::DisconnectEvent* event) {
-    WMLOG(INFO) << "Station " << event->station << " disconnected from AP";
+    WMLOG(INFO) << "Disconnected station=" << event->station.mac.string();
 }
