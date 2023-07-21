@@ -149,7 +149,7 @@ The following configuration options are available:
 | `cleanup_interval` | 10                 | Duration of the cleanup timer. Wimoved removes interfaces whenever the cleanup timer expires.                                                            |
 | `min_vni`          | 1                  | Minimum VNI used for hashing station MACs to VNIs                                                                                                        |
 | `max_vni`          | 20                 | Maximum VNI used for hashing station MACs to VNIs (exclusive)                                                                                            |
-| `sockets`          |                    | Explicit list of hostapd sockets, comma-separated. Can be used for sockets not in `hapd_sockdir`                                                         |
+| `sockets`          |                    | Explicit list of hostapd sockets, comma-separated. If used, `hapd_sockdir` will not be scanned for sockets. Names are relative to `hapd_sockdir`.        |
 
 
 ## Monitoring and Logging
