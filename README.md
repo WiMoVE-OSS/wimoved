@@ -147,7 +147,7 @@ The following configuration options are available:
 | `hapd_sockdir`     | `/var/run/hostapd` | Socket directory for hostapd. Hostapd sockets are discovered automatically from this directory.                                                          |
 | `hapd_group`       | root               | Group under which hostapd is run. This is needed to set the appropriate permissions when communicating with hostapd. On OpenWrt, this must be "network". |
 | `log_path`         | wimoved.log        | Path to the log file when logging to a file. Does nothing if logging to syslog.                                                                          |
-| `cleanup_interval` | 10                 | Duration of the cleanup timer. Wimoved removes interfaces whenever the cleanup timer expires.                                                            |
+| `cleanup_interval` | 10                 | Duration of the cleanup timer (seconds). Wimoved removes interfaces whenever the cleanup timer expires.                                                  |
 | `min_vni`          | 1                  | Minimum VNI used for hashing station MACs to VNIs                                                                                                        |
 | `max_vni`          | 20                 | Maximum VNI used for hashing station MACs to VNIs (exclusive)                                                                                            |
 | `sockets`          |                    | Explicit list of hostapd sockets, comma-separated. If used, `hapd_sockdir` will not be scanned for sockets. Names are relative to `hapd_sockdir`.        |
