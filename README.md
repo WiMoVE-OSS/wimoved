@@ -28,7 +28,8 @@ This is achieved by letting hostapd create one interface per station (see below)
 
 The following diagram shows the components and their interactions:
 
-<img src="https://github.com/WiMoVE-OSS/wimoved/assets/25486288/802775f0-67a3-4396-9bab-b965f9c43f2e" width=600>
+![](https://github.com/WiMoVE-OSS/wimoved/assets/25486288/6fc99e28-4ae8-41da-b0eb-0df441451a7b)
+
 
 The daemon is responsible for handling hostapd events, creating VXLAN interfaces and bridges.
 FRR receives events whenever network interfaces change and advertises the corresponding reachability information using BGP EVPN.
