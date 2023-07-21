@@ -136,6 +136,8 @@ docker pull "$IMAGE"
 ./openwrt/build-openwrt.sh
 ```
 
+The script creates an `out` directory and the package will be inside that directory.
+
 ## Configuration
 
 The default configuration file is `/etc/wimoved/config`.
