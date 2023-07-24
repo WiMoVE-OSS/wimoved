@@ -28,7 +28,9 @@ This is achieved by letting hostapd create one interface per station (see below)
 
 The following diagram shows the components and their interactions:
 
-![](https://github.com/WiMoVE-OSS/wimoved/assets/25486288/6fc99e28-4ae8-41da-b0eb-0df441451a7b)
+<p align="center">
+ <img width="600px" src="https://github.com/WiMoVE-OSS/wimoved/assets/25486288/6fc99e28-4ae8-41da-b0eb-0df441451a7b"/>
+</p>
 
 
 The daemon is responsible for handling hostapd events, creating VXLAN interfaces and bridges.
