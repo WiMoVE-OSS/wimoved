@@ -169,8 +169,13 @@ We plan on making the endpoint optional via a config option.
 ### Logging
 
 Wimoved can log to a file or to syslog.
+
 The file can be set through the configuration option `log_path`.
 
 On OpenWrt, wimoved logs to syslog.
 This is done by defining `ELPP_SYSLOG` in `CMakeLists.txt`.
 A syslog aggregator like syslog-ng can be used to aggregate those logs on a different host.
+
+## Known Issues
+
+- When a station roams from one AP to another, `zebra` can get into a state where no packets are forwarded to the station. We track the issue as [#68](https://github.com/WiMoVE-OSS/wimoved/issues/68). The cause seems to be an upstream issue in FRR which we reported [here](https://github.com/FRRouting/frr/issues/13973).    
