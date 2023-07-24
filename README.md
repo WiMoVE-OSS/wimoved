@@ -17,12 +17,24 @@ WiMoVE is built with standard network protocols, on top of open&#8209;source tec
 
 This solution allows for using commodity access points running OpenWrt for large&#8209;scale Wi&#8209;Fi deployments, even from different vendors.
 
+WiMoVE consists of multiple parts.
+If you want to learn more about the architecture or create a full setup, take a look at our [documentation](https://wimove-oss.github.io/docs/).
+
 ## This repository
 
 This repository contains the WiMoVE Access Point daemon wimoved.
-The daemon is responsible for handling hostapd events and creating VXLAN interfaces.
-WiMoVE consists of multiple other parts.
-If you want to learn more about the architecture or create a full setup, take a look at our [documentation](https://wimove-oss.github.io/docs/).
+The daemon is reponsible for connecting 802.11 stations to BGP EVPN.
+This is achieved by letting hostapd create one interface per station (see below), creating VXLAN interfaces and bridging the interfaces. 
+
+The following diagram shows the components and their interactions:
+
+<p align="center">
+ <img width="600px" src="https://github.com/WiMoVE-OSS/wimoved/assets/25486288/6fc99e28-4ae8-41da-b0eb-0df441451a7b"/>
+</p>
+
+
+The daemon is responsible for handling hostapd events, creating VXLAN interfaces and bridges.
+FRR receives events whenever network interfaces change and advertises the corresponding reachability information using BGP EVPN.
 
 ## Supported architectures
 
@@ -79,7 +91,7 @@ First, we will set up [hostapd](https://w1.fi/).
 - Hostapd has to be started with the option `-g /var/run/hostapd/global`. For the service to work properly, you might have to edit the service file for hostapd. Run `systemctl status hostapd` to locate this file.
 - Start hostapd, either with `systemctl start hostapd` or on the command line. You might need to stop `NetworkManager` before starting hostapd since the programs interfere with each other.
 
-### Build WiMoVE
+### Build
 
 - Install [`libnl`](https://github.com/thom311/libnl). On a recent Linux system, the corresponding package is probably already installed.
 - Install [`prometheus-cpp`](https://github.com/jupp0r/prometheus-cpp).
@@ -104,6 +116,47 @@ As linting takes a long time, we recommend integrating `clang-tidy` into your ed
 Build with sanitizers enabled by running `cmake . -DWIMOVED_SANITIZE=ON`.
 For full stacktrace support, set the environment variable `LSAN_OPTIONS=fast_unwind_on_malloc=0:malloc_context_size=30`.
 
+## Build for OpenWrt
+
+OpenWrt packages are built on every release.
+On each commit on `main`, a pre-release is created and a build is triggered.
+You can download the packages on [the releases page](https://github.com/wiMoVE-OSS/wimoved/releases).
+
+The pipeline works as follows:
+
+- For both supported architectures (`mvebu-cortexa9`, `ramips-mt7621`), there is a Docker image containing an OpenWrt build environment. In the image, libnl and prometheus-cpp are already built. The corresponding `Dockerfile` is located in `docker/openwrt-build-env`.
+- The pipeline sets the environment variable `IMAGE` and runs `openwrt/build-openwrt.sh`. This creates a container from the image, mounting the source code and the output directory.
+- The packages from the output directory are uploaded as pipeline artifacts.
+
+If you want to build for OpenWrt locally, you first need to build or pull a base image.
+Base images can be found on the [Packages](https://github.com/orgs/WiMoVE-OSS/packages?repo_name=wimoved) page.
+Then, you can run `./openwrt/build-openwrt.sh`:
+
+```bash
+export IMAGE=ghcr.io/wimove-oss/wimove/wimove-buildenv/mvebu-cortexa9-22.03.3:main
+docker pull "$IMAGE"
+./openwrt/build-openwrt.sh
+```
+
+The script creates an `out` directory and the package will be inside that directory.
+
+## Configuration
+
+The default configuration file is `/etc/wimoved/config`.
+A different configuration file can be specified as the first argument, i.e. by running `wimoved /path/to/config`.
+The following configuration options are available:
+
+| Name               | Default            | Explanation                                                                                                                                              |
+|--------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `hapd_sockdir`     | `/var/run/hostapd` | Socket directory for hostapd. Hostapd sockets are discovered automatically from this directory.                                                          |
+| `hapd_group`       | root               | Group under which hostapd is run. This is needed to set the appropriate permissions when communicating with hostapd. On OpenWrt, this must be "network". |
+| `log_path`         | wimoved.log        | Path to the log file when logging to a file. Does nothing if logging to syslog.                                                                          |
+| `cleanup_interval` | 10                 | Duration of the cleanup timer (seconds). Wimoved removes interfaces whenever the cleanup timer expires.                                                  |
+| `min_vni`          | 1                  | Minimum VNI used for hashing station MACs to VNIs                                                                                                        |
+| `max_vni`          | 20                 | Maximum VNI used for hashing station MACs to VNIs (exclusive)                                                                                            |
+| `sockets`          |                    | Explicit list of hostapd sockets, comma-separated. If used, `hapd_sockdir` will not be scanned for sockets. Names are relative to `hapd_sockdir`.        |
+
+
 ## Monitoring and Logging
 
 ### Monitoring
@@ -115,5 +168,14 @@ We plan on making the endpoint optional via a config option.
 
 ### Logging
 
-wimoved provides logs via syslog.
+Wimoved can log to a file or to syslog.
+
+The file can be set through the configuration option `log_path`.
+
+On OpenWrt, wimoved logs to syslog.
+This is done by defining `ELPP_SYSLOG` in `CMakeLists.txt`.
 A syslog aggregator like syslog-ng can be used to aggregate those logs on a different host.
+
+## Known Issues
+
+- When a station roams from one AP to another, `zebra` can get into a state where no packets are forwarded to the station. We track the issue as [#68](https://github.com/WiMoVE-OSS/wimoved/issues/68). The cause seems to be an upstream issue in FRR which we reported [here](https://github.com/FRRouting/frr/issues/13973).    
