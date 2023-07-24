@@ -7,34 +7,40 @@ on:
       - "v*"
 
 jobs:
+  get-version:
+    runs-on: "ubuntu-latest"
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.step1.outputs.version }}
+    steps:
+      - id: step1
+        run: echo "version=${GITHUB_REF#refs/*/}" >> "$GITHUB_OUTPUT"
   build-arm:
     permissions:
       packages: write
       contents: read
-
-    steps:
-      - name: Set tag
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - uses: ./.github/workflows/build-openwrt.yml
-        with:
-          architecture: mvebu-cortexa9-22.03.3
-          version: ${{ env.RELEASE_VERSION }}
-        secrets:
-          ghtoken: ${{ secrets.GITHUB_TOKEN }}
+    needs:
+      [get-version]
+    uses: ./.github/workflows/build-openwrt.yml
+    with:
+      architecture: mvebu-cortexa9-22.03.3
+      version: ${{ needs.get-version.outputs.version }}
+    secrets:
+      ghtoken: ${{ secrets.GITHUB_TOKEN }}
 
   build-ramips:
     permissions:
       packages: write
       contents: read
-    steps:
-      - name: Set tag
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - uses: ./.github/workflows/build-openwrt.yml
-        with:
-          architecture: ramips-mt7621-22.03.3
-          version: ${{ env.RELEASE_VERSION }}
-        secrets:
-          ghtoken: ${{ secrets.GITHUB_TOKEN }}
+    needs:
+      [get-version]
+    uses: ./.github/workflows/build-openwrt.yml
+    with:
+      architecture: ramips-mt7621-22.03.3
+      version: ${{ needs.get-version.outputs.version }}
+    secrets:
+      ghtoken: ${{ secrets.GITHUB_TOKEN }}
 
   release:
     needs: [build-ramips, build-arm]
